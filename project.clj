@@ -17,11 +17,9 @@
              {:env {:production true}
               :offline true}}
   :source-paths ["src/clj"]
-  :cljsbuild {:builds {:main
-                       {:source-paths ["src/cljs"]
-                        :jar true
+  :cljsbuild {:builds [{:source-paths ["src/cljs"]
                         :compiler {:output-to "resources/public/js/cljs.js"
                                    :optimizations :whitespace
-                                   :pretty-print true}}}}
+                                   :pretty-print true}}]}
   :main planets.server
   :ring {:handler planets.server/app})
