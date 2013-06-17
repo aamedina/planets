@@ -2,7 +2,6 @@ planets
 =======
 
 Refresh to generate a new random class A-Z planet! Result of playing around with Three.js and Clojurescript.
-<<<<<<< HEAD
 
 ## Requirements
 
@@ -15,4 +14,4 @@ Refresh to generate a new random class A-Z planet! Result of playing around with
 4. `open http://localhost:8000 in a WebGL capable browser`
 
 =======
->>>>>>> 8fac03f915376fb99568f39c1aa1f76888ffec9e
+
