@@ -1,0 +1,8 @@
+{
+  "name": "reactive",
+  "version": "0.0.0",
+  "dependencies": {
+    "3.0.0-wip": "https://github.com/twitter/bootstrap/archive/3.0.0-wip.zip",
+    "jquery": "~2.0.2"
+  }
+}
