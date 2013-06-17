@@ -29,7 +29,7 @@
 
 (defn handler []
   (-> #'application-routes
-      (site)
+      (site)      
       (wrap-reload {:dirs ["src/clj" "src/cljs"]})))
 
 (defn cljs-repl []
@@ -38,4 +38,6 @@
                cljs.repl/-setup)))
 
 (defn -main [& args]
-  (jetty/run-jetty (handler) {:port 8000}))
+  (jetty/run-jetty
+   (handler)
+   {:port (Integer/parseInt (get (System/getenv) "PORT" "8000"))}))
