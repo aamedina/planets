@@ -6,10 +6,7 @@
             [compojure.handler :refer [site]]
             [hiccup.def :refer [defhtml defelem]]
             [hiccup.page :refer [html5 include-css include-js]]
-            [ring.middleware.reload :refer [wrap-reload]]
-            cljs.repl
-            cljs.repl.browser
-            cemerick.piggieback)
+            [ring.middleware.reload :refer [wrap-reload]])
   (:gen-class))
 
 (defhtml layout [& body]
@@ -31,11 +28,6 @@
   (-> #'application-routes
       (site)      
       (wrap-reload {:dirs ["src/clj" "src/cljs"]})))
-
-(defn cljs-repl []
-  (cemerick.piggieback/cljs-repl
-   :repl-env (doto (cljs.repl.browser/repl-env :port 9000)
-               cljs.repl/-setup)))
 
 (defn -main [& args]
   (jetty/run-jetty
