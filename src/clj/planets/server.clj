@@ -12,7 +12,7 @@
 (defhtml layout [& body]
   (html5
    [:head
-    [:title "Reactive"]
+    [:title "Planets"]
     [:style "canvas { width: 100%; height: 100%; }"]
     (include-js "js/three.min.js")
     (include-js "js/cljs.js")]

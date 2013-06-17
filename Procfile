@@ -1,1 +1,1 @@
-web: lein with-profile production trampoline run -m planets.server $PORT
+web: lein with-profile production run -m planets.server $PORT
