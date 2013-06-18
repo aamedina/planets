@@ -19,7 +19,8 @@
   :source-paths ["src/clj"]
   :cljsbuild {:builds [{:source-paths ["src/cljs"]
                         :compiler {:output-to "resources/public/js/cljs.js"
-                                   :optimizations :whitespace
+                                   :externs ["resources/public/js/externs.js"]
+                                   :optimizations :advanced
                                    :pretty-print true}}]}
   :main planets.server
   :ring {:handler planets.server/app})
