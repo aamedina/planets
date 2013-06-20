@@ -8,3 +8,4 @@ pom.xml
 .DS_Store
 /target/
 /resources/public/textures/planets/
+/out/
