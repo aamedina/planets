@@ -3,8 +3,6 @@
   :url "http://github.com/aamedina/planets"
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-1806"]
-                 [com.google.javascript/closure-compiler "r1592"]
-                 [org.clojure/google-closure-library "0.0-790"]
                  [com.google.javascript/closure-compiler "r2388"]
                  [org.clojure/google-closure-library "0.0-2029-2"]
                  [compojure "1.1.5"]
@@ -13,11 +11,13 @@
                  [aleph "0.3.0-rc1"]
                  [org.clojure/data.json "0.2.2"]
                  [com.novemberain/monger "1.6.0-beta2"]
+                 [com.cemerick/piggieback "0.0.4"]
                  [hiccup "1.0.3"]
                  [prismatic/dommy "0.1.1"]]
   :min-lein-version "2.0.0"
   :plugins [[lein-cljsbuild "0.3.2"] [lein-ring "0.8.3"]]
   :hooks [leiningen.cljsbuild]
+  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
   :profiles {:production
              {:env {:production true}
               :offline true}}

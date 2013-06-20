@@ -7,3 +7,4 @@ pom.xml
 .repl/
 .DS_Store
 /target/
+/resources/public/textures/planets/
