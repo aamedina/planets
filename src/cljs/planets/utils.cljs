@@ -1,5 +1,10 @@
 (ns planets.utils
-  (:require [clojure.walk :refer [stringify-keys]]))
+  (:require [clojure.walk :refer [stringify-keys keywordize-keys]]
+            [dommy.core :as dommy])
+  (:use-macros [dommy.macros :only [node deftemplate sel1 sel]]))
+
+(defn sel-shader [script-id]
+  (.-textContent (sel1 script-id)))
 
 (defn shallow? [m]
   (not (coll? (val m))))
@@ -26,7 +31,7 @@
   (let [params (destruct-map options)]
     (doseq [param params]
       (if (= (count param) 2)
-        (aset obj (first param) (second param))
+        (aset obj (name (first param)) (second param))
         (aset (apply aget (into [obj] (drop-last 2 param)))
               (first (take-last 2 param))
               (last param))))))
@@ -41,3 +46,6 @@
               (first (take-last 2 param))
               (apply (last param)
                      [(apply aget (into [obj] (drop-last param)))]))))))
+
+(defn clone [obj]
+  (keywordize-keys (js->clj (.clone goog.object obj))))

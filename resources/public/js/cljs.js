@@ -170,7 +170,7 @@ if(!COMPILED && goog.ENABLE_DEBUG_LOADER) {
   goog.writeScriptTag_ = function(src) {
     if(goog.inHtmlDocument_()) {
       var doc = goog.global.document;
-      doc.write('\x3cscript type\x3d"text/javascript" src\x3d"' + src + '"\x3e\x3c/' + "script\x3e");
+      doc.write('<script type="text/javascript" src="' + src + '"></' + "script>");
       return true
     }else {
       return false
@@ -379,7 +379,7 @@ goog.globalEval = function(script) {
   }else {
     if(goog.global.eval) {
       if(goog.evalWorksForGlobals_ == null) {
-        goog.global.eval("var _et_ \x3d 1;");
+        goog.global.eval("var _et_ = 1;");
         if(typeof goog.global["_et_"] != "undefined") {
           delete goog.global["_et_"];
           goog.evalWorksForGlobals_ = true
@@ -627,26 +627,26 @@ goog.string.urlDecode = function(str) {
   return decodeURIComponent(str.replace(/\+/g, " "))
 };
 goog.string.newLineToBr = function(str, opt_xml) {
-  return str.replace(/(\r\n|\r|\n)/g, opt_xml ? "\x3cbr /\x3e" : "\x3cbr\x3e")
+  return str.replace(/(\r\n|\r|\n)/g, opt_xml ? "<br />" : "<br>")
 };
 goog.string.htmlEscape = function(str, opt_isLikelyToContainHtmlChars) {
   if(opt_isLikelyToContainHtmlChars) {
-    return str.replace(goog.string.amperRe_, "\x26amp;").replace(goog.string.ltRe_, "\x26lt;").replace(goog.string.gtRe_, "\x26gt;").replace(goog.string.quotRe_, "\x26quot;")
+    return str.replace(goog.string.amperRe_, "&amp;").replace(goog.string.ltRe_, "&lt;").replace(goog.string.gtRe_, "&gt;").replace(goog.string.quotRe_, "&quot;")
   }else {
     if(!goog.string.allRe_.test(str)) {
       return str
     }
-    if(str.indexOf("\x26") != -1) {
-      str = str.replace(goog.string.amperRe_, "\x26amp;")
+    if(str.indexOf("&") != -1) {
+      str = str.replace(goog.string.amperRe_, "&amp;")
     }
-    if(str.indexOf("\x3c") != -1) {
-      str = str.replace(goog.string.ltRe_, "\x26lt;")
+    if(str.indexOf("<") != -1) {
+      str = str.replace(goog.string.ltRe_, "&lt;")
     }
-    if(str.indexOf("\x3e") != -1) {
-      str = str.replace(goog.string.gtRe_, "\x26gt;")
+    if(str.indexOf(">") != -1) {
+      str = str.replace(goog.string.gtRe_, "&gt;")
     }
     if(str.indexOf('"') != -1) {
-      str = str.replace(goog.string.quotRe_, "\x26quot;")
+      str = str.replace(goog.string.quotRe_, "&quot;")
     }
     return str
   }
@@ -657,7 +657,7 @@ goog.string.gtRe_ = />/g;
 goog.string.quotRe_ = /\"/g;
 goog.string.allRe_ = /[&<>\"]/;
 goog.string.unescapeEntities = function(str) {
-  if(goog.string.contains(str, "\x26")) {
+  if(goog.string.contains(str, "&")) {
     if("document" in goog.global) {
       return goog.string.unescapeEntitiesUsingDom_(str)
     }else {
@@ -667,7 +667,7 @@ goog.string.unescapeEntities = function(str) {
   return str
 };
 goog.string.unescapeEntitiesUsingDom_ = function(str) {
-  var seen = {"\x26amp;":"\x26", "\x26lt;":"\x3c", "\x26gt;":"\x3e", "\x26quot;":'"'};
+  var seen = {"&amp;":"&", "&lt;":"<", "&gt;":">", "&quot;":'"'};
   var div = document.createElement("div");
   return str.replace(goog.string.HTML_ENTITY_PATTERN_, function(s, entity) {
     var value = seen[s];
@@ -691,11 +691,11 @@ goog.string.unescapePureXmlEntities_ = function(str) {
   return str.replace(/&([^;]+);/g, function(s, entity) {
     switch(entity) {
       case "amp":
-        return"\x26";
+        return"&";
       case "lt":
-        return"\x3c";
+        return"<";
       case "gt":
-        return"\x3e";
+        return">";
       case "quot":
         return'"';
       default:
@@ -711,7 +711,7 @@ goog.string.unescapePureXmlEntities_ = function(str) {
 };
 goog.string.HTML_ENTITY_PATTERN_ = /&([^;\s<&]+);?/g;
 goog.string.whitespaceEscape = function(str, opt_xml) {
-  return goog.string.newLineToBr(str.replace(/  /g, " \x26#160;"), opt_xml)
+  return goog.string.newLineToBr(str.replace(/  /g, " &#160;"), opt_xml)
 };
 goog.string.stripQuotes = function(str, quoteChars) {
   var length = quoteChars.length;
@@ -19491,7 +19491,7 @@ cljs.core.pr_writer = function pr_writer(obj, writer, opts) {
     return cljs.core._write(writer, "nil")
   }else {
     if(void 0 === obj) {
-      return cljs.core._write(writer, "#\x3cundefined\x3e")
+      return cljs.core._write(writer, "#<undefined>")
     }else {
       if("\ufdd0:else") {
         if(cljs.core.truth_(function() {
@@ -19572,7 +19572,7 @@ cljs.core.pr_writer = function pr_writer(obj, writer, opts) {
                 return cljs.core._write(writer, [cljs.core.str(obj)].join(""))
               }else {
                 if(obj instanceof Array) {
-                  return cljs.core.pr_sequential_writer(writer, pr_writer, "#\x3cArray [", ", ", "]\x3e", opts, obj)
+                  return cljs.core.pr_sequential_writer(writer, pr_writer, "#<Array [", ", ", "]>", opts, obj)
                 }else {
                   if(goog.isString(obj)) {
                     if(cljs.core.keyword_QMARK_(obj)) {
@@ -19607,7 +19607,7 @@ cljs.core.pr_writer = function pr_writer(obj, writer, opts) {
                     }
                   }else {
                     if(cljs.core.fn_QMARK_(obj)) {
-                      return cljs.core.write_all.cljs$core$IFn$_invoke$arity$variadic(writer, cljs.core.array_seq(["#\x3c", [cljs.core.str(obj)].join(""), "\x3e"], 0))
+                      return cljs.core.write_all.cljs$core$IFn$_invoke$arity$variadic(writer, cljs.core.array_seq(["#<", [cljs.core.str(obj)].join(""), ">"], 0))
                     }else {
                       if(obj instanceof Date) {
                         var normalize = function(n, len) {
@@ -19629,7 +19629,7 @@ cljs.core.pr_writer = function pr_writer(obj, writer, opts) {
                           return cljs.core.write_all.cljs$core$IFn$_invoke$arity$variadic(writer, cljs.core.array_seq(['#"', obj.source, '"'], 0))
                         }else {
                           if("\ufdd0:else") {
-                            return cljs.core.write_all.cljs$core$IFn$_invoke$arity$variadic(writer, cljs.core.array_seq(["#\x3c", [cljs.core.str(obj)].join(""), "\x3e"], 0))
+                            return cljs.core.write_all.cljs$core$IFn$_invoke$arity$variadic(writer, cljs.core.array_seq(["#<", [cljs.core.str(obj)].join(""), ">"], 0))
                           }else {
                             return null
                           }
@@ -20110,9 +20110,9 @@ cljs.core.Atom.prototype.cljs$core$IWatchable$_remove_watch$arity$2 = function(t
 };
 cljs.core.Atom.prototype.cljs$core$IPrintWithWriter$_pr_writer$arity$3 = function(a, writer, opts) {
   var self__ = this;
-  cljs.core._write(writer, "#\x3cAtom: ");
+  cljs.core._write(writer, "#<Atom: ");
   cljs.core.pr_writer(self__.state, writer, opts);
-  return cljs.core._write(writer, "\x3e")
+  return cljs.core._write(writer, ">")
 };
 cljs.core.Atom.prototype.cljs$core$IMeta$_meta$arity$1 = function(_) {
   var self__ = this;
@@ -20394,7 +20394,7 @@ cljs.core._clj__GT_js = function _clj__GT_js(x) {
         if(or__3943__auto____$1) {
           return or__3943__auto____$1
         }else {
-          throw cljs.core.missing_protocol("IEncodeJS.-clj-\x3ejs", x);
+          throw cljs.core.missing_protocol("IEncodeJS.-clj->js", x);
         }
       }
     }().call(null, x)
@@ -20421,7 +20421,7 @@ cljs.core._key__GT_js = function _key__GT_js(x) {
         if(or__3943__auto____$1) {
           return or__3943__auto____$1
         }else {
-          throw cljs.core.missing_protocol("IEncodeJS.-key-\x3ejs", x);
+          throw cljs.core.missing_protocol("IEncodeJS.-key->js", x);
         }
       }
     }().call(null, x)
@@ -20607,7 +20607,7 @@ cljs.core._js__GT_clj = function _js__GT_clj(x, options) {
         if(or__3943__auto____$1) {
           return or__3943__auto____$1
         }else {
-          throw cljs.core.missing_protocol("IEncodeClojure.-js-\x3eclj", x);
+          throw cljs.core.missing_protocol("IEncodeClojure.-js->clj", x);
         }
       }
     }().call(null, x, options)
@@ -21049,7 +21049,7 @@ cljs.core.derive = function() {
   var derive__3 = function(h, tag, parent) {
     if(cljs.core.not_EQ_.cljs$core$IFn$_invoke$arity$2(tag, parent)) {
     }else {
-      throw new Error([cljs.core.str("Assert failed: "), cljs.core.str(cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([cljs.core.with_meta(cljs.core.list(new cljs.core.Symbol(null, "not\x3d", "not\x3d", -1637144189, null), new cljs.core.Symbol(null, "tag", "tag", -1640416941, null), new cljs.core.Symbol(null, "parent", "parent", 1659011683, null)), cljs.core.hash_map("\ufdd0:line", 7018, "\ufdd0:column", 12))], 0)))].join(""));
+      throw new Error([cljs.core.str("Assert failed: "), cljs.core.str(cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.array_seq([cljs.core.with_meta(cljs.core.list(new cljs.core.Symbol(null, "not=", "not=", -1637144189, null), new cljs.core.Symbol(null, "tag", "tag", -1640416941, null), new cljs.core.Symbol(null, "parent", "parent", 1659011683, null)), cljs.core.hash_map("\ufdd0:line", 7018, "\ufdd0:column", 12))], 0)))].join(""));
     }
     var tp = (new cljs.core.Keyword("\ufdd0:parents")).call(null, h);
     var td = (new cljs.core.Keyword("\ufdd0:descendants")).call(null, h);
@@ -21219,7 +21219,7 @@ cljs.core.find_and_cache_best_method = function find_and_cache_best_method(name,
       }()) ? e : be;
       if(cljs.core.truth_(cljs.core.dominates(cljs.core.first(be2), k, prefer_table))) {
       }else {
-        throw new Error([cljs.core.str("Multiple methods in multimethod '"), cljs.core.str(name), cljs.core.str("' match dispatch value: "), cljs.core.str(dispatch_val), cljs.core.str(" -\x3e "), cljs.core.str(k), cljs.core.str(" and "), cljs.core.str(cljs.core.first(be2)), cljs.core.str(", and neither is preferred")].join(""));
+        throw new Error([cljs.core.str("Multiple methods in multimethod '"), cljs.core.str(name), cljs.core.str("' match dispatch value: "), cljs.core.str(dispatch_val), cljs.core.str(" -> "), cljs.core.str(k), cljs.core.str(" and "), cljs.core.str(cljs.core.first(be2)), cljs.core.str(", and neither is preferred")].join(""));
       }
       return be2
     }else {
@@ -21701,243 +21701,48 @@ cljs.core.comparator = function comparator(pred) {
   }
 };
 cljs.core.special_symbol_QMARK_ = function special_symbol_QMARK_(x) {
-  return cljs.core.contains_QMARK_(cljs.core.set([new cljs.core.Symbol(null, "deftype*", "deftype*", -978581244, null), new cljs.core.Symbol(null, "new", "new", -1640422567, null), new cljs.core.Symbol(null, "try*", "try*", -1636962424, null), new cljs.core.Symbol(null, "quote", "quote", -1532577739, null), new cljs.core.Symbol(null, "\x26", "\x26", -1640531489, null), new cljs.core.Symbol(null, "set!", "set!", -1637004872, null), new cljs.core.Symbol(null, "recur", "recur", -1532142362, null), new cljs.core.Symbol(null, 
+  return cljs.core.contains_QMARK_(cljs.core.set([new cljs.core.Symbol(null, "deftype*", "deftype*", -978581244, null), new cljs.core.Symbol(null, "new", "new", -1640422567, null), new cljs.core.Symbol(null, "try*", "try*", -1636962424, null), new cljs.core.Symbol(null, "quote", "quote", -1532577739, null), new cljs.core.Symbol(null, "&", "&", -1640531489, null), new cljs.core.Symbol(null, "set!", "set!", -1637004872, null), new cljs.core.Symbol(null, "recur", "recur", -1532142362, null), new cljs.core.Symbol(null, 
   ".", ".", -1640531481, null), new cljs.core.Symbol(null, "ns", "ns", -1640528002, null), new cljs.core.Symbol(null, "do", "do", -1640528316, null), new cljs.core.Symbol(null, "fn*", "fn*", -1640430053, null), new cljs.core.Symbol(null, "throw", "throw", -1530191713, null), new cljs.core.Symbol(null, "letfn*", "letfn*", 1548249632, null), new cljs.core.Symbol(null, "js*", "js*", -1640426054, null), new cljs.core.Symbol(null, "defrecord*", "defrecord*", 774272013, null), new cljs.core.Symbol(null, 
   "let*", "let*", -1637213400, null), new cljs.core.Symbol(null, "loop*", "loop*", -1537374273, null), new cljs.core.Symbol(null, "if", "if", -1640528170, null), new cljs.core.Symbol(null, "def", "def", -1640432194, null)]), x)
 };
-goog.provide("clojure.walk");
+goog.provide("planets.wrappers");
 goog.require("cljs.core");
-clojure.walk.walk = function walk(inner, outer, form) {
-  if(cljs.core.seq_QMARK_(form)) {
-    return outer.cljs$core$IFn$_invoke$arity$1 ? outer.cljs$core$IFn$_invoke$arity$1(cljs.core.doall.cljs$core$IFn$_invoke$arity$1(cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form))) : outer.call(null, cljs.core.doall.cljs$core$IFn$_invoke$arity$1(cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form)))
-  }else {
-    if(cljs.core.coll_QMARK_(form)) {
-      return outer.cljs$core$IFn$_invoke$arity$1 ? outer.cljs$core$IFn$_invoke$arity$1(cljs.core.into(cljs.core.empty(form), cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form))) : outer.call(null, cljs.core.into(cljs.core.empty(form), cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form)))
-    }else {
-      if("\ufdd0:else") {
-        return outer.cljs$core$IFn$_invoke$arity$1 ? outer.cljs$core$IFn$_invoke$arity$1(form) : outer.call(null, form)
-      }else {
-        return null
-      }
-    }
-  }
-};
-clojure.walk.postwalk = function postwalk(f, form) {
-  return clojure.walk.walk(cljs.core.partial.cljs$core$IFn$_invoke$arity$2(postwalk, f), f, form)
-};
-clojure.walk.prewalk = function prewalk(f, form) {
-  return clojure.walk.walk(cljs.core.partial.cljs$core$IFn$_invoke$arity$2(prewalk, f), cljs.core.identity, f.cljs$core$IFn$_invoke$arity$1 ? f.cljs$core$IFn$_invoke$arity$1(form) : f.call(null, form))
-};
-clojure.walk.keywordize_keys = function keywordize_keys(m) {
-  var f = function(p__5720) {
-    var vec__5721 = p__5720;
-    var k = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5721, 0, null);
-    var v = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5721, 1, null);
-    if(cljs.core.string_QMARK_(k)) {
-      return cljs.core.PersistentVector.fromArray([cljs.core.keyword.cljs$core$IFn$_invoke$arity$1(k), v], true)
-    }else {
-      return cljs.core.PersistentVector.fromArray([k, v], true)
-    }
-  };
-  return clojure.walk.postwalk(function(x) {
-    if(cljs.core.map_QMARK_(x)) {
-      return cljs.core.into(cljs.core.ObjMap.EMPTY, cljs.core.map.cljs$core$IFn$_invoke$arity$2(f, x))
-    }else {
-      return x
-    }
-  }, m)
-};
-clojure.walk.stringify_keys = function stringify_keys(m) {
-  var f = function(p__5724) {
-    var vec__5725 = p__5724;
-    var k = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5725, 0, null);
-    var v = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5725, 1, null);
-    if(cljs.core.keyword_QMARK_(k)) {
-      return cljs.core.PersistentVector.fromArray([cljs.core.name(k), v], true)
-    }else {
-      return cljs.core.PersistentVector.fromArray([k, v], true)
-    }
-  };
-  return clojure.walk.postwalk(function(x) {
-    if(cljs.core.map_QMARK_(x)) {
-      return cljs.core.into(cljs.core.ObjMap.EMPTY, cljs.core.map.cljs$core$IFn$_invoke$arity$2(f, x))
-    }else {
-      return x
-    }
-  }, m)
-};
-clojure.walk.prewalk_replace = function prewalk_replace(smap, form) {
-  return clojure.walk.prewalk(function(x) {
-    if(cljs.core.contains_QMARK_(smap, x)) {
-      return smap.cljs$core$IFn$_invoke$arity$1 ? smap.cljs$core$IFn$_invoke$arity$1(x) : smap.call(null, x)
-    }else {
-      return x
-    }
-  }, form)
-};
-clojure.walk.postwalk_replace = function postwalk_replace(smap, form) {
-  return clojure.walk.postwalk(function(x) {
-    if(cljs.core.contains_QMARK_(smap, x)) {
-      return smap.cljs$core$IFn$_invoke$arity$1 ? smap.cljs$core$IFn$_invoke$arity$1(x) : smap.call(null, x)
-    }else {
-      return x
-    }
-  }, form)
-};
-goog.provide("planets.utils");
-goog.require("cljs.core");
-goog.require("clojure.walk");
-goog.require("clojure.walk");
-planets.utils.shallow_QMARK_ = function shallow_QMARK_(m) {
-  return!cljs.core.coll_QMARK_.call(null, cljs.core.val.call(null, m))
-};
-planets.utils.destruct_map = function destruct_map(m) {
-  return cljs.core.doall.call(null, cljs.core.into.call(null, cljs.core.into.call(null, cljs.core.PersistentVector.EMPTY, cljs.core.map.call(null, cljs.core.vec, cljs.core.filter.call(null, planets.utils.shallow_QMARK_, m))), cljs.core.map.call(null, cljs.core.vec, cljs.core.map.call(null, cljs.core.flatten, cljs.core.map.call(null, function(p1__181807_SHARP_) {
-    return cljs.core.map.call(null, function(v) {
-      if(cljs.core.map_QMARK_.call(null, v)) {
-        return cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.EMPTY, v)
-      }else {
-        return v
-      }
-    }, p1__181807_SHARP_)
-  }, cljs.core.map.call(null, cljs.core.flatten, cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.EMPTY, cljs.core.map.call(null, function(kv) {
-    return cljs.core.into.call(null, cljs.core.PersistentVector.EMPTY, kv)
-  }, cljs.core.map.call(null, function(nm) {
-    if(cljs.core.map_QMARK_.call(null, cljs.core.val.call(null, nm))) {
-      return cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.EMPTY, cljs.core.map.call(null, cljs.core.vec, cljs.core.map.call(null, function(p1__181806_SHARP_) {
-        return cljs.core.hash_map.call(null, cljs.core.key.call(null, nm), p1__181806_SHARP_)
-      }, cljs.core.val.call(null, nm))))
-    }else {
-      return nm
-    }
-  }, cljs.core.remove.call(null, planets.utils.shallow_QMARK_, clojure.walk.stringify_keys.call(null, m)))))))))))
-};
-planets.utils.set_nested_BANG_ = function set_nested_BANG_(obj, options) {
-  var params = planets.utils.destruct_map.call(null, options);
-  var seq__181812 = cljs.core.seq.call(null, params);
-  var chunk__181813 = null;
-  var count__181814 = 0;
-  var i__181815 = 0;
-  while(true) {
-    if(i__181815 < count__181814) {
-      var param = cljs.core._nth.call(null, chunk__181813, i__181815);
-      if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
-        obj[cljs.core.first.call(null, param)] = cljs.core.second.call(null, param)
-      }else {
-        cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.last.call(null, param)
-      }
-      var G__181816 = seq__181812;
-      var G__181817 = chunk__181813;
-      var G__181818 = count__181814;
-      var G__181819 = i__181815 + 1;
-      seq__181812 = G__181816;
-      chunk__181813 = G__181817;
-      count__181814 = G__181818;
-      i__181815 = G__181819;
-      continue
-    }else {
-      var temp__4092__auto__ = cljs.core.seq.call(null, seq__181812);
-      if(temp__4092__auto__) {
-        var seq__181812__$1 = temp__4092__auto__;
-        if(cljs.core.chunked_seq_QMARK_.call(null, seq__181812__$1)) {
-          var c__3073__auto__ = cljs.core.chunk_first.call(null, seq__181812__$1);
-          var G__181820 = cljs.core.chunk_rest.call(null, seq__181812__$1);
-          var G__181821 = c__3073__auto__;
-          var G__181822 = cljs.core.count.call(null, c__3073__auto__);
-          var G__181823 = 0;
-          seq__181812 = G__181820;
-          chunk__181813 = G__181821;
-          count__181814 = G__181822;
-          i__181815 = G__181823;
-          continue
-        }else {
-          var param = cljs.core.first.call(null, seq__181812__$1);
-          if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
-            obj[cljs.core.first.call(null, param)] = cljs.core.second.call(null, param)
-          }else {
-            cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.last.call(null, param)
-          }
-          var G__181824 = cljs.core.next.call(null, seq__181812__$1);
-          var G__181825 = null;
-          var G__181826 = 0;
-          var G__181827 = 0;
-          seq__181812 = G__181824;
-          chunk__181813 = G__181825;
-          count__181814 = G__181826;
-          i__181815 = G__181827;
-          continue
-        }
-      }else {
-        return null
-      }
-    }
-    break
-  }
-};
-planets.utils.apply_nested_BANG_ = function apply_nested_BANG_(obj, options) {
-  var params = planets.utils.destruct_map.call(null, options);
-  var seq__181832 = cljs.core.seq.call(null, params);
-  var chunk__181833 = null;
-  var count__181834 = 0;
-  var i__181835 = 0;
-  while(true) {
-    if(i__181835 < count__181834) {
-      var param = cljs.core._nth.call(null, chunk__181833, i__181835);
-      if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
-        obj[cljs.core.name.call(null, cljs.core.first.call(null, param))] = cljs.core.apply.call(null, cljs.core.second.call(null, param), cljs.core.PersistentVector.fromArray([obj[cljs.core.name.call(null, cljs.core.first.call(null, param))]], true))
-      }else {
-        cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.apply.call(null, cljs.core.last.call(null, param), cljs.core.PersistentVector.fromArray([cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, param)))], 
-        true))
-      }
-      var G__181836 = seq__181832;
-      var G__181837 = chunk__181833;
-      var G__181838 = count__181834;
-      var G__181839 = i__181835 + 1;
-      seq__181832 = G__181836;
-      chunk__181833 = G__181837;
-      count__181834 = G__181838;
-      i__181835 = G__181839;
-      continue
-    }else {
-      var temp__4092__auto__ = cljs.core.seq.call(null, seq__181832);
-      if(temp__4092__auto__) {
-        var seq__181832__$1 = temp__4092__auto__;
-        if(cljs.core.chunked_seq_QMARK_.call(null, seq__181832__$1)) {
-          var c__3073__auto__ = cljs.core.chunk_first.call(null, seq__181832__$1);
-          var G__181840 = cljs.core.chunk_rest.call(null, seq__181832__$1);
-          var G__181841 = c__3073__auto__;
-          var G__181842 = cljs.core.count.call(null, c__3073__auto__);
-          var G__181843 = 0;
-          seq__181832 = G__181840;
-          chunk__181833 = G__181841;
-          count__181834 = G__181842;
-          i__181835 = G__181843;
-          continue
-        }else {
-          var param = cljs.core.first.call(null, seq__181832__$1);
-          if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
-            obj[cljs.core.name.call(null, cljs.core.first.call(null, param))] = cljs.core.apply.call(null, cljs.core.second.call(null, param), cljs.core.PersistentVector.fromArray([obj[cljs.core.name.call(null, cljs.core.first.call(null, param))]], true))
-          }else {
-            cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.apply.call(null, cljs.core.last.call(null, param), cljs.core.PersistentVector.fromArray([cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, param)))], 
-            true))
-          }
-          var G__181844 = cljs.core.next.call(null, seq__181832__$1);
-          var G__181845 = null;
-          var G__181846 = 0;
-          var G__181847 = 0;
-          seq__181832 = G__181844;
-          chunk__181833 = G__181845;
-          count__181834 = G__181846;
-          i__181835 = G__181847;
-          continue
-        }
-      }else {
-        return null
-      }
-    }
-    break
-  }
-};
+planets.wrappers.THREE = THREE;
+planets.wrappers.Camera = THREE.Camera;
+planets.wrappers.OBJMTLLoader = THREE.OBJMTLLoader;
+planets.wrappers.MTLLoader = THREE.MTLLoader;
+planets.wrappers.OBJLoader = THREE.OBJLoader;
+planets.wrappers.Color = THREE.Color;
+planets.wrappers.Raycaster = THREE.Raycaster;
+planets.wrappers.Quaternion = THREE.Quaternion;
+planets.wrappers.PerspectiveCamera = THREE.PerspectiveCamera;
+planets.wrappers.Scene = THREE.Scene;
+planets.wrappers.FogExp2 = THREE.FogExp2;
+planets.wrappers.Renderer = THREE.WebGLRenderer;
+planets.wrappers.Texture = THREE.Texture;
+planets.wrappers.ImageUtils = THREE.ImageUtils;
+planets.wrappers.AdditiveBlending = THREE.AdditiveBlending;
+planets.wrappers.RenderPass = THREE.RenderPass;
+planets.wrappers.FilmPass = THREE.FilmPass;
+planets.wrappers.Mesh = THREE.Mesh;
+planets.wrappers.ShaderLib = THREE.ShaderLib;
+planets.wrappers.Geometry = THREE.Geometry;
+planets.wrappers.Vertex = THREE.Vertex;
+planets.wrappers.Vector3 = THREE.Vector3;
+planets.wrappers.EffectComposer = THREE.EffectComposer;
+planets.wrappers.ParticleBasicMaterial = THREE.ParticleBasicMaterial;
+planets.wrappers.MeshPhongMaterial = THREE.MeshPhongMaterial;
+planets.wrappers.ParticleSystem = THREE.ParticleSystem;
+planets.wrappers.SphereGeometry = THREE.SphereGeometry;
+planets.wrappers.CubeGeometry = THREE.CubeGeometry;
+planets.wrappers.MeshLambertMaterial = THREE.MeshLambertMaterial;
+planets.wrappers.MeshBasicMaterial = THREE.MeshBasicMaterial;
+planets.wrappers.ShaderMaterial = THREE.ShaderMaterial;
+planets.wrappers.Clock = THREE.Clock;
+planets.wrappers.PointLight = THREE.PointLight;
+planets.wrappers.DirectionalLight = THREE.DirectionalLight;
+planets.wrappers.AmbientLight = THREE.AmbientLight;
+planets.wrappers.UniformsUtils = THREE.UniformsUtils;
 goog.provide("goog.disposable.IDisposable");
 goog.disposable.IDisposable = function() {
 };
@@ -22682,9 +22487,9 @@ goog.events.expose = function(e) {
   var str = [];
   for(var key in e) {
     if(e[key] && e[key].id) {
-      str.push(key + " \x3d " + e[key] + " (" + e[key].id + ")")
+      str.push(key + " = " + e[key] + " (" + e[key].id + ")")
     }else {
-      str.push(key + " \x3d " + e[key])
+      str.push(key + " = " + e[key])
     }
   }
   return str.join("\n")
@@ -23834,7 +23639,7 @@ goog.debug.expose = function(obj, opt_showFn) {
     if(!opt_showFn && goog.isFunction(obj[x])) {
       continue
     }
-    var s = x + " \x3d ";
+    var s = x + " = ";
     try {
       s += obj[x]
     }catch(e) {
@@ -23877,7 +23682,7 @@ goog.debug.deepExpose = function(obj, opt_showFn) {
                     }
                     str.push("\n");
                     str.push(nestspace);
-                    str.push(x + " \x3d ");
+                    str.push(x + " = ");
                     helper(obj[x], nestspace)
                   }
                   str.push("\n" + space + "}")
@@ -23910,7 +23715,7 @@ goog.debug.exposeArray = function(arr) {
 goog.debug.exposeException = function(err, opt_fn) {
   try {
     var e = goog.debug.normalizeErrorObject(err);
-    var error = "Message: " + goog.string.htmlEscape(e.message) + '\nUrl: \x3ca href\x3d"view-source:' + e.fileName + '" target\x3d"_new"\x3e' + e.fileName + "\x3c/a\x3e\nLine: " + e.lineNumber + "\n\nBrowser stack:\n" + goog.string.htmlEscape(e.stack + "-\x3e ") + "[end]\n\nJS stack traversal:\n" + goog.string.htmlEscape(goog.debug.getStacktrace(opt_fn) + "-\x3e ");
+    var error = "Message: " + goog.string.htmlEscape(e.message) + '\nUrl: <a href="view-source:' + e.fileName + '" target="_new">' + e.fileName + "</a>\nLine: " + e.lineNumber + "\n\nBrowser stack:\n" + goog.string.htmlEscape(e.stack + "-> ") + "[end]\n\nJS stack traversal:\n" + goog.string.htmlEscape(goog.debug.getStacktrace(opt_fn) + "-> ");
     return error
   }catch(e2) {
     return"Exception trying to expose exception! You win, we lose. " + e2
@@ -24840,7 +24645,7 @@ goog.uri.utils.appendKeyValuePairs_ = function(key, value, pairs) {
     }
   }else {
     if(value != null) {
-      pairs.push("\x26", key, value === "" ? "" : "\x3d", goog.string.urlEncode(value))
+      pairs.push("&", key, value === "" ? "" : "=", goog.string.urlEncode(value))
     }
   }
 };
@@ -24874,7 +24679,7 @@ goog.uri.utils.appendParamsFromMap = function(uri, map) {
   return goog.uri.utils.appendQueryData_(goog.uri.utils.buildQueryDataBufferFromMap_([uri], map))
 };
 goog.uri.utils.appendParam = function(uri, key, value) {
-  return goog.uri.utils.appendQueryData_([uri, "\x26", key, "\x3d", goog.string.urlEncode(value)])
+  return goog.uri.utils.appendQueryData_([uri, "&", key, "=", goog.string.urlEncode(value)])
 };
 goog.uri.utils.findParam_ = function(uri, startIndex, keyEncoded, hashOrEndIndex) {
   var index = startIndex;
@@ -24901,7 +24706,7 @@ goog.uri.utils.getParamValue = function(uri, keyEncoded) {
   if(foundIndex < 0) {
     return null
   }else {
-    var endPosition = uri.indexOf("\x26", foundIndex);
+    var endPosition = uri.indexOf("&", foundIndex);
     if(endPosition < 0 || endPosition > hashOrEndIndex) {
       endPosition = hashOrEndIndex
     }
@@ -24915,7 +24720,7 @@ goog.uri.utils.getParamValues = function(uri, keyEncoded) {
   var foundIndex;
   var result = [];
   while((foundIndex = goog.uri.utils.findParam_(uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
-    position = uri.indexOf("\x26", foundIndex);
+    position = uri.indexOf("&", foundIndex);
     if(position < 0 || position > hashOrEndIndex) {
       position = hashOrEndIndex
     }
@@ -24932,7 +24737,7 @@ goog.uri.utils.removeParam = function(uri, keyEncoded) {
   var buffer = [];
   while((foundIndex = goog.uri.utils.findParam_(uri, position, keyEncoded, hashOrEndIndex)) >= 0) {
     buffer.push(uri.substring(position, foundIndex));
-    position = Math.min(uri.indexOf("\x26", foundIndex) + 1 || hashOrEndIndex, hashOrEndIndex)
+    position = Math.min(uri.indexOf("&", foundIndex) + 1 || hashOrEndIndex, hashOrEndIndex)
   }
   buffer.push(uri.substr(position));
   return buffer.join("").replace(goog.uri.utils.trailingQueryPunctuationRe_, "$1")
@@ -24980,7 +24785,7 @@ goog.net.XhrIo.ResponseType = {DEFAULT:"", TEXT:"text", DOCUMENT:"document", BLO
 goog.net.XhrIo.prototype.logger_ = goog.debug.Logger.getLogger("goog.net.XhrIo");
 goog.net.XhrIo.CONTENT_TYPE_HEADER = "Content-Type";
 goog.net.XhrIo.HTTP_SCHEME_PATTERN = /^https?$/i;
-goog.net.XhrIo.FORM_CONTENT_TYPE = "application/x-www-form-urlencoded;charset\x3dutf-8";
+goog.net.XhrIo.FORM_CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
 goog.net.XhrIo.sendInstances_ = [];
 goog.net.XhrIo.send = function(url, opt_callback, opt_method, opt_content, opt_headers, opt_timeoutInterval) {
   var x = new goog.net.XhrIo;
@@ -27054,9 +26859,9 @@ goog.Uri.QueryData.prototype.ensureKeyMapInitialized_ = function() {
     this.keyMap_ = new goog.structs.Map;
     this.count_ = 0;
     if(this.encodedQuery_) {
-      var pairs = this.encodedQuery_.split("\x26");
+      var pairs = this.encodedQuery_.split("&");
       for(var i = 0;i < pairs.length;i++) {
-        var indexOfEquals = pairs[i].indexOf("\x3d");
+        var indexOfEquals = pairs[i].indexOf("=");
         var name = null;
         var value = null;
         if(indexOfEquals >= 0) {
@@ -27217,12 +27022,12 @@ goog.Uri.QueryData.prototype.toString = function() {
     for(var j = 0;j < val.length;j++) {
       var param = encodedKey;
       if(val[j] !== "") {
-        param += "\x3d" + goog.string.urlEncode(val[j])
+        param += "=" + goog.string.urlEncode(val[j])
       }
       sb.push(param)
     }
   }
-  return this.encodedQuery_ = sb.join("\x26")
+  return this.encodedQuery_ = sb.join("&")
 };
 goog.Uri.QueryData.prototype.toDecodedString = function() {
   return goog.Uri.decodeOrEmpty_(this.toString())
@@ -27323,6 +27128,118 @@ goog.async.Delay.prototype.doAction_ = function() {
   this.id_ = 0;
   if(this.listener_) {
     this.listener_.call(this.handler_)
+  }
+};
+goog.provide("planets.prototypes");
+goog.require("cljs.core");
+planets.prototypes.IRenderable = {};
+planets.prototypes.setup = function setup(this$, options) {
+  if(function() {
+    var and__3941__auto__ = this$;
+    if(and__3941__auto__) {
+      return this$.planets$prototypes$IRenderable$setup$arity$2
+    }else {
+      return and__3941__auto__
+    }
+  }()) {
+    return this$.planets$prototypes$IRenderable$setup$arity$2(this$, options)
+  }else {
+    var x__2942__auto__ = this$ == null ? null : this$;
+    return function() {
+      var or__3943__auto__ = planets.prototypes.setup[goog.typeOf(x__2942__auto__)];
+      if(or__3943__auto__) {
+        return or__3943__auto__
+      }else {
+        var or__3943__auto____$1 = planets.prototypes.setup["_"];
+        if(or__3943__auto____$1) {
+          return or__3943__auto____$1
+        }else {
+          throw cljs.core.missing_protocol.call(null, "IRenderable.setup", this$);
+        }
+      }
+    }().call(null, this$, options)
+  }
+};
+planets.prototypes.render = function render(this$, renderables, options) {
+  if(function() {
+    var and__3941__auto__ = this$;
+    if(and__3941__auto__) {
+      return this$.planets$prototypes$IRenderable$render$arity$3
+    }else {
+      return and__3941__auto__
+    }
+  }()) {
+    return this$.planets$prototypes$IRenderable$render$arity$3(this$, renderables, options)
+  }else {
+    var x__2942__auto__ = this$ == null ? null : this$;
+    return function() {
+      var or__3943__auto__ = planets.prototypes.render[goog.typeOf(x__2942__auto__)];
+      if(or__3943__auto__) {
+        return or__3943__auto__
+      }else {
+        var or__3943__auto____$1 = planets.prototypes.render["_"];
+        if(or__3943__auto____$1) {
+          return or__3943__auto____$1
+        }else {
+          throw cljs.core.missing_protocol.call(null, "IRenderable.render", this$);
+        }
+      }
+    }().call(null, this$, renderables, options)
+  }
+};
+planets.prototypes.IAnimatable = {};
+planets.prototypes.animate = function animate(this$, renderables, animatables, options) {
+  if(function() {
+    var and__3941__auto__ = this$;
+    if(and__3941__auto__) {
+      return this$.planets$prototypes$IAnimatable$animate$arity$4
+    }else {
+      return and__3941__auto__
+    }
+  }()) {
+    return this$.planets$prototypes$IAnimatable$animate$arity$4(this$, renderables, animatables, options)
+  }else {
+    var x__2942__auto__ = this$ == null ? null : this$;
+    return function() {
+      var or__3943__auto__ = planets.prototypes.animate[goog.typeOf(x__2942__auto__)];
+      if(or__3943__auto__) {
+        return or__3943__auto__
+      }else {
+        var or__3943__auto____$1 = planets.prototypes.animate["_"];
+        if(or__3943__auto____$1) {
+          return or__3943__auto____$1
+        }else {
+          throw cljs.core.missing_protocol.call(null, "IAnimatable.animate", this$);
+        }
+      }
+    }().call(null, this$, renderables, animatables, options)
+  }
+};
+planets.prototypes.animate_BANG_ = function animate_BANG_(this$, options, delta) {
+  if(function() {
+    var and__3941__auto__ = this$;
+    if(and__3941__auto__) {
+      return this$.planets$prototypes$IAnimatable$animate_BANG_$arity$3
+    }else {
+      return and__3941__auto__
+    }
+  }()) {
+    return this$.planets$prototypes$IAnimatable$animate_BANG_$arity$3(this$, options, delta)
+  }else {
+    var x__2942__auto__ = this$ == null ? null : this$;
+    return function() {
+      var or__3943__auto__ = planets.prototypes.animate_BANG_[goog.typeOf(x__2942__auto__)];
+      if(or__3943__auto__) {
+        return or__3943__auto__
+      }else {
+        var or__3943__auto____$1 = planets.prototypes.animate_BANG_["_"];
+        if(or__3943__auto____$1) {
+          return or__3943__auto____$1
+        }else {
+          throw cljs.core.missing_protocol.call(null, "IAnimatable.animate!", this$);
+        }
+      }
+    }().call(null, this$, options, delta)
   }
 };
 goog.provide("goog.dom.BrowserFeature");
@@ -27836,18 +27753,18 @@ goog.dom.createDom_ = function(doc, args) {
   var tagName = args[0];
   var attributes = args[1];
   if(!goog.dom.BrowserFeature.CAN_ADD_NAME_OR_TYPE_ATTRIBUTES && attributes && (attributes.name || attributes.type)) {
-    var tagNameArr = ["\x3c", tagName];
+    var tagNameArr = ["<", tagName];
     if(attributes.name) {
-      tagNameArr.push(' name\x3d"', goog.string.htmlEscape(attributes.name), '"')
+      tagNameArr.push(' name="', goog.string.htmlEscape(attributes.name), '"')
     }
     if(attributes.type) {
-      tagNameArr.push(' type\x3d"', goog.string.htmlEscape(attributes.type), '"');
+      tagNameArr.push(' type="', goog.string.htmlEscape(attributes.type), '"');
       var clone = {};
       goog.object.extend(clone, attributes);
       attributes = clone;
       delete attributes.type
     }
-    tagNameArr.push("\x3e");
+    tagNameArr.push(">");
     tagName = tagNameArr.join("")
   }
   var element = doc.createElement(tagName);
@@ -27893,17 +27810,17 @@ goog.dom.createTable = function(rows, columns, opt_fillWithNbsp) {
   return goog.dom.createTable_(document, rows, columns, !!opt_fillWithNbsp)
 };
 goog.dom.createTable_ = function(doc, rows, columns, fillWithNbsp) {
-  var rowHtml = ["\x3ctr\x3e"];
+  var rowHtml = ["<tr>"];
   for(var i = 0;i < columns;i++) {
-    rowHtml.push(fillWithNbsp ? "\x3ctd\x3e\x26nbsp;\x3c/td\x3e" : "\x3ctd\x3e\x3c/td\x3e")
+    rowHtml.push(fillWithNbsp ? "<td>&nbsp;</td>" : "<td></td>")
   }
-  rowHtml.push("\x3c/tr\x3e");
+  rowHtml.push("</tr>");
   rowHtml = rowHtml.join("");
-  var totalHtml = ["\x3ctable\x3e"];
+  var totalHtml = ["<table>"];
   for(i = 0;i < rows;i++) {
     totalHtml.push(rowHtml)
   }
-  totalHtml.push("\x3c/table\x3e");
+  totalHtml.push("</table>");
   var elem = doc.createElement(goog.dom.TagName.DIV);
   elem.innerHTML = totalHtml.join("");
   return elem.removeChild(elem.firstChild)
@@ -27914,7 +27831,7 @@ goog.dom.htmlToDocumentFragment = function(htmlString) {
 goog.dom.htmlToDocumentFragment_ = function(doc, htmlString) {
   var tempDiv = doc.createElement("div");
   if(goog.dom.BrowserFeature.INNER_HTML_NEEDS_SCOPED_ELEMENT) {
-    tempDiv.innerHTML = "\x3cbr\x3e" + htmlString;
+    tempDiv.innerHTML = "<br>" + htmlString;
     tempDiv.removeChild(tempDiv.firstChild)
   }else {
     tempDiv.innerHTML = htmlString
@@ -28565,2230 +28482,84 @@ goog.net.xpc.Transport.prototype.getName = function() {
 goog.net.xpc.Transport.prototype.transportServiceHandler = goog.abstractMethod;
 goog.net.xpc.Transport.prototype.connect = goog.abstractMethod;
 goog.net.xpc.Transport.prototype.send = goog.abstractMethod;
-goog.provide("goog.messaging.MessageChannel");
-goog.messaging.MessageChannel = function() {
-};
-goog.messaging.MessageChannel.prototype.connect = function(opt_connectCb) {
-};
-goog.messaging.MessageChannel.prototype.isConnected = function() {
-};
-goog.messaging.MessageChannel.prototype.registerService = function(serviceName, callback, opt_objectPayload) {
-};
-goog.messaging.MessageChannel.prototype.registerDefaultService = function(callback) {
-};
-goog.messaging.MessageChannel.prototype.send = function(serviceName, payload) {
-};
-goog.provide("goog.messaging.AbstractChannel");
-goog.require("goog.Disposable");
-goog.require("goog.debug");
-goog.require("goog.debug.Logger");
-goog.require("goog.json");
-goog.require("goog.messaging.MessageChannel");
-goog.messaging.AbstractChannel = function() {
-  goog.base(this);
-  this.services_ = {}
-};
-goog.inherits(goog.messaging.AbstractChannel, goog.Disposable);
-goog.messaging.AbstractChannel.prototype.defaultService_;
-goog.messaging.AbstractChannel.prototype.logger = goog.debug.Logger.getLogger("goog.messaging.AbstractChannel");
-goog.messaging.AbstractChannel.prototype.connect = function(opt_connectCb) {
-  if(opt_connectCb) {
-    opt_connectCb()
-  }
-};
-goog.messaging.AbstractChannel.prototype.isConnected = function() {
-  return true
-};
-goog.messaging.AbstractChannel.prototype.registerService = function(serviceName, callback, opt_objectPayload) {
-  this.services_[serviceName] = {callback:callback, objectPayload:!!opt_objectPayload}
-};
-goog.messaging.AbstractChannel.prototype.registerDefaultService = function(callback) {
-  this.defaultService_ = callback
-};
-goog.messaging.AbstractChannel.prototype.send = goog.abstractMethod;
-goog.messaging.AbstractChannel.prototype.deliver = function(serviceName, payload) {
-  var service = this.getService(serviceName, payload);
-  if(!service) {
-    return
-  }
-  var decodedPayload = this.decodePayload(serviceName, payload, service.objectPayload);
-  if(goog.isDefAndNotNull(decodedPayload)) {
-    service.callback(decodedPayload)
-  }
-};
-goog.messaging.AbstractChannel.prototype.getService = function(serviceName, payload) {
-  var service = this.services_[serviceName];
-  if(service) {
-    return service
-  }else {
-    if(this.defaultService_) {
-      var callback = goog.partial(this.defaultService_, serviceName);
-      var objectPayload = goog.isObject(payload);
-      return{callback:callback, objectPayload:objectPayload}
-    }
-  }
-  this.logger.warning('Unknown service name "' + serviceName + '"');
-  return null
-};
-goog.messaging.AbstractChannel.prototype.decodePayload = function(serviceName, payload, objectPayload) {
-  if(objectPayload && goog.isString(payload)) {
-    try {
-      return goog.json.parse(payload)
-    }catch(err) {
-      this.logger.warning("Expected JSON payload for " + serviceName + ', was "' + payload + '"');
-      return null
-    }
-  }else {
-    if(!objectPayload && !goog.isString(payload)) {
-      return goog.json.serialize(payload)
-    }
-  }
-  return payload
-};
-goog.messaging.AbstractChannel.prototype.disposeInternal = function() {
-  goog.base(this, "disposeInternal");
-  goog.dispose(this.logger);
-  delete this.logger;
-  delete this.services_;
-  delete this.defaultService_
-};
-goog.provide("clojure.browser.event");
+goog.provide("clojure.walk");
 goog.require("cljs.core");
-goog.require("goog.events.EventType");
-goog.require("goog.events.EventTarget");
-goog.require("goog.events");
-clojure.browser.event.EventType = {};
-clojure.browser.event.event_types = function event_types(this$) {
-  if(function() {
-    var and__3941__auto__ = this$;
-    if(and__3941__auto__) {
-      return this$.clojure$browser$event$EventType$event_types$arity$1
-    }else {
-      return and__3941__auto__
-    }
-  }()) {
-    return this$.clojure$browser$event$EventType$event_types$arity$1(this$)
+clojure.walk.walk = function walk(inner, outer, form) {
+  if(cljs.core.seq_QMARK_(form)) {
+    return outer.cljs$core$IFn$_invoke$arity$1 ? outer.cljs$core$IFn$_invoke$arity$1(cljs.core.doall.cljs$core$IFn$_invoke$arity$1(cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form))) : outer.call(null, cljs.core.doall.cljs$core$IFn$_invoke$arity$1(cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form)))
   }else {
-    var x__2942__auto__ = this$ == null ? null : this$;
-    return function() {
-      var or__3943__auto__ = clojure.browser.event.event_types[goog.typeOf(x__2942__auto__)];
-      if(or__3943__auto__) {
-        return or__3943__auto__
+    if(cljs.core.coll_QMARK_(form)) {
+      return outer.cljs$core$IFn$_invoke$arity$1 ? outer.cljs$core$IFn$_invoke$arity$1(cljs.core.into(cljs.core.empty(form), cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form))) : outer.call(null, cljs.core.into(cljs.core.empty(form), cljs.core.map.cljs$core$IFn$_invoke$arity$2(inner, form)))
+    }else {
+      if("\ufdd0:else") {
+        return outer.cljs$core$IFn$_invoke$arity$1 ? outer.cljs$core$IFn$_invoke$arity$1(form) : outer.call(null, form)
       }else {
-        var or__3943__auto____$1 = clojure.browser.event.event_types["_"];
-        if(or__3943__auto____$1) {
-          return or__3943__auto____$1
-        }else {
-          throw cljs.core.missing_protocol.call(null, "EventType.event-types", this$);
-        }
+        return null
       }
-    }().call(null, this$)
-  }
-};
-Element.prototype.clojure$browser$event$EventType$ = true;
-Element.prototype.clojure$browser$event$EventType$event_types$arity$1 = function(this$) {
-  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4381) {
-    var vec__4382 = p__4381;
-    var k = cljs.core.nth.call(null, vec__4382, 0, null);
-    var v = cljs.core.nth.call(null, vec__4382, 1, null);
-    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
-  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
-};
-goog.events.EventTarget.prototype.clojure$browser$event$EventType$ = true;
-goog.events.EventTarget.prototype.clojure$browser$event$EventType$event_types$arity$1 = function(this$) {
-  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4383) {
-    var vec__4384 = p__4383;
-    var k = cljs.core.nth.call(null, vec__4384, 0, null);
-    var v = cljs.core.nth.call(null, vec__4384, 1, null);
-    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
-  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
-};
-clojure.browser.event.listen = function() {
-  var listen = null;
-  var listen__3 = function(src, type, fn) {
-    return listen.call(null, src, type, fn, false)
-  };
-  var listen__4 = function(src, type, fn, capture_QMARK_) {
-    return goog.events.listen(src, cljs.core.get.call(null, clojure.browser.event.event_types.call(null, src), type, type), fn, capture_QMARK_)
-  };
-  listen = function(src, type, fn, capture_QMARK_) {
-    switch(arguments.length) {
-      case 3:
-        return listen__3.call(this, src, type, fn);
-      case 4:
-        return listen__4.call(this, src, type, fn, capture_QMARK_)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  listen.cljs$core$IFn$_invoke$arity$3 = listen__3;
-  listen.cljs$core$IFn$_invoke$arity$4 = listen__4;
-  return listen
-}();
-clojure.browser.event.listen_once = function() {
-  var listen_once = null;
-  var listen_once__3 = function(src, type, fn) {
-    return listen_once.call(null, src, type, fn, false)
-  };
-  var listen_once__4 = function(src, type, fn, capture_QMARK_) {
-    return goog.events.listenOnce(src, cljs.core.get.call(null, clojure.browser.event.event_types.call(null, src), type, type), fn, capture_QMARK_)
-  };
-  listen_once = function(src, type, fn, capture_QMARK_) {
-    switch(arguments.length) {
-      case 3:
-        return listen_once__3.call(this, src, type, fn);
-      case 4:
-        return listen_once__4.call(this, src, type, fn, capture_QMARK_)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  listen_once.cljs$core$IFn$_invoke$arity$3 = listen_once__3;
-  listen_once.cljs$core$IFn$_invoke$arity$4 = listen_once__4;
-  return listen_once
-}();
-clojure.browser.event.unlisten = function() {
-  var unlisten = null;
-  var unlisten__3 = function(src, type, fn) {
-    return unlisten.call(null, src, type, fn, false)
-  };
-  var unlisten__4 = function(src, type, fn, capture_QMARK_) {
-    return goog.events.unlisten(src, cljs.core.get.call(null, clojure.browser.event.event_types.call(null, src), type, type), fn, capture_QMARK_)
-  };
-  unlisten = function(src, type, fn, capture_QMARK_) {
-    switch(arguments.length) {
-      case 3:
-        return unlisten__3.call(this, src, type, fn);
-      case 4:
-        return unlisten__4.call(this, src, type, fn, capture_QMARK_)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  unlisten.cljs$core$IFn$_invoke$arity$3 = unlisten__3;
-  unlisten.cljs$core$IFn$_invoke$arity$4 = unlisten__4;
-  return unlisten
-}();
-clojure.browser.event.unlisten_by_key = function unlisten_by_key(key) {
-  return goog.events.unlistenByKey(key)
-};
-clojure.browser.event.dispatch_event = function dispatch_event(src, event) {
-  return goog.events.dispatchEvent(src, event)
-};
-clojure.browser.event.expose = function expose(e) {
-  return goog.events.expose(e)
-};
-clojure.browser.event.fire_listeners = function fire_listeners(obj, type, capture, event) {
-  return null
-};
-clojure.browser.event.total_listener_count = function total_listener_count() {
-  return goog.events.getTotalListenerCount()
-};
-clojure.browser.event.get_listener = function get_listener(src, type, listener, opt_capt, opt_handler) {
-  return null
-};
-clojure.browser.event.all_listeners = function all_listeners(obj, type, capture) {
-  return null
-};
-clojure.browser.event.unique_event_id = function unique_event_id(event_type) {
-  return null
-};
-clojure.browser.event.has_listener = function has_listener(obj, opt_type, opt_capture) {
-  return null
-};
-clojure.browser.event.remove_all = function remove_all(opt_obj, opt_type, opt_capt) {
-  return null
-};
-goog.provide("goog.events.EventHandler");
-goog.require("goog.Disposable");
-goog.require("goog.array");
-goog.require("goog.events");
-goog.require("goog.events.EventWrapper");
-goog.events.EventHandler = function(opt_handler) {
-  goog.Disposable.call(this);
-  this.handler_ = opt_handler;
-  this.keys_ = []
-};
-goog.inherits(goog.events.EventHandler, goog.Disposable);
-goog.events.EventHandler.typeArray_ = [];
-goog.events.EventHandler.prototype.listen = function(src, type, opt_fn, opt_capture, opt_handler) {
-  if(!goog.isArray(type)) {
-    goog.events.EventHandler.typeArray_[0] = type;
-    type = goog.events.EventHandler.typeArray_
-  }
-  for(var i = 0;i < type.length;i++) {
-    var key = goog.events.listen(src, type[i], opt_fn || this, opt_capture || false, opt_handler || this.handler_ || this);
-    this.keys_.push(key)
-  }
-  return this
-};
-goog.events.EventHandler.prototype.listenOnce = function(src, type, opt_fn, opt_capture, opt_handler) {
-  if(goog.isArray(type)) {
-    for(var i = 0;i < type.length;i++) {
-      this.listenOnce(src, type[i], opt_fn, opt_capture, opt_handler)
-    }
-  }else {
-    var key = goog.events.listenOnce(src, type, opt_fn || this, opt_capture, opt_handler || this.handler_ || this);
-    this.keys_.push(key)
-  }
-  return this
-};
-goog.events.EventHandler.prototype.listenWithWrapper = function(src, wrapper, listener, opt_capt, opt_handler) {
-  wrapper.listen(src, listener, opt_capt, opt_handler || this.handler_ || this, this);
-  return this
-};
-goog.events.EventHandler.prototype.getListenerCount = function() {
-  return this.keys_.length
-};
-goog.events.EventHandler.prototype.unlisten = function(src, type, opt_fn, opt_capture, opt_handler) {
-  if(goog.isArray(type)) {
-    for(var i = 0;i < type.length;i++) {
-      this.unlisten(src, type[i], opt_fn, opt_capture, opt_handler)
-    }
-  }else {
-    var listener = goog.events.getListener(src, type, opt_fn || this, opt_capture, opt_handler || this.handler_ || this);
-    if(listener) {
-      var key = listener.key;
-      goog.events.unlistenByKey(key);
-      goog.array.remove(this.keys_, key)
-    }
-  }
-  return this
-};
-goog.events.EventHandler.prototype.unlistenWithWrapper = function(src, wrapper, listener, opt_capt, opt_handler) {
-  wrapper.unlisten(src, listener, opt_capt, opt_handler || this.handler_ || this, this);
-  return this
-};
-goog.events.EventHandler.prototype.removeAll = function() {
-  goog.array.forEach(this.keys_, goog.events.unlistenByKey);
-  this.keys_.length = 0
-};
-goog.events.EventHandler.prototype.disposeInternal = function() {
-  goog.events.EventHandler.superClass_.disposeInternal.call(this);
-  this.removeAll()
-};
-goog.events.EventHandler.prototype.handleEvent = function(e) {
-  throw Error("EventHandler.handleEvent not implemented");
-};
-goog.provide("goog.net.xpc.CrossPageChannelRole");
-goog.net.xpc.CrossPageChannelRole = {OUTER:0, INNER:1};
-goog.provide("goog.net.xpc.FrameElementMethodTransport");
-goog.require("goog.net.xpc");
-goog.require("goog.net.xpc.CrossPageChannelRole");
-goog.require("goog.net.xpc.Transport");
-goog.net.xpc.FrameElementMethodTransport = function(channel, opt_domHelper) {
-  goog.base(this, opt_domHelper);
-  this.channel_ = channel;
-  this.queue_ = [];
-  this.deliverQueuedCb_ = goog.bind(this.deliverQueued_, this)
-};
-goog.inherits(goog.net.xpc.FrameElementMethodTransport, goog.net.xpc.Transport);
-goog.net.xpc.FrameElementMethodTransport.prototype.transportType = goog.net.xpc.TransportTypes.FRAME_ELEMENT_METHOD;
-goog.net.xpc.FrameElementMethodTransport.prototype.recursive_ = false;
-goog.net.xpc.FrameElementMethodTransport.prototype.timer_ = 0;
-goog.net.xpc.FrameElementMethodTransport.outgoing_ = null;
-goog.net.xpc.FrameElementMethodTransport.prototype.connect = function() {
-  if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER) {
-    this.iframeElm_ = this.channel_.iframeElement_;
-    this.iframeElm_["XPC_toOuter"] = goog.bind(this.incoming_, this)
-  }else {
-    this.attemptSetup_()
-  }
-};
-goog.net.xpc.FrameElementMethodTransport.prototype.attemptSetup_ = function() {
-  var retry = true;
-  try {
-    if(!this.iframeElm_) {
-      this.iframeElm_ = this.getWindow().frameElement
-    }
-    if(this.iframeElm_ && this.iframeElm_["XPC_toOuter"]) {
-      this.outgoing_ = this.iframeElm_["XPC_toOuter"];
-      this.iframeElm_["XPC_toOuter"]["XPC_toInner"] = goog.bind(this.incoming_, this);
-      retry = false;
-      this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_);
-      this.channel_.notifyConnected()
-    }
-  }catch(e) {
-    goog.net.xpc.logger.severe("exception caught while attempting setup: " + e)
-  }
-  if(retry) {
-    if(!this.attemptSetupCb_) {
-      this.attemptSetupCb_ = goog.bind(this.attemptSetup_, this)
-    }
-    this.getWindow().setTimeout(this.attemptSetupCb_, 100)
-  }
-};
-goog.net.xpc.FrameElementMethodTransport.prototype.transportServiceHandler = function(payload) {
-  if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER && !this.channel_.isConnected() && payload == goog.net.xpc.SETUP_ACK_) {
-    this.outgoing_ = this.iframeElm_["XPC_toOuter"]["XPC_toInner"];
-    this.channel_.notifyConnected()
-  }else {
-    throw Error("Got unexpected transport message.");
-  }
-};
-goog.net.xpc.FrameElementMethodTransport.prototype.incoming_ = function(serviceName, payload) {
-  if(!this.recursive_ && this.queue_.length == 0) {
-    this.channel_.deliver_(serviceName, payload)
-  }else {
-    this.queue_.push({serviceName:serviceName, payload:payload});
-    if(this.queue_.length == 1) {
-      this.timer_ = this.getWindow().setTimeout(this.deliverQueuedCb_, 1)
     }
   }
 };
-goog.net.xpc.FrameElementMethodTransport.prototype.deliverQueued_ = function() {
-  while(this.queue_.length) {
-    var msg = this.queue_.shift();
-    this.channel_.deliver_(msg.serviceName, msg.payload)
-  }
+clojure.walk.postwalk = function postwalk(f, form) {
+  return clojure.walk.walk(cljs.core.partial.cljs$core$IFn$_invoke$arity$2(postwalk, f), f, form)
 };
-goog.net.xpc.FrameElementMethodTransport.prototype.send = function(service, payload) {
-  this.recursive_ = true;
-  this.outgoing_(service, payload);
-  this.recursive_ = false
+clojure.walk.prewalk = function prewalk(f, form) {
+  return clojure.walk.walk(cljs.core.partial.cljs$core$IFn$_invoke$arity$2(prewalk, f), cljs.core.identity, f.cljs$core$IFn$_invoke$arity$1 ? f.cljs$core$IFn$_invoke$arity$1(form) : f.call(null, form))
 };
-goog.net.xpc.FrameElementMethodTransport.prototype.disposeInternal = function() {
-  goog.net.xpc.FrameElementMethodTransport.superClass_.disposeInternal.call(this);
-  this.outgoing_ = null;
-  this.iframeElm_ = null
-};
-goog.provide("goog.net.xpc.IframePollingTransport");
-goog.provide("goog.net.xpc.IframePollingTransport.Receiver");
-goog.provide("goog.net.xpc.IframePollingTransport.Sender");
-goog.require("goog.array");
-goog.require("goog.dom");
-goog.require("goog.net.xpc");
-goog.require("goog.net.xpc.CrossPageChannelRole");
-goog.require("goog.net.xpc.Transport");
-goog.require("goog.userAgent");
-goog.net.xpc.IframePollingTransport = function(channel, opt_domHelper) {
-  goog.base(this, opt_domHelper);
-  this.channel_ = channel;
-  this.sendUri_ = this.channel_.cfg_[goog.net.xpc.CfgFields.PEER_POLL_URI];
-  this.rcvUri_ = this.channel_.cfg_[goog.net.xpc.CfgFields.LOCAL_POLL_URI];
-  this.sendQueue_ = []
-};
-goog.inherits(goog.net.xpc.IframePollingTransport, goog.net.xpc.Transport);
-goog.net.xpc.IframePollingTransport.prototype.pollsBeforeReconnect_ = 5;
-goog.net.xpc.IframePollingTransport.prototype.transportType = goog.net.xpc.TransportTypes.IFRAME_POLLING;
-goog.net.xpc.IframePollingTransport.prototype.sequence_ = 0;
-goog.net.xpc.IframePollingTransport.prototype.waitForAck_ = false;
-goog.net.xpc.IframePollingTransport.prototype.initialized_ = false;
-goog.net.xpc.IframePollingTransport.prototype.reconnectFrame_ = null;
-goog.net.xpc.IframePollingTransport.IFRAME_PREFIX = "googlexpc";
-goog.net.xpc.IframePollingTransport.prototype.getMsgFrameName_ = function() {
-  return goog.net.xpc.IframePollingTransport.IFRAME_PREFIX + "_" + this.channel_.name + "_msg"
-};
-goog.net.xpc.IframePollingTransport.prototype.getAckFrameName_ = function() {
-  return goog.net.xpc.IframePollingTransport.IFRAME_PREFIX + "_" + this.channel_.name + "_ack"
-};
-goog.net.xpc.IframePollingTransport.prototype.isChannelAvailable = function() {
-  return!this.isDisposed() && this.channel_.isPeerAvailable()
-};
-goog.net.xpc.IframePollingTransport.prototype.getPeerFrames_ = function() {
-  try {
-    if(this.isChannelAvailable()) {
-      return this.channel_.getPeerWindowObject().frames || {}
-    }
-  }catch(e) {
-    goog.net.xpc.logger.fine("error retrieving peer frames")
-  }
-  return{}
-};
-goog.net.xpc.IframePollingTransport.prototype.getPeerFrame_ = function(frameName) {
-  return this.getPeerFrames_()[frameName]
-};
-goog.net.xpc.IframePollingTransport.prototype.connect = function() {
-  if(!this.isChannelAvailable()) {
-    return
-  }
-  goog.net.xpc.logger.fine("transport connect called");
-  if(!this.initialized_) {
-    goog.net.xpc.logger.fine("initializing...");
-    this.constructSenderFrames_();
-    this.initialized_ = true
-  }
-  this.checkForeignFramesReady_()
-};
-goog.net.xpc.IframePollingTransport.prototype.constructSenderFrames_ = function() {
-  var name = this.getMsgFrameName_();
-  this.msgIframeElm_ = this.constructSenderFrame_(name);
-  this.msgWinObj_ = this.getWindow().frames[name];
-  name = this.getAckFrameName_();
-  this.ackIframeElm_ = this.constructSenderFrame_(name);
-  this.ackWinObj_ = this.getWindow().frames[name]
-};
-goog.net.xpc.IframePollingTransport.prototype.constructSenderFrame_ = function(id) {
-  goog.net.xpc.logger.finest("constructing sender frame: " + id);
-  var ifr = goog.dom.createElement("iframe");
-  var s = ifr.style;
-  s.position = "absolute";
-  s.top = "-10px";
-  s.left = "10px";
-  s.width = "1px";
-  s.height = "1px";
-  ifr.id = ifr.name = id;
-  ifr.src = this.sendUri_ + "#INITIAL";
-  this.getWindow().document.body.appendChild(ifr);
-  return ifr
-};
-goog.net.xpc.IframePollingTransport.prototype.maybeInnerPeerReconnect_ = function() {
-  if(this.reconnectFrame_ || this.pollsBeforeReconnect_-- > 0) {
-    return
-  }
-  goog.net.xpc.logger.finest("Inner peer reconnect triggered.");
-  this.channel_.name = goog.net.xpc.getRandomString(10);
-  goog.net.xpc.logger.finest("switching channels: " + this.channel_.name);
-  this.deconstructSenderFrames_();
-  this.initialized_ = false;
-  this.reconnectFrame_ = this.constructSenderFrame_(goog.net.xpc.IframePollingTransport.IFRAME_PREFIX + "_reconnect_" + this.channel_.name)
-};
-goog.net.xpc.IframePollingTransport.prototype.outerPeerReconnect_ = function() {
-  goog.net.xpc.logger.finest("outerPeerReconnect called");
-  var frames = this.getPeerFrames_();
-  var length = frames.length;
-  for(var i = 0;i < length;i++) {
-    var frameName;
-    try {
-      if(frames[i] && frames[i].name) {
-        frameName = frames[i].name
-      }
-    }catch(e) {
-    }
-    if(!frameName) {
-      continue
-    }
-    var message = frameName.split("_");
-    if(message.length == 3 && message[0] == goog.net.xpc.IframePollingTransport.IFRAME_PREFIX && message[1] == "reconnect") {
-      this.channel_.name = message[2];
-      this.deconstructSenderFrames_();
-      this.initialized_ = false;
-      break
-    }
-  }
-};
-goog.net.xpc.IframePollingTransport.prototype.deconstructSenderFrames_ = function() {
-  goog.net.xpc.logger.finest("deconstructSenderFrames called");
-  if(this.msgIframeElm_) {
-    this.msgIframeElm_.parentNode.removeChild(this.msgIframeElm_);
-    this.msgIframeElm_ = null;
-    this.msgWinObj_ = null
-  }
-  if(this.ackIframeElm_) {
-    this.ackIframeElm_.parentNode.removeChild(this.ackIframeElm_);
-    this.ackIframeElm_ = null;
-    this.ackWinObj_ = null
-  }
-};
-goog.net.xpc.IframePollingTransport.prototype.checkForeignFramesReady_ = function() {
-  if(!(this.isRcvFrameReady_(this.getMsgFrameName_()) && this.isRcvFrameReady_(this.getAckFrameName_()))) {
-    goog.net.xpc.logger.finest("foreign frames not (yet) present");
-    if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.INNER) {
-      this.maybeInnerPeerReconnect_()
+clojure.walk.keywordize_keys = function keywordize_keys(m) {
+  var f = function(p__5720) {
+    var vec__5721 = p__5720;
+    var k = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5721, 0, null);
+    var v = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5721, 1, null);
+    if(cljs.core.string_QMARK_(k)) {
+      return cljs.core.PersistentVector.fromArray([cljs.core.keyword.cljs$core$IFn$_invoke$arity$1(k), v], true)
     }else {
-      if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER) {
-        this.outerPeerReconnect_()
-      }
+      return cljs.core.PersistentVector.fromArray([k, v], true)
     }
-    this.getWindow().setTimeout(goog.bind(this.connect, this), 100)
-  }else {
-    goog.net.xpc.logger.fine("foreign frames present");
-    this.msgReceiver_ = new goog.net.xpc.IframePollingTransport.Receiver(this, this.getPeerFrame_(this.getMsgFrameName_()), goog.bind(this.processIncomingMsg, this));
-    this.ackReceiver_ = new goog.net.xpc.IframePollingTransport.Receiver(this, this.getPeerFrame_(this.getAckFrameName_()), goog.bind(this.processIncomingAck, this));
-    this.checkLocalFramesPresent_()
-  }
-};
-goog.net.xpc.IframePollingTransport.prototype.isRcvFrameReady_ = function(frameName) {
-  goog.net.xpc.logger.finest("checking for receive frame: " + frameName);
-  try {
-    var winObj = this.getPeerFrame_(frameName);
-    if(!winObj || winObj.location.href.indexOf(this.rcvUri_) != 0) {
-      return false
-    }
-  }catch(e) {
-    return false
-  }
-  return true
-};
-goog.net.xpc.IframePollingTransport.prototype.checkLocalFramesPresent_ = function() {
-  var frames = this.getPeerFrames_();
-  if(!(frames[this.getAckFrameName_()] && frames[this.getMsgFrameName_()])) {
-    if(!this.checkLocalFramesPresentCb_) {
-      this.checkLocalFramesPresentCb_ = goog.bind(this.checkLocalFramesPresent_, this)
-    }
-    this.getWindow().setTimeout(this.checkLocalFramesPresentCb_, 100);
-    goog.net.xpc.logger.fine("local frames not (yet) present")
-  }else {
-    this.msgSender_ = new goog.net.xpc.IframePollingTransport.Sender(this.sendUri_, this.msgWinObj_);
-    this.ackSender_ = new goog.net.xpc.IframePollingTransport.Sender(this.sendUri_, this.ackWinObj_);
-    goog.net.xpc.logger.fine("local frames ready");
-    this.getWindow().setTimeout(goog.bind(function() {
-      this.msgSender_.send(goog.net.xpc.SETUP);
-      this.sentConnectionSetup_ = true;
-      this.waitForAck_ = true;
-      goog.net.xpc.logger.fine("SETUP sent")
-    }, this), 100)
-  }
-};
-goog.net.xpc.IframePollingTransport.prototype.checkIfConnected_ = function() {
-  if(this.sentConnectionSetupAck_ && this.rcvdConnectionSetupAck_) {
-    this.channel_.notifyConnected();
-    if(this.deliveryQueue_) {
-      goog.net.xpc.logger.fine("delivering queued messages " + "(" + this.deliveryQueue_.length + ")");
-      for(var i = 0, m;i < this.deliveryQueue_.length;i++) {
-        m = this.deliveryQueue_[i];
-        this.channel_.deliver_(m.service, m.payload)
-      }
-      delete this.deliveryQueue_
-    }
-  }else {
-    goog.net.xpc.logger.finest("checking if connected: " + "ack sent:" + this.sentConnectionSetupAck_ + ", ack rcvd: " + this.rcvdConnectionSetupAck_)
-  }
-};
-goog.net.xpc.IframePollingTransport.prototype.processIncomingMsg = function(raw) {
-  goog.net.xpc.logger.finest("msg received: " + raw);
-  if(raw == goog.net.xpc.SETUP) {
-    if(!this.ackSender_) {
-      return
-    }
-    this.ackSender_.send(goog.net.xpc.SETUP_ACK_);
-    goog.net.xpc.logger.finest("SETUP_ACK sent");
-    this.sentConnectionSetupAck_ = true;
-    this.checkIfConnected_()
-  }else {
-    if(this.channel_.isConnected() || this.sentConnectionSetupAck_) {
-      var pos = raw.indexOf("|");
-      var head = raw.substring(0, pos);
-      var frame = raw.substring(pos + 1);
-      pos = head.indexOf(",");
-      if(pos == -1) {
-        var seq = head;
-        this.ackSender_.send("ACK:" + seq);
-        this.deliverPayload_(frame)
-      }else {
-        var seq = head.substring(0, pos);
-        this.ackSender_.send("ACK:" + seq);
-        var partInfo = head.substring(pos + 1).split("/");
-        var part0 = parseInt(partInfo[0], 10);
-        var part1 = parseInt(partInfo[1], 10);
-        if(part0 == 1) {
-          this.parts_ = []
-        }
-        this.parts_.push(frame);
-        if(part0 == part1) {
-          this.deliverPayload_(this.parts_.join(""));
-          delete this.parts_
-        }
-      }
+  };
+  return clojure.walk.postwalk(function(x) {
+    if(cljs.core.map_QMARK_(x)) {
+      return cljs.core.into(cljs.core.ObjMap.EMPTY, cljs.core.map.cljs$core$IFn$_invoke$arity$2(f, x))
     }else {
-      goog.net.xpc.logger.warning("received msg, but channel is not connected")
+      return x
     }
-  }
+  }, m)
 };
-goog.net.xpc.IframePollingTransport.prototype.processIncomingAck = function(msgStr) {
-  goog.net.xpc.logger.finest("ack received: " + msgStr);
-  if(msgStr == goog.net.xpc.SETUP_ACK_) {
-    this.waitForAck_ = false;
-    this.rcvdConnectionSetupAck_ = true;
-    this.checkIfConnected_()
-  }else {
-    if(this.channel_.isConnected()) {
-      if(!this.waitForAck_) {
-        goog.net.xpc.logger.warning("got unexpected ack");
-        return
-      }
-      var seq = parseInt(msgStr.split(":")[1], 10);
-      if(seq == this.sequence_) {
-        this.waitForAck_ = false;
-        this.sendNextFrame_()
-      }else {
-        goog.net.xpc.logger.warning("got ack with wrong sequence")
-      }
+clojure.walk.stringify_keys = function stringify_keys(m) {
+  var f = function(p__5724) {
+    var vec__5725 = p__5724;
+    var k = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5725, 0, null);
+    var v = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__5725, 1, null);
+    if(cljs.core.keyword_QMARK_(k)) {
+      return cljs.core.PersistentVector.fromArray([cljs.core.name(k), v], true)
     }else {
-      goog.net.xpc.logger.warning("received ack, but channel not connected")
+      return cljs.core.PersistentVector.fromArray([k, v], true)
     }
-  }
-};
-goog.net.xpc.IframePollingTransport.prototype.sendNextFrame_ = function() {
-  if(this.waitForAck_ || !this.sendQueue_.length) {
-    return
-  }
-  var s = this.sendQueue_.shift();
-  ++this.sequence_;
-  this.msgSender_.send(this.sequence_ + s);
-  goog.net.xpc.logger.finest("msg sent: " + this.sequence_ + s);
-  this.waitForAck_ = true
-};
-goog.net.xpc.IframePollingTransport.prototype.deliverPayload_ = function(s) {
-  var pos = s.indexOf(":");
-  var service = s.substr(0, pos);
-  var payload = s.substring(pos + 1);
-  if(!this.channel_.isConnected()) {
-    (this.deliveryQueue_ || (this.deliveryQueue_ = [])).push({service:service, payload:payload});
-    goog.net.xpc.logger.finest("queued delivery")
-  }else {
-    this.channel_.deliver_(service, payload)
-  }
-};
-goog.net.xpc.IframePollingTransport.prototype.MAX_FRAME_LENGTH_ = 3800;
-goog.net.xpc.IframePollingTransport.prototype.send = function(service, payload) {
-  var frame = service + ":" + payload;
-  if(!goog.userAgent.IE || payload.length <= this.MAX_FRAME_LENGTH_) {
-    this.sendQueue_.push("|" + frame)
-  }else {
-    var l = payload.length;
-    var num = Math.ceil(l / this.MAX_FRAME_LENGTH_);
-    var pos = 0;
-    var i = 1;
-    while(pos < l) {
-      this.sendQueue_.push("," + i + "/" + num + "|" + frame.substr(pos, this.MAX_FRAME_LENGTH_));
-      i++;
-      pos += this.MAX_FRAME_LENGTH_
-    }
-  }
-  this.sendNextFrame_()
-};
-goog.net.xpc.IframePollingTransport.prototype.disposeInternal = function() {
-  goog.base(this, "disposeInternal");
-  var receivers = goog.net.xpc.IframePollingTransport.receivers_;
-  goog.array.remove(receivers, this.msgReceiver_);
-  goog.array.remove(receivers, this.ackReceiver_);
-  this.msgReceiver_ = this.ackReceiver_ = null;
-  goog.dom.removeNode(this.msgIframeElm_);
-  goog.dom.removeNode(this.ackIframeElm_);
-  this.msgIframeElm_ = this.ackIframeElm_ = null;
-  this.msgWinObj_ = this.ackWinObj_ = null
-};
-goog.net.xpc.IframePollingTransport.receivers_ = [];
-goog.net.xpc.IframePollingTransport.TIME_POLL_SHORT_ = 10;
-goog.net.xpc.IframePollingTransport.TIME_POLL_LONG_ = 100;
-goog.net.xpc.IframePollingTransport.TIME_SHORT_POLL_AFTER_ACTIVITY_ = 1E3;
-goog.net.xpc.IframePollingTransport.receive_ = function() {
-  var rcvd = false;
-  try {
-    for(var i = 0, l = goog.net.xpc.IframePollingTransport.receivers_.length;i < l;i++) {
-      rcvd = rcvd || goog.net.xpc.IframePollingTransport.receivers_[i].receive()
-    }
-  }catch(e) {
-    goog.net.xpc.logger.info("receive_() failed: " + e);
-    goog.net.xpc.IframePollingTransport.receivers_[i].transport_.channel_.notifyTransportError_();
-    if(!goog.net.xpc.IframePollingTransport.receivers_.length) {
-      return
-    }
-  }
-  var now = goog.now();
-  if(rcvd) {
-    goog.net.xpc.IframePollingTransport.lastActivity_ = now
-  }
-  var t = now - goog.net.xpc.IframePollingTransport.lastActivity_ < goog.net.xpc.IframePollingTransport.TIME_SHORT_POLL_AFTER_ACTIVITY_ ? goog.net.xpc.IframePollingTransport.TIME_POLL_SHORT_ : goog.net.xpc.IframePollingTransport.TIME_POLL_LONG_;
-  goog.net.xpc.IframePollingTransport.rcvTimer_ = window.setTimeout(goog.net.xpc.IframePollingTransport.receiveCb_, t)
-};
-goog.net.xpc.IframePollingTransport.receiveCb_ = goog.bind(goog.net.xpc.IframePollingTransport.receive_, goog.net.xpc.IframePollingTransport);
-goog.net.xpc.IframePollingTransport.startRcvTimer_ = function() {
-  goog.net.xpc.logger.fine("starting receive-timer");
-  goog.net.xpc.IframePollingTransport.lastActivity_ = goog.now();
-  if(goog.net.xpc.IframePollingTransport.rcvTimer_) {
-    window.clearTimeout(goog.net.xpc.IframePollingTransport.rcvTimer_)
-  }
-  goog.net.xpc.IframePollingTransport.rcvTimer_ = window.setTimeout(goog.net.xpc.IframePollingTransport.receiveCb_, goog.net.xpc.IframePollingTransport.TIME_POLL_SHORT_)
-};
-goog.net.xpc.IframePollingTransport.Sender = function(url, windowObj) {
-  this.sendUri_ = url;
-  this.sendFrame_ = windowObj;
-  this.cycle_ = 0
-};
-goog.net.xpc.IframePollingTransport.Sender.prototype.send = function(payload) {
-  this.cycle_ = ++this.cycle_ % 2;
-  var url = this.sendUri_ + "#" + this.cycle_ + encodeURIComponent(payload);
-  try {
-    if(goog.userAgent.WEBKIT) {
-      this.sendFrame_.location.href = url
+  };
+  return clojure.walk.postwalk(function(x) {
+    if(cljs.core.map_QMARK_(x)) {
+      return cljs.core.into(cljs.core.ObjMap.EMPTY, cljs.core.map.cljs$core$IFn$_invoke$arity$2(f, x))
     }else {
-      this.sendFrame_.location.replace(url)
+      return x
     }
-  }catch(e) {
-    goog.net.xpc.logger.severe("sending failed", e)
-  }
-  goog.net.xpc.IframePollingTransport.startRcvTimer_()
+  }, m)
 };
-goog.net.xpc.IframePollingTransport.Receiver = function(transport, windowObj, callback) {
-  this.transport_ = transport;
-  this.rcvFrame_ = windowObj;
-  this.cb_ = callback;
-  this.currentLoc_ = this.rcvFrame_.location.href.split("#")[0] + "#INITIAL";
-  goog.net.xpc.IframePollingTransport.receivers_.push(this);
-  goog.net.xpc.IframePollingTransport.startRcvTimer_()
-};
-goog.net.xpc.IframePollingTransport.Receiver.prototype.receive = function() {
-  var loc = this.rcvFrame_.location.href;
-  if(loc != this.currentLoc_) {
-    this.currentLoc_ = loc;
-    var payload = loc.split("#")[1];
-    if(payload) {
-      payload = payload.substr(1);
-      this.cb_(decodeURIComponent(payload))
-    }
-    return true
-  }else {
-    return false
-  }
-};
-goog.provide("goog.net.xpc.IframeRelayTransport");
-goog.require("goog.dom");
-goog.require("goog.events");
-goog.require("goog.net.xpc");
-goog.require("goog.net.xpc.Transport");
-goog.require("goog.userAgent");
-goog.net.xpc.IframeRelayTransport = function(channel, opt_domHelper) {
-  goog.base(this, opt_domHelper);
-  this.channel_ = channel;
-  this.peerRelayUri_ = this.channel_.cfg_[goog.net.xpc.CfgFields.PEER_RELAY_URI];
-  this.peerIframeId_ = this.channel_.cfg_[goog.net.xpc.CfgFields.IFRAME_ID];
-  if(goog.userAgent.WEBKIT) {
-    goog.net.xpc.IframeRelayTransport.startCleanupTimer_()
-  }
-};
-goog.inherits(goog.net.xpc.IframeRelayTransport, goog.net.xpc.Transport);
-if(goog.userAgent.WEBKIT) {
-  goog.net.xpc.IframeRelayTransport.iframeRefs_ = [];
-  goog.net.xpc.IframeRelayTransport.CLEANUP_INTERVAL_ = 1E3;
-  goog.net.xpc.IframeRelayTransport.IFRAME_MAX_AGE_ = 3E3;
-  goog.net.xpc.IframeRelayTransport.cleanupTimer_ = 0;
-  goog.net.xpc.IframeRelayTransport.startCleanupTimer_ = function() {
-    if(!goog.net.xpc.IframeRelayTransport.cleanupTimer_) {
-      goog.net.xpc.IframeRelayTransport.cleanupTimer_ = window.setTimeout(function() {
-        goog.net.xpc.IframeRelayTransport.cleanup_()
-      }, goog.net.xpc.IframeRelayTransport.CLEANUP_INTERVAL_)
-    }
-  };
-  goog.net.xpc.IframeRelayTransport.cleanup_ = function(opt_maxAge) {
-    var now = goog.now();
-    var maxAge = opt_maxAge || goog.net.xpc.IframeRelayTransport.IFRAME_MAX_AGE_;
-    while(goog.net.xpc.IframeRelayTransport.iframeRefs_.length && now - goog.net.xpc.IframeRelayTransport.iframeRefs_[0].timestamp >= maxAge) {
-      var ifr = goog.net.xpc.IframeRelayTransport.iframeRefs_.shift().iframeElement;
-      goog.dom.removeNode(ifr);
-      goog.net.xpc.logger.finest("iframe removed")
-    }
-    goog.net.xpc.IframeRelayTransport.cleanupTimer_ = window.setTimeout(goog.net.xpc.IframeRelayTransport.cleanupCb_, goog.net.xpc.IframeRelayTransport.CLEANUP_INTERVAL_)
-  };
-  goog.net.xpc.IframeRelayTransport.cleanupCb_ = function() {
-    goog.net.xpc.IframeRelayTransport.cleanup_()
-  }
-}
-goog.net.xpc.IframeRelayTransport.IE_PAYLOAD_MAX_SIZE_ = 1800;
-goog.net.xpc.IframeRelayTransport.FragmentInfo;
-goog.net.xpc.IframeRelayTransport.fragmentMap_ = {};
-goog.net.xpc.IframeRelayTransport.prototype.transportType = goog.net.xpc.TransportTypes.IFRAME_RELAY;
-goog.net.xpc.IframeRelayTransport.prototype.connect = function() {
-  if(!this.getWindow()["xpcRelay"]) {
-    this.getWindow()["xpcRelay"] = goog.net.xpc.IframeRelayTransport.receiveMessage_
-  }
-  this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP)
-};
-goog.net.xpc.IframeRelayTransport.receiveMessage_ = function(channelName, frame) {
-  var pos = frame.indexOf(":");
-  var header = frame.substr(0, pos);
-  var payload = frame.substr(pos + 1);
-  if(!goog.userAgent.IE || (pos = header.indexOf("|")) == -1) {
-    var service = header
-  }else {
-    var service = header.substr(0, pos);
-    var fragmentIdStr = header.substr(pos + 1);
-    pos = fragmentIdStr.indexOf("+");
-    var messageIdStr = fragmentIdStr.substr(0, pos);
-    var fragmentNum = parseInt(fragmentIdStr.substr(pos + 1), 10);
-    var fragmentInfo = goog.net.xpc.IframeRelayTransport.fragmentMap_[messageIdStr];
-    if(!fragmentInfo) {
-      fragmentInfo = goog.net.xpc.IframeRelayTransport.fragmentMap_[messageIdStr] = {fragments:[], received:0, expected:0}
-    }
-    if(goog.string.contains(fragmentIdStr, "++")) {
-      fragmentInfo.expected = fragmentNum + 1
-    }
-    fragmentInfo.fragments[fragmentNum] = payload;
-    fragmentInfo.received++;
-    if(fragmentInfo.received != fragmentInfo.expected) {
-      return
-    }
-    payload = fragmentInfo.fragments.join("");
-    delete goog.net.xpc.IframeRelayTransport.fragmentMap_[messageIdStr]
-  }
-  goog.net.xpc.channels_[channelName].deliver_(service, decodeURIComponent(payload))
-};
-goog.net.xpc.IframeRelayTransport.prototype.transportServiceHandler = function(payload) {
-  if(payload == goog.net.xpc.SETUP) {
-    this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_);
-    this.channel_.notifyConnected()
-  }else {
-    if(payload == goog.net.xpc.SETUP_ACK_) {
-      this.channel_.notifyConnected()
-    }
-  }
-};
-goog.net.xpc.IframeRelayTransport.prototype.send = function(service, payload) {
-  var encodedPayload = encodeURIComponent(payload);
-  var encodedLen = encodedPayload.length;
-  var maxSize = goog.net.xpc.IframeRelayTransport.IE_PAYLOAD_MAX_SIZE_;
-  if(goog.userAgent.IE && encodedLen > maxSize) {
-    var messageIdStr = goog.string.getRandomString();
-    for(var startIndex = 0, fragmentNum = 0;startIndex < encodedLen;fragmentNum++) {
-      var payloadFragment = encodedPayload.substr(startIndex, maxSize);
-      startIndex += maxSize;
-      var fragmentIdStr = messageIdStr + (startIndex >= encodedLen ? "++" : "+") + fragmentNum;
-      this.send_(service, payloadFragment, fragmentIdStr)
-    }
-  }else {
-    this.send_(service, encodedPayload)
-  }
-};
-goog.net.xpc.IframeRelayTransport.prototype.send_ = function(service, encodedPayload, opt_fragmentIdStr) {
-  if(goog.userAgent.IE) {
-    var div = this.getWindow().document.createElement("div");
-    div.innerHTML = '\x3ciframe onload\x3d"this.xpcOnload()"\x3e\x3c/iframe\x3e';
-    var ifr = div.childNodes[0];
-    div = null;
-    ifr["xpcOnload"] = goog.net.xpc.IframeRelayTransport.iframeLoadHandler_
-  }else {
-    var ifr = this.getWindow().document.createElement("iframe");
-    if(goog.userAgent.WEBKIT) {
-      goog.net.xpc.IframeRelayTransport.iframeRefs_.push({timestamp:goog.now(), iframeElement:ifr})
+clojure.walk.prewalk_replace = function prewalk_replace(smap, form) {
+  return clojure.walk.prewalk(function(x) {
+    if(cljs.core.contains_QMARK_(smap, x)) {
+      return smap.cljs$core$IFn$_invoke$arity$1 ? smap.cljs$core$IFn$_invoke$arity$1(x) : smap.call(null, x)
     }else {
-      goog.events.listen(ifr, "load", goog.net.xpc.IframeRelayTransport.iframeLoadHandler_)
+      return x
     }
-  }
-  var style = ifr.style;
-  style.visibility = "hidden";
-  style.width = ifr.style.height = "0px";
-  style.position = "absolute";
-  var url = this.peerRelayUri_;
-  url += "#" + this.channel_.name;
-  if(this.peerIframeId_) {
-    url += "," + this.peerIframeId_
-  }
-  url += "|" + service;
-  if(opt_fragmentIdStr) {
-    url += "|" + opt_fragmentIdStr
-  }
-  url += ":" + encodedPayload;
-  ifr.src = url;
-  this.getWindow().document.body.appendChild(ifr);
-  goog.net.xpc.logger.finest("msg sent: " + url)
+  }, form)
 };
-goog.net.xpc.IframeRelayTransport.iframeLoadHandler_ = function() {
-  goog.net.xpc.logger.finest("iframe-load");
-  goog.dom.removeNode(this);
-  this.xpcOnload = null
-};
-goog.net.xpc.IframeRelayTransport.prototype.disposeInternal = function() {
-  goog.base(this, "disposeInternal");
-  if(goog.userAgent.WEBKIT) {
-    goog.net.xpc.IframeRelayTransport.cleanup_(0)
-  }
-};
-goog.provide("goog.net.xpc.NativeMessagingTransport");
-goog.require("goog.Timer");
-goog.require("goog.asserts");
-goog.require("goog.async.Deferred");
-goog.require("goog.events");
-goog.require("goog.events.EventHandler");
-goog.require("goog.net.xpc");
-goog.require("goog.net.xpc.CrossPageChannelRole");
-goog.require("goog.net.xpc.Transport");
-goog.net.xpc.NativeMessagingTransport = function(channel, peerHostname, opt_domHelper, opt_oneSidedHandshake, opt_protocolVersion) {
-  goog.base(this, opt_domHelper);
-  this.channel_ = channel;
-  this.protocolVersion_ = opt_protocolVersion || 2;
-  goog.asserts.assert(this.protocolVersion_ >= 1);
-  goog.asserts.assert(this.protocolVersion_ <= 2);
-  this.peerHostname_ = peerHostname || "*";
-  this.eventHandler_ = new goog.events.EventHandler(this);
-  this.maybeAttemptToConnectTimer_ = new goog.Timer(100, this.getWindow());
-  this.oneSidedHandshake_ = !!opt_oneSidedHandshake;
-  this.setupAckReceived_ = new goog.async.Deferred;
-  this.setupAckSent_ = new goog.async.Deferred;
-  this.connected_ = new goog.async.Deferred;
-  this.endpointId_ = goog.net.xpc.getRandomString(10);
-  this.peerEndpointId_ = null;
-  if(this.oneSidedHandshake_) {
-    if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.INNER) {
-      this.connected_.awaitDeferred(this.setupAckReceived_)
+clojure.walk.postwalk_replace = function postwalk_replace(smap, form) {
+  return clojure.walk.postwalk(function(x) {
+    if(cljs.core.contains_QMARK_(smap, x)) {
+      return smap.cljs$core$IFn$_invoke$arity$1 ? smap.cljs$core$IFn$_invoke$arity$1(x) : smap.call(null, x)
     }else {
-      this.connected_.awaitDeferred(this.setupAckSent_)
+      return x
     }
-  }else {
-    this.connected_.awaitDeferred(this.setupAckReceived_);
-    if(this.protocolVersion_ == 2) {
-      this.connected_.awaitDeferred(this.setupAckSent_)
-    }
-  }
-  this.connected_.addCallback(this.notifyConnected_, this);
-  this.connected_.callback(true);
-  this.eventHandler_.listen(this.maybeAttemptToConnectTimer_, goog.Timer.TICK, this.maybeAttemptToConnect_);
-  goog.net.xpc.logger.info("NativeMessagingTransport created.  " + "protocolVersion\x3d" + this.protocolVersion_ + ", oneSidedHandshake\x3d" + this.oneSidedHandshake_ + ", role\x3d" + this.channel_.getRole())
-};
-goog.inherits(goog.net.xpc.NativeMessagingTransport, goog.net.xpc.Transport);
-goog.net.xpc.NativeMessagingTransport.CONNECTION_DELAY_MS_ = 200;
-goog.net.xpc.NativeMessagingTransport.prototype.peerProtocolVersion_ = null;
-goog.net.xpc.NativeMessagingTransport.prototype.initialized_ = false;
-goog.net.xpc.NativeMessagingTransport.prototype.transportType = goog.net.xpc.TransportTypes.NATIVE_MESSAGING;
-goog.net.xpc.NativeMessagingTransport.MESSAGE_DELIMITER_ = ",";
-goog.net.xpc.NativeMessagingTransport.activeCount_ = {};
-goog.net.xpc.NativeMessagingTransport.sendTimerId_ = 0;
-goog.net.xpc.NativeMessagingTransport.prototype.couldPeerVersionBe_ = function(version) {
-  return this.peerProtocolVersion_ == null || this.peerProtocolVersion_ == version
-};
-goog.net.xpc.NativeMessagingTransport.initialize_ = function(listenWindow) {
-  var uid = goog.getUid(listenWindow);
-  var value = goog.net.xpc.NativeMessagingTransport.activeCount_[uid];
-  if(!goog.isNumber(value)) {
-    value = 0
-  }
-  if(value == 0) {
-    goog.events.listen(listenWindow.postMessage ? listenWindow : listenWindow.document, "message", goog.net.xpc.NativeMessagingTransport.messageReceived_, false, goog.net.xpc.NativeMessagingTransport)
-  }
-  goog.net.xpc.NativeMessagingTransport.activeCount_[uid] = value + 1
-};
-goog.net.xpc.NativeMessagingTransport.messageReceived_ = function(msgEvt) {
-  var data = msgEvt.getBrowserEvent().data;
-  if(!goog.isString(data)) {
-    return false
-  }
-  var headDelim = data.indexOf("|");
-  var serviceDelim = data.indexOf(":");
-  if(headDelim == -1 || serviceDelim == -1) {
-    return false
-  }
-  var channelName = data.substring(0, headDelim);
-  var service = data.substring(headDelim + 1, serviceDelim);
-  var payload = data.substring(serviceDelim + 1);
-  goog.net.xpc.logger.fine("messageReceived: channel\x3d" + channelName + ", service\x3d" + service + ", payload\x3d" + payload);
-  var channel = goog.net.xpc.channels_[channelName];
-  if(channel) {
-    channel.deliver_(service, payload, msgEvt.getBrowserEvent().origin);
-    return true
-  }
-  var transportMessageType = goog.net.xpc.NativeMessagingTransport.parseTransportPayload_(payload)[0];
-  for(var staleChannelName in goog.net.xpc.channels_) {
-    var staleChannel = goog.net.xpc.channels_[staleChannelName];
-    if(staleChannel.getRole() == goog.net.xpc.CrossPageChannelRole.INNER && !staleChannel.isConnected() && service == goog.net.xpc.TRANSPORT_SERVICE_ && (transportMessageType == goog.net.xpc.SETUP || transportMessageType == goog.net.xpc.SETUP_NTPV2)) {
-      goog.net.xpc.logger.fine("changing channel name to " + channelName);
-      staleChannel.name = channelName;
-      delete goog.net.xpc.channels_[staleChannelName];
-      goog.net.xpc.channels_[channelName] = staleChannel;
-      staleChannel.deliver_(service, payload);
-      return true
-    }
-  }
-  goog.net.xpc.logger.info('channel name mismatch; message ignored"');
-  return false
-};
-goog.net.xpc.NativeMessagingTransport.prototype.transportServiceHandler = function(payload) {
-  var transportParts = goog.net.xpc.NativeMessagingTransport.parseTransportPayload_(payload);
-  var transportMessageType = transportParts[0];
-  var peerEndpointId = transportParts[1];
-  switch(transportMessageType) {
-    case goog.net.xpc.SETUP_ACK_:
-      this.setPeerProtocolVersion_(1);
-      if(!this.setupAckReceived_.hasFired()) {
-        this.setupAckReceived_.callback(true)
-      }
-      break;
-    case goog.net.xpc.SETUP_ACK_NTPV2:
-      if(this.protocolVersion_ == 2) {
-        this.setPeerProtocolVersion_(2);
-        if(!this.setupAckReceived_.hasFired()) {
-          this.setupAckReceived_.callback(true)
-        }
-      }
-      break;
-    case goog.net.xpc.SETUP:
-      this.setPeerProtocolVersion_(1);
-      this.sendSetupAckMessage_(1);
-      break;
-    case goog.net.xpc.SETUP_NTPV2:
-      if(this.protocolVersion_ == 2) {
-        var prevPeerProtocolVersion = this.peerProtocolVersion_;
-        this.setPeerProtocolVersion_(2);
-        this.sendSetupAckMessage_(2);
-        if((prevPeerProtocolVersion == 1 || this.peerEndpointId_ != null) && this.peerEndpointId_ != peerEndpointId) {
-          goog.net.xpc.logger.info("Sending SETUP and changing peer ID to: " + peerEndpointId);
-          this.sendSetupMessage_()
-        }
-        this.peerEndpointId_ = peerEndpointId
-      }
-      break
-  }
-};
-goog.net.xpc.NativeMessagingTransport.prototype.sendSetupMessage_ = function() {
-  goog.asserts.assert(!(this.protocolVersion_ == 1 && this.peerProtocolVersion_ == 2));
-  if(this.protocolVersion_ == 2 && this.couldPeerVersionBe_(2)) {
-    var payload = goog.net.xpc.SETUP_NTPV2;
-    payload += goog.net.xpc.NativeMessagingTransport.MESSAGE_DELIMITER_;
-    payload += this.endpointId_;
-    this.send(goog.net.xpc.TRANSPORT_SERVICE_, payload)
-  }
-  if(this.couldPeerVersionBe_(1)) {
-    this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP)
-  }
-};
-goog.net.xpc.NativeMessagingTransport.prototype.sendSetupAckMessage_ = function(protocolVersion) {
-  goog.asserts.assert(this.protocolVersion_ != 1 || protocolVersion != 2, "Shouldn't try to send a v2 setup ack in v1 mode.");
-  if(this.protocolVersion_ == 2 && this.couldPeerVersionBe_(2) && protocolVersion == 2) {
-    this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_NTPV2)
-  }else {
-    if(this.couldPeerVersionBe_(1) && protocolVersion == 1) {
-      this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_)
-    }else {
-      return
-    }
-  }
-  if(!this.setupAckSent_.hasFired()) {
-    this.setupAckSent_.callback(true)
-  }
-};
-goog.net.xpc.NativeMessagingTransport.prototype.setPeerProtocolVersion_ = function(version) {
-  if(version > this.peerProtocolVersion_) {
-    this.peerProtocolVersion_ = version
-  }
-  if(this.peerProtocolVersion_ == 1) {
-    if(!this.setupAckSent_.hasFired() && !this.oneSidedHandshake_) {
-      this.setupAckSent_.callback(true)
-    }
-    this.peerEndpointId_ = null
-  }
-};
-goog.net.xpc.NativeMessagingTransport.prototype.connect = function() {
-  goog.net.xpc.NativeMessagingTransport.initialize_(this.getWindow());
-  this.initialized_ = true;
-  this.maybeAttemptToConnect_()
-};
-goog.net.xpc.NativeMessagingTransport.prototype.maybeAttemptToConnect_ = function() {
-  var outerFrame = this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER;
-  if(this.oneSidedHandshake_ && outerFrame || this.channel_.isConnected() || this.isDisposed()) {
-    this.maybeAttemptToConnectTimer_.stop();
-    return
-  }
-  this.maybeAttemptToConnectTimer_.start();
-  this.sendSetupMessage_()
-};
-goog.net.xpc.NativeMessagingTransport.prototype.send = function(service, payload) {
-  var win = this.channel_.peerWindowObject_;
-  if(!win) {
-    goog.net.xpc.logger.fine("send(): window not ready");
-    return
-  }
-  this.send = function(service, payload) {
-    var transport = this;
-    var channelName = this.channel_.name;
-    var sendFunctor = function() {
-      transport.sendTimerId_ = 0;
-      try {
-        var obj = win.postMessage ? win : win.document;
-        if(!obj.postMessage) {
-          goog.net.xpc.logger.warning("Peer window had no postMessage " + "function.");
-          return
-        }
-        obj.postMessage(channelName + "|" + service + ":" + payload, transport.peerHostname_);
-        goog.net.xpc.logger.fine("send(): service\x3d" + service + " payload\x3d" + payload + " to hostname\x3d" + transport.peerHostname_)
-      }catch(error) {
-        goog.net.xpc.logger.warning("Error performing postMessage, ignoring.", error)
-      }
-    };
-    this.sendTimerId_ = goog.Timer.callOnce(sendFunctor, 0)
-  };
-  this.send(service, payload)
-};
-goog.net.xpc.NativeMessagingTransport.prototype.notifyConnected_ = function() {
-  var delay = this.protocolVersion_ == 1 || this.peerProtocolVersion_ == 1 ? goog.net.xpc.NativeMessagingTransport.CONNECTION_DELAY_MS_ : undefined;
-  this.channel_.notifyConnected(delay)
-};
-goog.net.xpc.NativeMessagingTransport.prototype.disposeInternal = function() {
-  if(this.initialized_) {
-    var listenWindow = this.getWindow();
-    var uid = goog.getUid(listenWindow);
-    var value = goog.net.xpc.NativeMessagingTransport.activeCount_[uid];
-    goog.net.xpc.NativeMessagingTransport.activeCount_[uid] = value - 1;
-    if(value == 1) {
-      goog.events.unlisten(listenWindow.postMessage ? listenWindow : listenWindow.document, "message", goog.net.xpc.NativeMessagingTransport.messageReceived_, false, goog.net.xpc.NativeMessagingTransport)
-    }
-  }
-  if(this.sendTimerId_) {
-    goog.Timer.clear(this.sendTimerId_);
-    this.sendTimerId_ = 0
-  }
-  goog.dispose(this.eventHandler_);
-  delete this.eventHandler_;
-  goog.dispose(this.maybeAttemptToConnectTimer_);
-  delete this.maybeAttemptToConnectTimer_;
-  this.setupAckReceived_.cancel();
-  delete this.setupAckReceived_;
-  this.setupAckSent_.cancel();
-  delete this.setupAckSent_;
-  this.connected_.cancel();
-  delete this.connected_;
-  delete this.send;
-  goog.base(this, "disposeInternal")
-};
-goog.net.xpc.NativeMessagingTransport.parseTransportPayload_ = function(payload) {
-  var transportParts = payload.split(goog.net.xpc.NativeMessagingTransport.MESSAGE_DELIMITER_);
-  transportParts[1] = transportParts[1] || null;
-  return transportParts
-};
-goog.provide("goog.net.xpc.NixTransport");
-goog.require("goog.net.xpc");
-goog.require("goog.net.xpc.CrossPageChannelRole");
-goog.require("goog.net.xpc.Transport");
-goog.require("goog.reflect");
-goog.net.xpc.NixTransport = function(channel, opt_domHelper) {
-  goog.base(this, opt_domHelper);
-  this.channel_ = channel;
-  this.authToken_ = channel[goog.net.xpc.CfgFields.AUTH_TOKEN] || "";
-  this.remoteAuthToken_ = channel[goog.net.xpc.CfgFields.REMOTE_AUTH_TOKEN] || "";
-  goog.net.xpc.NixTransport.conductGlobalSetup_(this.getWindow());
-  this[goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE] = this.handleMessage_;
-  this[goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL] = this.createChannel_
-};
-goog.inherits(goog.net.xpc.NixTransport, goog.net.xpc.Transport);
-goog.net.xpc.NixTransport.NIX_WRAPPER = "GCXPC____NIXVBS_wrapper";
-goog.net.xpc.NixTransport.NIX_GET_WRAPPER = "GCXPC____NIXVBS_get_wrapper";
-goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE = "GCXPC____NIXJS_handle_message";
-goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL = "GCXPC____NIXJS_create_channel";
-goog.net.xpc.NixTransport.NIX_ID_FIELD = "GCXPC____NIXVBS_container";
-goog.net.xpc.NixTransport.isNixSupported = function() {
-  var isSupported = false;
-  try {
-    var oldOpener = window.opener;
-    window.opener = {};
-    isSupported = goog.reflect.canAccessProperty(window, "opener");
-    window.opener = oldOpener
-  }catch(e) {
-  }
-  return isSupported
-};
-goog.net.xpc.NixTransport.conductGlobalSetup_ = function(listenWindow) {
-  if(listenWindow["nix_setup_complete"]) {
-    return
-  }
-  var vbscript = "Class " + goog.net.xpc.NixTransport.NIX_WRAPPER + "\n " + "Private m_Transport\n" + "Private m_Auth\n" + "Public Sub SetTransport(transport)\n" + "If isEmpty(m_Transport) Then\n" + "Set m_Transport \x3d transport\n" + "End If\n" + "End Sub\n" + "Public Sub SetAuth(auth)\n" + "If isEmpty(m_Auth) Then\n" + "m_Auth \x3d auth\n" + "End If\n" + "End Sub\n" + "Public Function GetAuthToken()\n " + "GetAuthToken \x3d m_Auth\n" + "End Function\n" + "Public Sub SendMessage(service, payload)\n " + 
-  "Call m_Transport." + goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE + "(service, payload)\n" + "End Sub\n" + "Public Sub CreateChannel(channel)\n " + "Call m_Transport." + goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL + "(channel)\n" + "End Sub\n" + "Public Sub " + goog.net.xpc.NixTransport.NIX_ID_FIELD + "()\n " + "End Sub\n" + "End Class\n " + "Function " + goog.net.xpc.NixTransport.NIX_GET_WRAPPER + "(transport, auth)\n" + "Dim wrap\n" + "Set wrap \x3d New " + goog.net.xpc.NixTransport.NIX_WRAPPER + 
-  "\n" + "wrap.SetTransport transport\n" + "wrap.SetAuth auth\n" + "Set " + goog.net.xpc.NixTransport.NIX_GET_WRAPPER + " \x3d wrap\n" + "End Function";
-  try {
-    listenWindow.execScript(vbscript, "vbscript");
-    listenWindow["nix_setup_complete"] = true
-  }catch(e) {
-    goog.net.xpc.logger.severe("exception caught while attempting global setup: " + e)
-  }
-};
-goog.net.xpc.NixTransport.prototype.transportType = goog.net.xpc.TransportTypes.NIX;
-goog.net.xpc.NixTransport.prototype.localSetupCompleted_ = false;
-goog.net.xpc.NixTransport.prototype.nixChannel_ = null;
-goog.net.xpc.NixTransport.prototype.connect = function() {
-  if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER) {
-    this.attemptOuterSetup_()
-  }else {
-    this.attemptInnerSetup_()
-  }
-};
-goog.net.xpc.NixTransport.prototype.attemptOuterSetup_ = function() {
-  if(this.localSetupCompleted_) {
-    return
-  }
-  var innerFrame = this.channel_.iframeElement_;
-  try {
-    innerFrame.contentWindow.opener = this.getWindow()[goog.net.xpc.NixTransport.NIX_GET_WRAPPER](this, this.authToken_);
-    this.localSetupCompleted_ = true
-  }catch(e) {
-    goog.net.xpc.logger.severe("exception caught while attempting setup: " + e)
-  }
-  if(!this.localSetupCompleted_) {
-    this.getWindow().setTimeout(goog.bind(this.attemptOuterSetup_, this), 100)
-  }
-};
-goog.net.xpc.NixTransport.prototype.attemptInnerSetup_ = function() {
-  if(this.localSetupCompleted_) {
-    return
-  }
-  try {
-    var opener = this.getWindow().opener;
-    if(opener && goog.net.xpc.NixTransport.NIX_ID_FIELD in opener) {
-      this.nixChannel_ = opener;
-      var remoteAuthToken = this.nixChannel_["GetAuthToken"]();
-      if(remoteAuthToken != this.remoteAuthToken_) {
-        goog.net.xpc.logger.severe("Invalid auth token from other party");
-        return
-      }
-      this.nixChannel_["CreateChannel"](this.getWindow()[goog.net.xpc.NixTransport.NIX_GET_WRAPPER](this, this.authToken_));
-      this.localSetupCompleted_ = true;
-      this.channel_.notifyConnected()
-    }
-  }catch(e) {
-    goog.net.xpc.logger.severe("exception caught while attempting setup: " + e);
-    return
-  }
-  if(!this.localSetupCompleted_) {
-    this.getWindow().setTimeout(goog.bind(this.attemptInnerSetup_, this), 100)
-  }
-};
-goog.net.xpc.NixTransport.prototype.createChannel_ = function(channel) {
-  if(typeof channel != "unknown" || !(goog.net.xpc.NixTransport.NIX_ID_FIELD in channel)) {
-    goog.net.xpc.logger.severe("Invalid NIX channel given to createChannel_")
-  }
-  this.nixChannel_ = channel;
-  var remoteAuthToken = this.nixChannel_["GetAuthToken"]();
-  if(remoteAuthToken != this.remoteAuthToken_) {
-    goog.net.xpc.logger.severe("Invalid auth token from other party");
-    return
-  }
-  this.channel_.notifyConnected()
-};
-goog.net.xpc.NixTransport.prototype.handleMessage_ = function(serviceName, payload) {
-  var deliveryHandler = function() {
-    this.channel_.safeDeliver(serviceName, payload)
-  };
-  this.getWindow().setTimeout(goog.bind(deliveryHandler, this), 1)
-};
-goog.net.xpc.NixTransport.prototype.send = function(service, payload) {
-  if(typeof this.nixChannel_ !== "unknown") {
-    goog.net.xpc.logger.severe("NIX channel not connected")
-  }
-  this.nixChannel_["SendMessage"](service, payload)
-};
-goog.net.xpc.NixTransport.prototype.disposeInternal = function() {
-  goog.base(this, "disposeInternal");
-  this.nixChannel_ = null
-};
-goog.provide("goog.net.xpc.CrossPageChannel");
-goog.require("goog.Disposable");
-goog.require("goog.Uri");
-goog.require("goog.async.Deferred");
-goog.require("goog.async.Delay");
-goog.require("goog.dom");
-goog.require("goog.events");
-goog.require("goog.events.EventHandler");
-goog.require("goog.json");
-goog.require("goog.messaging.AbstractChannel");
-goog.require("goog.net.xpc");
-goog.require("goog.net.xpc.CrossPageChannelRole");
-goog.require("goog.net.xpc.FrameElementMethodTransport");
-goog.require("goog.net.xpc.IframePollingTransport");
-goog.require("goog.net.xpc.IframeRelayTransport");
-goog.require("goog.net.xpc.NativeMessagingTransport");
-goog.require("goog.net.xpc.NixTransport");
-goog.require("goog.net.xpc.Transport");
-goog.require("goog.userAgent");
-goog.net.xpc.CrossPageChannel = function(cfg, opt_domHelper) {
-  goog.base(this);
-  for(var i = 0, uriField;uriField = goog.net.xpc.UriCfgFields[i];i++) {
-    if(uriField in cfg && !/^https?:\/\//.test(cfg[uriField])) {
-      throw Error("URI " + cfg[uriField] + " is invalid for field " + uriField);
-    }
-  }
-  this.cfg_ = cfg;
-  this.name = this.cfg_[goog.net.xpc.CfgFields.CHANNEL_NAME] || goog.net.xpc.getRandomString(10);
-  this.domHelper_ = opt_domHelper || goog.dom.getDomHelper();
-  this.deferredDeliveries_ = [];
-  this.peerLoadHandler_ = new goog.events.EventHandler(this);
-  cfg[goog.net.xpc.CfgFields.LOCAL_POLL_URI] = cfg[goog.net.xpc.CfgFields.LOCAL_POLL_URI] || goog.uri.utils.getHost(this.domHelper_.getWindow().location.href) + "/robots.txt";
-  cfg[goog.net.xpc.CfgFields.PEER_POLL_URI] = cfg[goog.net.xpc.CfgFields.PEER_POLL_URI] || goog.uri.utils.getHost(cfg[goog.net.xpc.CfgFields.PEER_URI] || "") + "/robots.txt";
-  goog.net.xpc.channels_[this.name] = this;
-  goog.events.listen(window, "unload", goog.net.xpc.CrossPageChannel.disposeAll_);
-  goog.net.xpc.logger.info("CrossPageChannel created: " + this.name)
-};
-goog.inherits(goog.net.xpc.CrossPageChannel, goog.messaging.AbstractChannel);
-goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_ESCAPE_RE_ = new RegExp("^%*" + goog.net.xpc.TRANSPORT_SERVICE_ + "$");
-goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_UNESCAPE_RE_ = new RegExp("^%+" + goog.net.xpc.TRANSPORT_SERVICE_ + "$");
-goog.net.xpc.CrossPageChannel.prototype.connectionDelay_ = null;
-goog.net.xpc.CrossPageChannel.prototype.peerWindowDeferred_ = null;
-goog.net.xpc.CrossPageChannel.prototype.transport_ = null;
-goog.net.xpc.CrossPageChannel.prototype.state_ = goog.net.xpc.ChannelStates.NOT_CONNECTED;
-goog.net.xpc.CrossPageChannel.prototype.isConnected = function() {
-  return this.state_ == goog.net.xpc.ChannelStates.CONNECTED
-};
-goog.net.xpc.CrossPageChannel.prototype.peerWindowObject_ = null;
-goog.net.xpc.CrossPageChannel.prototype.iframeElement_ = null;
-goog.net.xpc.CrossPageChannel.prototype.setPeerWindowObject = function(peerWindowObject) {
-  this.peerWindowObject_ = peerWindowObject
-};
-goog.net.xpc.CrossPageChannel.prototype.getPeerWindowObject = function() {
-  return this.peerWindowObject_
-};
-goog.net.xpc.CrossPageChannel.prototype.isPeerAvailable = function() {
-  try {
-    return!!this.peerWindowObject_ && !Boolean(this.peerWindowObject_.closed)
-  }catch(e) {
-    return false
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.determineTransportType_ = function() {
-  var transportType;
-  if(goog.isFunction(document.postMessage) || goog.isFunction(window.postMessage) || goog.userAgent.IE && window.postMessage) {
-    transportType = goog.net.xpc.TransportTypes.NATIVE_MESSAGING
-  }else {
-    if(goog.userAgent.GECKO) {
-      transportType = goog.net.xpc.TransportTypes.FRAME_ELEMENT_METHOD
-    }else {
-      if(goog.userAgent.IE && this.cfg_[goog.net.xpc.CfgFields.PEER_RELAY_URI]) {
-        transportType = goog.net.xpc.TransportTypes.IFRAME_RELAY
-      }else {
-        if(goog.userAgent.IE && goog.net.xpc.NixTransport.isNixSupported()) {
-          transportType = goog.net.xpc.TransportTypes.NIX
-        }else {
-          transportType = goog.net.xpc.TransportTypes.IFRAME_POLLING
-        }
-      }
-    }
-  }
-  return transportType
-};
-goog.net.xpc.CrossPageChannel.prototype.createTransport_ = function() {
-  if(this.transport_) {
-    return
-  }
-  if(!this.cfg_[goog.net.xpc.CfgFields.TRANSPORT]) {
-    this.cfg_[goog.net.xpc.CfgFields.TRANSPORT] = this.determineTransportType_()
-  }
-  switch(this.cfg_[goog.net.xpc.CfgFields.TRANSPORT]) {
-    case goog.net.xpc.TransportTypes.NATIVE_MESSAGING:
-      var protocolVersion = this.cfg_[goog.net.xpc.CfgFields.NATIVE_TRANSPORT_PROTOCOL_VERSION] || 2;
-      this.transport_ = new goog.net.xpc.NativeMessagingTransport(this, this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME], this.domHelper_, !!this.cfg_[goog.net.xpc.CfgFields.ONE_SIDED_HANDSHAKE], protocolVersion);
-      break;
-    case goog.net.xpc.TransportTypes.NIX:
-      this.transport_ = new goog.net.xpc.NixTransport(this, this.domHelper_);
-      break;
-    case goog.net.xpc.TransportTypes.FRAME_ELEMENT_METHOD:
-      this.transport_ = new goog.net.xpc.FrameElementMethodTransport(this, this.domHelper_);
-      break;
-    case goog.net.xpc.TransportTypes.IFRAME_RELAY:
-      this.transport_ = new goog.net.xpc.IframeRelayTransport(this, this.domHelper_);
-      break;
-    case goog.net.xpc.TransportTypes.IFRAME_POLLING:
-      this.transport_ = new goog.net.xpc.IframePollingTransport(this, this.domHelper_);
-      break
-  }
-  if(this.transport_) {
-    goog.net.xpc.logger.info("Transport created: " + this.transport_.getName())
-  }else {
-    throw Error("CrossPageChannel: No suitable transport found!");
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.getTransportType = function() {
-  return this.transport_.getType()
-};
-goog.net.xpc.CrossPageChannel.prototype.getTransportName = function() {
-  return this.transport_.getName()
-};
-goog.net.xpc.CrossPageChannel.prototype.getPeerConfiguration = function() {
-  var peerCfg = {};
-  peerCfg[goog.net.xpc.CfgFields.CHANNEL_NAME] = this.name;
-  peerCfg[goog.net.xpc.CfgFields.TRANSPORT] = this.cfg_[goog.net.xpc.CfgFields.TRANSPORT];
-  peerCfg[goog.net.xpc.CfgFields.ONE_SIDED_HANDSHAKE] = this.cfg_[goog.net.xpc.CfgFields.ONE_SIDED_HANDSHAKE];
-  if(this.cfg_[goog.net.xpc.CfgFields.LOCAL_RELAY_URI]) {
-    peerCfg[goog.net.xpc.CfgFields.PEER_RELAY_URI] = this.cfg_[goog.net.xpc.CfgFields.LOCAL_RELAY_URI]
-  }
-  if(this.cfg_[goog.net.xpc.CfgFields.LOCAL_POLL_URI]) {
-    peerCfg[goog.net.xpc.CfgFields.PEER_POLL_URI] = this.cfg_[goog.net.xpc.CfgFields.LOCAL_POLL_URI]
-  }
-  if(this.cfg_[goog.net.xpc.CfgFields.PEER_POLL_URI]) {
-    peerCfg[goog.net.xpc.CfgFields.LOCAL_POLL_URI] = this.cfg_[goog.net.xpc.CfgFields.PEER_POLL_URI]
-  }
-  var role = this.cfg_[goog.net.xpc.CfgFields.ROLE];
-  if(role) {
-    peerCfg[goog.net.xpc.CfgFields.ROLE] = role == goog.net.xpc.CrossPageChannelRole.INNER ? goog.net.xpc.CrossPageChannelRole.OUTER : goog.net.xpc.CrossPageChannelRole.INNER
-  }
-  return peerCfg
-};
-goog.net.xpc.CrossPageChannel.prototype.createPeerIframe = function(parentElm, opt_configureIframeCb, opt_addCfgParam) {
-  goog.net.xpc.logger.info("createPeerIframe()");
-  var iframeId = this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID];
-  if(!iframeId) {
-    iframeId = this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID] = "xpcpeer" + goog.net.xpc.getRandomString(4)
-  }
-  var iframeElm = goog.dom.getDomHelper(parentElm).createElement("IFRAME");
-  iframeElm.id = iframeElm.name = iframeId;
-  if(opt_configureIframeCb) {
-    opt_configureIframeCb(iframeElm)
-  }else {
-    iframeElm.style.width = iframeElm.style.height = "100%"
-  }
-  this.cleanUpIncompleteConnection_();
-  this.peerWindowDeferred_ = new goog.async.Deferred(undefined, this);
-  var peerUri = this.getPeerUri(opt_addCfgParam);
-  this.peerLoadHandler_.listenOnce(iframeElm, "load", this.peerWindowDeferred_.callback, false, this.peerWindowDeferred_);
-  if(goog.userAgent.GECKO || goog.userAgent.WEBKIT) {
-    window.setTimeout(goog.bind(function() {
-      parentElm.appendChild(iframeElm);
-      iframeElm.src = peerUri.toString();
-      goog.net.xpc.logger.info("peer iframe created (" + iframeId + ")")
-    }, this), 1)
-  }else {
-    iframeElm.src = peerUri.toString();
-    parentElm.appendChild(iframeElm);
-    goog.net.xpc.logger.info("peer iframe created (" + iframeId + ")")
-  }
-  return iframeElm
-};
-goog.net.xpc.CrossPageChannel.prototype.cleanUpIncompleteConnection_ = function() {
-  if(this.peerWindowDeferred_) {
-    this.peerWindowDeferred_.cancel();
-    this.peerWindowDeferred_ = null
-  }
-  this.deferredDeliveries_.length = 0;
-  this.peerLoadHandler_.removeAll()
-};
-goog.net.xpc.CrossPageChannel.prototype.getPeerUri = function(opt_addCfgParam) {
-  var peerUri = this.cfg_[goog.net.xpc.CfgFields.PEER_URI];
-  if(goog.isString(peerUri)) {
-    peerUri = this.cfg_[goog.net.xpc.CfgFields.PEER_URI] = new goog.Uri(peerUri)
-  }
-  if(opt_addCfgParam !== false) {
-    peerUri.setParameterValue("xpc", goog.json.serialize(this.getPeerConfiguration()))
-  }
-  return peerUri
-};
-goog.net.xpc.CrossPageChannel.prototype.connect = function(opt_connectCb) {
-  this.connectCb_ = opt_connectCb || goog.nullFunction;
-  if(this.peerWindowDeferred_) {
-    this.peerWindowDeferred_.addCallback(this.continueConnection_)
-  }else {
-    this.continueConnection_()
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.continueConnection_ = function() {
-  goog.net.xpc.logger.info("continueConnection_()");
-  this.peerWindowDeferred_ = null;
-  if(this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID]) {
-    this.iframeElement_ = this.domHelper_.getElement(this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID])
-  }
-  if(this.iframeElement_) {
-    var winObj = this.iframeElement_.contentWindow;
-    if(!winObj) {
-      winObj = window.frames[this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID]]
-    }
-    this.setPeerWindowObject(winObj)
-  }
-  if(!this.peerWindowObject_) {
-    if(window == window.top) {
-      throw Error("CrossPageChannel: Can't connect, peer window-object not set.");
-    }else {
-      this.setPeerWindowObject(window.parent)
-    }
-  }
-  this.createTransport_();
-  this.transport_.connect();
-  while(this.deferredDeliveries_.length > 0) {
-    this.deferredDeliveries_.shift()()
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.close = function() {
-  this.cleanUpIncompleteConnection_();
-  this.state_ = goog.net.xpc.ChannelStates.CLOSED;
-  goog.dispose(this.transport_);
-  this.transport_ = null;
-  this.connectCb_ = null;
-  goog.dispose(this.connectionDelay_);
-  this.connectionDelay_ = null;
-  goog.net.xpc.logger.info('Channel "' + this.name + '" closed')
-};
-goog.net.xpc.CrossPageChannel.prototype.notifyConnected = function(opt_delay) {
-  if(this.isConnected() || this.connectionDelay_ && this.connectionDelay_.isActive()) {
-    return
-  }
-  this.state_ = goog.net.xpc.ChannelStates.CONNECTED;
-  goog.net.xpc.logger.info('Channel "' + this.name + '" connected');
-  goog.dispose(this.connectionDelay_);
-  if(opt_delay) {
-    this.connectionDelay_ = new goog.async.Delay(this.connectCb_, opt_delay);
-    this.connectionDelay_.start()
-  }else {
-    this.connectionDelay_ = null;
-    this.connectCb_()
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.notifyConnected_ = goog.net.xpc.CrossPageChannel.prototype.notifyConnected;
-goog.net.xpc.CrossPageChannel.prototype.notifyTransportError_ = function() {
-  goog.net.xpc.logger.info("Transport Error");
-  this.close()
-};
-goog.net.xpc.CrossPageChannel.prototype.send = function(serviceName, payload) {
-  if(!this.isConnected()) {
-    goog.net.xpc.logger.severe("Can't send. Channel not connected.");
-    return
-  }
-  if(!this.isPeerAvailable()) {
-    goog.net.xpc.logger.severe("Peer has disappeared.");
-    this.close();
-    return
-  }
-  if(goog.isObject(payload)) {
-    payload = goog.json.serialize(payload)
-  }
-  this.transport_.send(this.escapeServiceName_(serviceName), payload)
-};
-goog.net.xpc.CrossPageChannel.prototype.safeDeliver = function(serviceName, payload, opt_origin) {
-  this.deliver_(serviceName, payload, opt_origin)
-};
-goog.net.xpc.CrossPageChannel.prototype.deliver_ = function(serviceName, payload, opt_origin) {
-  if(this.peerWindowDeferred_) {
-    this.deferredDeliveries_.push(goog.bind(this.deliver_, this, serviceName, payload, opt_origin));
-    return
-  }
-  if(!this.isMessageOriginAcceptable_(opt_origin)) {
-    goog.net.xpc.logger.warning('Message received from unapproved origin "' + opt_origin + '" - rejected.');
-    return
-  }
-  if(this.isDisposed()) {
-    goog.net.xpc.logger.warning("CrossPageChannel::deliver_(): Disposed.")
-  }else {
-    if(!serviceName || serviceName == goog.net.xpc.TRANSPORT_SERVICE_) {
-      this.transport_.transportServiceHandler(payload)
-    }else {
-      if(this.isConnected()) {
-        this.deliver(this.unescapeServiceName_(serviceName), payload)
-      }else {
-        goog.net.xpc.logger.info("CrossPageChannel::deliver_(): Not connected.")
-      }
-    }
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.escapeServiceName_ = function(name) {
-  if(goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_ESCAPE_RE_.test(name)) {
-    name = "%" + name
-  }
-  return name.replace(/[%:|]/g, encodeURIComponent)
-};
-goog.net.xpc.CrossPageChannel.prototype.unescapeServiceName_ = function(name) {
-  name = name.replace(/%[0-9a-f]{2}/gi, decodeURIComponent);
-  if(goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_UNESCAPE_RE_.test(name)) {
-    return name.substring(1)
-  }else {
-    return name
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.getRole = function() {
-  var role = this.cfg_[goog.net.xpc.CfgFields.ROLE];
-  if(role) {
-    return role
-  }else {
-    return window.parent == this.peerWindowObject_ ? goog.net.xpc.CrossPageChannelRole.INNER : goog.net.xpc.CrossPageChannelRole.OUTER
-  }
-};
-goog.net.xpc.CrossPageChannel.prototype.isMessageOriginAcceptable_ = function(opt_origin) {
-  var peerHostname = this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME];
-  return goog.string.isEmptySafe(opt_origin) || goog.string.isEmptySafe(peerHostname) || opt_origin == this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME]
-};
-goog.net.xpc.CrossPageChannel.prototype.disposeInternal = function() {
-  this.close();
-  this.peerWindowObject_ = null;
-  this.iframeElement_ = null;
-  delete goog.net.xpc.channels_[this.name];
-  goog.dispose(this.peerLoadHandler_);
-  delete this.peerLoadHandler_;
-  goog.base(this, "disposeInternal")
-};
-goog.net.xpc.CrossPageChannel.disposeAll_ = function() {
-  for(var name in goog.net.xpc.channels_) {
-    goog.dispose(goog.net.xpc.channels_[name])
-  }
-};
-goog.provide("clojure.browser.net");
-goog.require("cljs.core");
-goog.require("goog.json");
-goog.require("goog.net.xpc.CrossPageChannel");
-goog.require("goog.net.xpc.CfgFields");
-goog.require("goog.net.EventType");
-goog.require("goog.net.XhrIo");
-goog.require("clojure.browser.event");
-clojure.browser.net._STAR_timeout_STAR_ = 1E4;
-clojure.browser.net.event_types = cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4369) {
-  var vec__4370 = p__4369;
-  var k = cljs.core.nth.call(null, vec__4370, 0, null);
-  var v = cljs.core.nth.call(null, vec__4370, 1, null);
-  return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
-}, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.net.EventType))));
-clojure.browser.net.IConnection = {};
-clojure.browser.net.connect = function() {
-  var connect = null;
-  var connect__1 = function(this$) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$connect$arity$1
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$connect$arity$1(this$)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
-          }
-        }
-      }().call(null, this$)
-    }
-  };
-  var connect__2 = function(this$, opt1) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$connect$arity$2
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$connect$arity$2(this$, opt1)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
-          }
-        }
-      }().call(null, this$, opt1)
-    }
-  };
-  var connect__3 = function(this$, opt1, opt2) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$connect$arity$3
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$connect$arity$3(this$, opt1, opt2)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
-          }
-        }
-      }().call(null, this$, opt1, opt2)
-    }
-  };
-  var connect__4 = function(this$, opt1, opt2, opt3) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$connect$arity$4
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$connect$arity$4(this$, opt1, opt2, opt3)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
-          }
-        }
-      }().call(null, this$, opt1, opt2, opt3)
-    }
-  };
-  connect = function(this$, opt1, opt2, opt3) {
-    switch(arguments.length) {
-      case 1:
-        return connect__1.call(this, this$);
-      case 2:
-        return connect__2.call(this, this$, opt1);
-      case 3:
-        return connect__3.call(this, this$, opt1, opt2);
-      case 4:
-        return connect__4.call(this, this$, opt1, opt2, opt3)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  connect.cljs$core$IFn$_invoke$arity$1 = connect__1;
-  connect.cljs$core$IFn$_invoke$arity$2 = connect__2;
-  connect.cljs$core$IFn$_invoke$arity$3 = connect__3;
-  connect.cljs$core$IFn$_invoke$arity$4 = connect__4;
-  return connect
-}();
-clojure.browser.net.transmit = function() {
-  var transmit = null;
-  var transmit__2 = function(this$, opt) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$transmit$arity$2
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$transmit$arity$2(this$, opt)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
-          }
-        }
-      }().call(null, this$, opt)
-    }
-  };
-  var transmit__3 = function(this$, opt, opt2) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$transmit$arity$3
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$transmit$arity$3(this$, opt, opt2)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
-          }
-        }
-      }().call(null, this$, opt, opt2)
-    }
-  };
-  var transmit__4 = function(this$, opt, opt2, opt3) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$transmit$arity$4
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$transmit$arity$4(this$, opt, opt2, opt3)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
-          }
-        }
-      }().call(null, this$, opt, opt2, opt3)
-    }
-  };
-  var transmit__5 = function(this$, opt, opt2, opt3, opt4) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$transmit$arity$5
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$transmit$arity$5(this$, opt, opt2, opt3, opt4)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
-          }
-        }
-      }().call(null, this$, opt, opt2, opt3, opt4)
-    }
-  };
-  var transmit__6 = function(this$, opt, opt2, opt3, opt4, opt5) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$IConnection$transmit$arity$6
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$IConnection$transmit$arity$6(this$, opt, opt2, opt3, opt4, opt5)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
-          }
-        }
-      }().call(null, this$, opt, opt2, opt3, opt4, opt5)
-    }
-  };
-  transmit = function(this$, opt, opt2, opt3, opt4, opt5) {
-    switch(arguments.length) {
-      case 2:
-        return transmit__2.call(this, this$, opt);
-      case 3:
-        return transmit__3.call(this, this$, opt, opt2);
-      case 4:
-        return transmit__4.call(this, this$, opt, opt2, opt3);
-      case 5:
-        return transmit__5.call(this, this$, opt, opt2, opt3, opt4);
-      case 6:
-        return transmit__6.call(this, this$, opt, opt2, opt3, opt4, opt5)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  transmit.cljs$core$IFn$_invoke$arity$2 = transmit__2;
-  transmit.cljs$core$IFn$_invoke$arity$3 = transmit__3;
-  transmit.cljs$core$IFn$_invoke$arity$4 = transmit__4;
-  transmit.cljs$core$IFn$_invoke$arity$5 = transmit__5;
-  transmit.cljs$core$IFn$_invoke$arity$6 = transmit__6;
-  return transmit
-}();
-clojure.browser.net.close = function close(this$) {
-  if(function() {
-    var and__3941__auto__ = this$;
-    if(and__3941__auto__) {
-      return this$.clojure$browser$net$IConnection$close$arity$1
-    }else {
-      return and__3941__auto__
-    }
-  }()) {
-    return this$.clojure$browser$net$IConnection$close$arity$1(this$)
-  }else {
-    var x__2942__auto__ = this$ == null ? null : this$;
-    return function() {
-      var or__3943__auto__ = clojure.browser.net.close[goog.typeOf(x__2942__auto__)];
-      if(or__3943__auto__) {
-        return or__3943__auto__
-      }else {
-        var or__3943__auto____$1 = clojure.browser.net.close["_"];
-        if(or__3943__auto____$1) {
-          return or__3943__auto____$1
-        }else {
-          throw cljs.core.missing_protocol.call(null, "IConnection.close", this$);
-        }
-      }
-    }().call(null, this$)
-  }
-};
-goog.net.XhrIo.prototype.clojure$browser$event$EventType$ = true;
-goog.net.XhrIo.prototype.clojure$browser$event$EventType$event_types$arity$1 = function(this$) {
-  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4371) {
-    var vec__4372 = p__4371;
-    var k = cljs.core.nth.call(null, vec__4372, 0, null);
-    var v = cljs.core.nth.call(null, vec__4372, 1, null);
-    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
-  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.net.EventType))))
-};
-goog.net.XhrIo.prototype.clojure$browser$net$IConnection$ = true;
-goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$2 = function(this$, uri) {
-  return clojure.browser.net.transmit.call(null, this$, uri, "GET", null, null, clojure.browser.net._STAR_timeout_STAR_)
-};
-goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$3 = function(this$, uri, method) {
-  return clojure.browser.net.transmit.call(null, this$, uri, method, null, null, clojure.browser.net._STAR_timeout_STAR_)
-};
-goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$4 = function(this$, uri, method, content) {
-  return clojure.browser.net.transmit.call(null, this$, uri, method, content, null, clojure.browser.net._STAR_timeout_STAR_)
-};
-goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$5 = function(this$, uri, method, content, headers) {
-  return clojure.browser.net.transmit.call(null, this$, uri, method, content, headers, clojure.browser.net._STAR_timeout_STAR_)
-};
-goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$6 = function(this$, uri, method, content, headers, timeout) {
-  this$.setTimeoutInterval(timeout);
-  return this$.send(uri, method, content, headers)
-};
-clojure.browser.net.xpc_config_fields = cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4373) {
-  var vec__4374 = p__4373;
-  var k = cljs.core.nth.call(null, vec__4374, 0, null);
-  var v = cljs.core.nth.call(null, vec__4374, 1, null);
-  return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
-}, cljs.core.js__GT_clj.call(null, goog.net.xpc.CfgFields)));
-clojure.browser.net.xhr_connection = function xhr_connection() {
-  return new goog.net.XhrIo
-};
-clojure.browser.net.ICrossPageChannel = {};
-clojure.browser.net.register_service = function() {
-  var register_service = null;
-  var register_service__3 = function(this$, service_name, fn) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$3
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$3(this$, service_name, fn)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.register_service[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.register_service["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "ICrossPageChannel.register-service", this$);
-          }
-        }
-      }().call(null, this$, service_name, fn)
-    }
-  };
-  var register_service__4 = function(this$, service_name, fn, encode_json_QMARK_) {
-    if(function() {
-      var and__3941__auto__ = this$;
-      if(and__3941__auto__) {
-        return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$4
-      }else {
-        return and__3941__auto__
-      }
-    }()) {
-      return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$4(this$, service_name, fn, encode_json_QMARK_)
-    }else {
-      var x__2942__auto__ = this$ == null ? null : this$;
-      return function() {
-        var or__3943__auto__ = clojure.browser.net.register_service[goog.typeOf(x__2942__auto__)];
-        if(or__3943__auto__) {
-          return or__3943__auto__
-        }else {
-          var or__3943__auto____$1 = clojure.browser.net.register_service["_"];
-          if(or__3943__auto____$1) {
-            return or__3943__auto____$1
-          }else {
-            throw cljs.core.missing_protocol.call(null, "ICrossPageChannel.register-service", this$);
-          }
-        }
-      }().call(null, this$, service_name, fn, encode_json_QMARK_)
-    }
-  };
-  register_service = function(this$, service_name, fn, encode_json_QMARK_) {
-    switch(arguments.length) {
-      case 3:
-        return register_service__3.call(this, this$, service_name, fn);
-      case 4:
-        return register_service__4.call(this, this$, service_name, fn, encode_json_QMARK_)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  register_service.cljs$core$IFn$_invoke$arity$3 = register_service__3;
-  register_service.cljs$core$IFn$_invoke$arity$4 = register_service__4;
-  return register_service
-}();
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$ = true;
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$1 = function(this$) {
-  return clojure.browser.net.connect.call(null, this$, null)
-};
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$2 = function(this$, on_connect_fn) {
-  return this$.connect(on_connect_fn)
-};
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$3 = function(this$, on_connect_fn, config_iframe_fn) {
-  return clojure.browser.net.connect.call(null, this$, on_connect_fn, config_iframe_fn, document.body)
-};
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$4 = function(this$, on_connect_fn, config_iframe_fn, iframe_parent) {
-  this$.createPeerIframe(iframe_parent, config_iframe_fn);
-  return this$.connect(on_connect_fn)
-};
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$transmit$arity$3 = function(this$, service_name, payload) {
-  return this$.send(cljs.core.name.call(null, service_name), payload)
-};
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$close$arity$1 = function(this$) {
-  return this$.close(cljs.core.List.EMPTY)
-};
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$ICrossPageChannel$ = true;
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$ICrossPageChannel$register_service$arity$3 = function(this$, service_name, fn) {
-  return clojure.browser.net.register_service.call(null, this$, service_name, fn, false)
-};
-goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$ICrossPageChannel$register_service$arity$4 = function(this$, service_name, fn, encode_json_QMARK_) {
-  return this$.registerService(cljs.core.name.call(null, service_name), fn, encode_json_QMARK_)
-};
-clojure.browser.net.xpc_connection = function() {
-  var xpc_connection = null;
-  var xpc_connection__0 = function() {
-    var temp__4092__auto__ = (new goog.Uri(window.location.href)).getParameterValue("xpc");
-    if(cljs.core.truth_(temp__4092__auto__)) {
-      var config = temp__4092__auto__;
-      return new goog.net.xpc.CrossPageChannel(goog.json.parse(config))
-    }else {
-      return null
-    }
-  };
-  var xpc_connection__1 = function(config) {
-    return new goog.net.xpc.CrossPageChannel(cljs.core.reduce.call(null, function(sum, p__4378) {
-      var vec__4379 = p__4378;
-      var k = cljs.core.nth.call(null, vec__4379, 0, null);
-      var v = cljs.core.nth.call(null, vec__4379, 1, null);
-      var temp__4090__auto__ = cljs.core.get.call(null, clojure.browser.net.xpc_config_fields, k);
-      if(cljs.core.truth_(temp__4090__auto__)) {
-        var field = temp__4090__auto__;
-        var G__4380 = sum;
-        G__4380[field] = v;
-        return G__4380
-      }else {
-        return sum
-      }
-    }, {}, config))
-  };
-  xpc_connection = function(config) {
-    switch(arguments.length) {
-      case 0:
-        return xpc_connection__0.call(this);
-      case 1:
-        return xpc_connection__1.call(this, config)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  xpc_connection.cljs$core$IFn$_invoke$arity$0 = xpc_connection__0;
-  xpc_connection.cljs$core$IFn$_invoke$arity$1 = xpc_connection__1;
-  return xpc_connection
-}();
-goog.provide("clojure.browser.repl");
-goog.require("cljs.core");
-goog.require("clojure.browser.event");
-goog.require("clojure.browser.net");
-clojure.browser.repl.xpc_connection = cljs.core.atom.call(null, null);
-clojure.browser.repl.repl_print = function repl_print(data) {
-  var temp__4090__auto__ = cljs.core.deref.call(null, clojure.browser.repl.xpc_connection);
-  if(cljs.core.truth_(temp__4090__auto__)) {
-    var conn = temp__4090__auto__;
-    return clojure.browser.net.transmit.call(null, conn, "\ufdd0:print", cljs.core.pr_str.call(null, data))
-  }else {
-    return null
-  }
-};
-clojure.browser.repl.evaluate_javascript = function evaluate_javascript(conn, block) {
-  var result = function() {
-    try {
-      return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:status", "\ufdd0:success", "\ufdd0:value", [cljs.core.str(eval(block))].join("")], true)
-    }catch(e4368) {
-      if(e4368 instanceof Error) {
-        var e = e4368;
-        return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:status", "\ufdd0:exception", "\ufdd0:value", cljs.core.pr_str.call(null, e), "\ufdd0:stacktrace", cljs.core.truth_(e.hasOwnProperty("stack")) ? e.stack : "No stacktrace available."], true)
-      }else {
-        if("\ufdd0:else") {
-          throw e4368;
-        }else {
-          return null
-        }
-      }
-    }
-  }();
-  return cljs.core.pr_str.call(null, result)
-};
-clojure.browser.repl.send_result = function send_result(connection, url, data) {
-  return clojure.browser.net.transmit.call(null, connection, url, "POST", data, null, 0)
-};
-clojure.browser.repl.send_print = function() {
-  var send_print = null;
-  var send_print__2 = function(url, data) {
-    return send_print.call(null, url, data, 0)
-  };
-  var send_print__3 = function(url, data, n) {
-    var conn = clojure.browser.net.xhr_connection.call(null);
-    clojure.browser.event.listen.call(null, conn, "\ufdd0:error", function(_) {
-      if(n < 10) {
-        return send_print.call(null, url, data, n + 1)
-      }else {
-        return console.log([cljs.core.str("Could not send "), cljs.core.str(data), cljs.core.str(" after "), cljs.core.str(n), cljs.core.str(" attempts.")].join(""))
-      }
-    });
-    return clojure.browser.net.transmit.call(null, conn, url, "POST", data, null, 0)
-  };
-  send_print = function(url, data, n) {
-    switch(arguments.length) {
-      case 2:
-        return send_print__2.call(this, url, data);
-      case 3:
-        return send_print__3.call(this, url, data, n)
-    }
-    throw new Error("Invalid arity: " + arguments.length);
-  };
-  send_print.cljs$core$IFn$_invoke$arity$2 = send_print__2;
-  send_print.cljs$core$IFn$_invoke$arity$3 = send_print__3;
-  return send_print
-}();
-clojure.browser.repl.order = cljs.core.atom.call(null, 0);
-clojure.browser.repl.wrap_message = function wrap_message(t, data) {
-  return cljs.core.pr_str.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", t, "\ufdd0:content", data, "\ufdd0:order", cljs.core.swap_BANG_.call(null, clojure.browser.repl.order, cljs.core.inc)], true))
-};
-clojure.browser.repl.start_evaluator = function start_evaluator(url) {
-  var temp__4090__auto__ = clojure.browser.net.xpc_connection.call(null);
-  if(cljs.core.truth_(temp__4090__auto__)) {
-    var repl_connection = temp__4090__auto__;
-    var connection = clojure.browser.net.xhr_connection.call(null);
-    clojure.browser.event.listen.call(null, connection, "\ufdd0:success", function(e) {
-      return clojure.browser.net.transmit.call(null, repl_connection, "\ufdd0:evaluate-javascript", e.currentTarget.getResponseText(cljs.core.List.EMPTY))
-    });
-    clojure.browser.net.register_service.call(null, repl_connection, "\ufdd0:send-result", function(data) {
-      return clojure.browser.repl.send_result.call(null, connection, url, clojure.browser.repl.wrap_message.call(null, "\ufdd0:result", data))
-    });
-    clojure.browser.net.register_service.call(null, repl_connection, "\ufdd0:print", function(data) {
-      return clojure.browser.repl.send_print.call(null, url, clojure.browser.repl.wrap_message.call(null, "\ufdd0:print", data))
-    });
-    clojure.browser.net.connect.call(null, repl_connection, cljs.core.constantly.call(null, null));
-    return setTimeout(function() {
-      return clojure.browser.repl.send_result.call(null, connection, url, clojure.browser.repl.wrap_message.call(null, "\ufdd0:ready", "ready"))
-    }, 50)
-  }else {
-    return alert("No 'xpc' param provided to child iframe.")
-  }
-};
-clojure.browser.repl.connect = function connect(repl_server_url) {
-  var repl_connection = clojure.browser.net.xpc_connection.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:peer_uri", repl_server_url], true));
-  cljs.core.swap_BANG_.call(null, clojure.browser.repl.xpc_connection, cljs.core.constantly.call(null, repl_connection));
-  clojure.browser.net.register_service.call(null, repl_connection, "\ufdd0:evaluate-javascript", function(js) {
-    return clojure.browser.net.transmit.call(null, repl_connection, "\ufdd0:send-result", clojure.browser.repl.evaluate_javascript.call(null, repl_connection, js))
-  });
-  return clojure.browser.net.connect.call(null, repl_connection, cljs.core.constantly.call(null, null), function(iframe) {
-    return iframe.style.display = "none"
-  })
+  }, form)
 };
 goog.provide("dommy.template");
 goog.require("cljs.core");
@@ -32362,46 +30133,2709 @@ dommy.core.fire_BANG_ = function() {
   fire_BANG_.cljs$core$IFn$_invoke$arity$variadic = fire_BANG___delegate;
   return fire_BANG_
 }();
-goog.provide("planets.three");
+goog.provide("planets.utils");
+goog.require("cljs.core");
+goog.require("clojure.walk");
+goog.require("dommy.core");
+goog.require("clojure.walk");
+planets.utils.sel_shader = function sel_shader(script_id) {
+  return document.querySelector(dommy.core.selector.call(null, script_id)).textContent
+};
+planets.utils.shallow_QMARK_ = function shallow_QMARK_(m) {
+  return!cljs.core.coll_QMARK_.call(null, cljs.core.val.call(null, m))
+};
+planets.utils.destruct_map = function destruct_map(m) {
+  return cljs.core.doall.call(null, cljs.core.into.call(null, cljs.core.into.call(null, cljs.core.PersistentVector.EMPTY, cljs.core.map.call(null, cljs.core.vec, cljs.core.filter.call(null, planets.utils.shallow_QMARK_, m))), cljs.core.map.call(null, cljs.core.vec, cljs.core.map.call(null, cljs.core.flatten, cljs.core.map.call(null, function(p1__13952_SHARP_) {
+    return cljs.core.map.call(null, function(v) {
+      if(cljs.core.map_QMARK_.call(null, v)) {
+        return cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.EMPTY, v)
+      }else {
+        return v
+      }
+    }, p1__13952_SHARP_)
+  }, cljs.core.map.call(null, cljs.core.flatten, cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.EMPTY, cljs.core.map.call(null, function(kv) {
+    return cljs.core.into.call(null, cljs.core.PersistentVector.EMPTY, kv)
+  }, cljs.core.map.call(null, function(nm) {
+    if(cljs.core.map_QMARK_.call(null, cljs.core.val.call(null, nm))) {
+      return cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.EMPTY, cljs.core.map.call(null, cljs.core.vec, cljs.core.map.call(null, function(p1__13951_SHARP_) {
+        return cljs.core.hash_map.call(null, cljs.core.key.call(null, nm), p1__13951_SHARP_)
+      }, cljs.core.val.call(null, nm))))
+    }else {
+      return nm
+    }
+  }, cljs.core.remove.call(null, planets.utils.shallow_QMARK_, clojure.walk.stringify_keys.call(null, m)))))))))))
+};
+planets.utils.set_nested_BANG_ = function set_nested_BANG_(obj, options) {
+  var params = planets.utils.destruct_map.call(null, options);
+  var seq__13957 = cljs.core.seq.call(null, params);
+  var chunk__13958 = null;
+  var count__13959 = 0;
+  var i__13960 = 0;
+  while(true) {
+    if(i__13960 < count__13959) {
+      var param = cljs.core._nth.call(null, chunk__13958, i__13960);
+      if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
+        obj[cljs.core.name.call(null, cljs.core.first.call(null, param))] = cljs.core.second.call(null, param)
+      }else {
+        cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.last.call(null, param)
+      }
+      var G__13961 = seq__13957;
+      var G__13962 = chunk__13958;
+      var G__13963 = count__13959;
+      var G__13964 = i__13960 + 1;
+      seq__13957 = G__13961;
+      chunk__13958 = G__13962;
+      count__13959 = G__13963;
+      i__13960 = G__13964;
+      continue
+    }else {
+      var temp__4092__auto__ = cljs.core.seq.call(null, seq__13957);
+      if(temp__4092__auto__) {
+        var seq__13957__$1 = temp__4092__auto__;
+        if(cljs.core.chunked_seq_QMARK_.call(null, seq__13957__$1)) {
+          var c__3031__auto__ = cljs.core.chunk_first.call(null, seq__13957__$1);
+          var G__13965 = cljs.core.chunk_rest.call(null, seq__13957__$1);
+          var G__13966 = c__3031__auto__;
+          var G__13967 = cljs.core.count.call(null, c__3031__auto__);
+          var G__13968 = 0;
+          seq__13957 = G__13965;
+          chunk__13958 = G__13966;
+          count__13959 = G__13967;
+          i__13960 = G__13968;
+          continue
+        }else {
+          var param = cljs.core.first.call(null, seq__13957__$1);
+          if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
+            obj[cljs.core.name.call(null, cljs.core.first.call(null, param))] = cljs.core.second.call(null, param)
+          }else {
+            cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.last.call(null, param)
+          }
+          var G__13969 = cljs.core.next.call(null, seq__13957__$1);
+          var G__13970 = null;
+          var G__13971 = 0;
+          var G__13972 = 0;
+          seq__13957 = G__13969;
+          chunk__13958 = G__13970;
+          count__13959 = G__13971;
+          i__13960 = G__13972;
+          continue
+        }
+      }else {
+        return null
+      }
+    }
+    break
+  }
+};
+planets.utils.apply_nested_BANG_ = function apply_nested_BANG_(obj, options) {
+  var params = planets.utils.destruct_map.call(null, options);
+  var seq__13977 = cljs.core.seq.call(null, params);
+  var chunk__13978 = null;
+  var count__13979 = 0;
+  var i__13980 = 0;
+  while(true) {
+    if(i__13980 < count__13979) {
+      var param = cljs.core._nth.call(null, chunk__13978, i__13980);
+      if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
+        obj[cljs.core.name.call(null, cljs.core.first.call(null, param))] = cljs.core.apply.call(null, cljs.core.second.call(null, param), cljs.core.PersistentVector.fromArray([obj[cljs.core.name.call(null, cljs.core.first.call(null, param))]], true))
+      }else {
+        cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.apply.call(null, cljs.core.last.call(null, param), cljs.core.PersistentVector.fromArray([cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, param)))], 
+        true))
+      }
+      var G__13981 = seq__13977;
+      var G__13982 = chunk__13978;
+      var G__13983 = count__13979;
+      var G__13984 = i__13980 + 1;
+      seq__13977 = G__13981;
+      chunk__13978 = G__13982;
+      count__13979 = G__13983;
+      i__13980 = G__13984;
+      continue
+    }else {
+      var temp__4092__auto__ = cljs.core.seq.call(null, seq__13977);
+      if(temp__4092__auto__) {
+        var seq__13977__$1 = temp__4092__auto__;
+        if(cljs.core.chunked_seq_QMARK_.call(null, seq__13977__$1)) {
+          var c__3031__auto__ = cljs.core.chunk_first.call(null, seq__13977__$1);
+          var G__13985 = cljs.core.chunk_rest.call(null, seq__13977__$1);
+          var G__13986 = c__3031__auto__;
+          var G__13987 = cljs.core.count.call(null, c__3031__auto__);
+          var G__13988 = 0;
+          seq__13977 = G__13985;
+          chunk__13978 = G__13986;
+          count__13979 = G__13987;
+          i__13980 = G__13988;
+          continue
+        }else {
+          var param = cljs.core.first.call(null, seq__13977__$1);
+          if(cljs.core._EQ_.call(null, cljs.core.count.call(null, param), 2)) {
+            obj[cljs.core.name.call(null, cljs.core.first.call(null, param))] = cljs.core.apply.call(null, cljs.core.second.call(null, param), cljs.core.PersistentVector.fromArray([obj[cljs.core.name.call(null, cljs.core.first.call(null, param))]], true))
+          }else {
+            cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, 2, param)))[cljs.core.first.call(null, cljs.core.take_last.call(null, 2, param))] = cljs.core.apply.call(null, cljs.core.last.call(null, param), cljs.core.PersistentVector.fromArray([cljs.core.apply.call(null, cljs.core.aget, cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([obj], true), cljs.core.drop_last.call(null, param)))], 
+            true))
+          }
+          var G__13989 = cljs.core.next.call(null, seq__13977__$1);
+          var G__13990 = null;
+          var G__13991 = 0;
+          var G__13992 = 0;
+          seq__13977 = G__13989;
+          chunk__13978 = G__13990;
+          count__13979 = G__13991;
+          i__13980 = G__13992;
+          continue
+        }
+      }else {
+        return null
+      }
+    }
+    break
+  }
+};
+planets.utils.clone = function clone(obj) {
+  return clojure.walk.keywordize_keys.call(null, cljs.core.js__GT_clj.call(null, goog.object.clone(obj)))
+};
+goog.provide("planets.rtt");
 goog.require("cljs.core");
 goog.require("planets.utils");
 goog.require("planets.utils");
+planets.rtt.rtt_scene = function rtt_scene() {
+  var camera = function() {
+    var G__197293 = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -1E4, 1E4);
+    planets.utils.set_nested_BANG_.call(null, G__197293, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0, "\ufdd0:y", 0, "\ufdd0:z", -500], true)], true));
+    return G__197293
+  }();
+  var scene = function() {
+    var G__197294 = new THREE.Scene;
+    G__197294.add(camera);
+    return G__197294
+  }();
+  return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:camera", camera, "\ufdd0:scene", scene], true)
+};
+planets.rtt.rtt_BANG_ = function rtt_BANG_(material, mappings, renderer) {
+  var rtt_scene = planets.rtt.rtt_scene.call(null);
+  var mesh = function() {
+    var G__197300 = new THREE.Mesh(new THREE.PlaneGeometry(window.innerWidth, window.innerHeight), material);
+    planets.utils.set_nested_BANG_.call(null, G__197300, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0, "\ufdd0:y", 0, "\ufdd0:z", -500], true)], true));
+    return G__197300
+  }();
+  var scene = (new cljs.core.Keyword("\ufdd0:scene")).call(null, rtt_scene);
+  var camera = (new cljs.core.Keyword("\ufdd0:camera")).call(null, rtt_scene);
+  (new cljs.core.Keyword("\ufdd0:scene")).call(null, rtt_scene).add(mesh);
+  var seq__197301 = cljs.core.seq.call(null, mappings);
+  var chunk__197302 = null;
+  var count__197303 = 0;
+  var i__197304 = 0;
+  while(true) {
+    if(i__197304 < count__197303) {
+      var mapping = cljs.core._nth.call(null, chunk__197302, i__197304);
+      renderer.render(scene, camera, mapping, true);
+      var G__197305 = seq__197301;
+      var G__197306 = chunk__197302;
+      var G__197307 = count__197303;
+      var G__197308 = i__197304 + 1;
+      seq__197301 = G__197305;
+      chunk__197302 = G__197306;
+      count__197303 = G__197307;
+      i__197304 = G__197308;
+      continue
+    }else {
+      var temp__4092__auto__ = cljs.core.seq.call(null, seq__197301);
+      if(temp__4092__auto__) {
+        var seq__197301__$1 = temp__4092__auto__;
+        if(cljs.core.chunked_seq_QMARK_.call(null, seq__197301__$1)) {
+          var c__3031__auto__ = cljs.core.chunk_first.call(null, seq__197301__$1);
+          var G__197309 = cljs.core.chunk_rest.call(null, seq__197301__$1);
+          var G__197310 = c__3031__auto__;
+          var G__197311 = cljs.core.count.call(null, c__3031__auto__);
+          var G__197312 = 0;
+          seq__197301 = G__197309;
+          chunk__197302 = G__197310;
+          count__197303 = G__197311;
+          i__197304 = G__197312;
+          continue
+        }else {
+          var mapping = cljs.core.first.call(null, seq__197301__$1);
+          renderer.render(scene, camera, mapping, true);
+          var G__197313 = cljs.core.next.call(null, seq__197301__$1);
+          var G__197314 = null;
+          var G__197315 = 0;
+          var G__197316 = 0;
+          seq__197301 = G__197313;
+          chunk__197302 = G__197314;
+          count__197303 = G__197315;
+          i__197304 = G__197316;
+          continue
+        }
+      }else {
+        return null
+      }
+    }
+    break
+  }
+};
+goog.provide("planets.shader");
+goog.require("cljs.core");
+goog.require("planets.utils");
+goog.require("planets.utils");
+planets.shader.common = planets.utils.clone.call(null, THREE.UniformsLib["common"]);
+planets.shader.bump = planets.utils.clone.call(null, THREE.UniformsLib["bump"]);
+planets.shader.normalmap = planets.utils.clone.call(null, THREE.UniformsLib["normalmap"]);
+planets.shader.fog = planets.utils.clone.call(null, THREE.UniformsLib["fog"]);
+planets.shader.lights = planets.utils.clone.call(null, THREE.UniformsLib["lights"]);
+planets.shader.particle = planets.utils.clone.call(null, THREE.UniformsLib["particle"]);
+planets.shader.shadowmap = planets.utils.clone.call(null, THREE.UniformsLib["shadowmap"]);
+planets.shader.fog_params_fragment = THREE.ShaderChunk["fog_pars_fragment"];
+planets.shader.fog_fragment = THREE.ShaderChunk["fog_fragment"];
+planets.shader.envmap_params_fragment = THREE.ShaderChunk["envmap_pars_fragment"];
+planets.shader.envmap_fragment = THREE.ShaderChunk["envmap_fragment"];
+planets.shader.envmap_params_vertex = THREE.ShaderChunk["envmap_pars_vertex"];
+planets.shader.envmap_vertex = THREE.ShaderChunk["envmap_vertex"];
+planets.shader.worldpos_vertex = THREE.ShaderChunk["worldpos_vertex"];
+planets.shader.map_particle_params_fragment = THREE.ShaderChunk["map_particle_pars_fragment"];
+planets.shader.map_particle_fragment = THREE.ShaderChunk["map_particle_fragment"];
+planets.shader.map_params_fragment = THREE.ShaderChunk["map_pars_fragment"];
+planets.shader.map_params_vertex = THREE.ShaderChunk["map_pars_vertex"];
+planets.shader.map_vertex = THREE.ShaderChunk["map_vertex"];
+planets.shader.map_fragment = THREE.ShaderChunk["map_fragment"];
+planets.shader.lightmap_params_fragment = THREE.ShaderChunk["lightmap_pars_fragment"];
+planets.shader.lightmap_params_vertex = THREE.ShaderChunk["lightmap_pars_vertex"];
+planets.shader.lightmap_fragment = THREE.ShaderChunk["lightmap_fragment"];
+planets.shader.lightmap_vertex = THREE.ShaderChunk["lightmap_vertex"];
+planets.shader.bumpmap_params_fragment = THREE.ShaderChunk["bumpmap_pars_fragment"];
+planets.shader.normalmap_params_fragment = THREE.ShaderChunk["normalmap_pars_fragment"];
+planets.shader.specularmap_params_fragment = THREE.ShaderChunk["specularmap_pars_fragment"];
+planets.shader.specularmap_fragment = THREE.ShaderChunk["specularmap_fragment"];
+planets.shader.lights_lambert_params_vertex = THREE.ShaderChunk["lights_lambert_pars_vertex"];
+planets.shader.lights_lambert_vertex = THREE.ShaderChunk["lights_lambert_vertex"];
+planets.shader.lights_phong_params_vertex = THREE.ShaderChunk["lights_phong_pars_vertex"];
+planets.shader.lights_phong_vertex = THREE.ShaderChunk["lights_phong_vertex"];
+planets.shader.lights_phong_params_fragment = THREE.ShaderChunk["lights_phong_pars_fragment"];
+planets.shader.lights_phong_fragment = THREE.ShaderChunk["lights_phong_fragment"];
+planets.shader.color_params_fragment = THREE.ShaderChunk["color_pars_fragment"];
+planets.shader.color_phong_fragment = THREE.ShaderChunk["color_fragment"];
+planets.shader.color_params_vertex = THREE.ShaderChunk["color_pars_vertex"];
+planets.shader.color_phong_vertex = THREE.ShaderChunk["color_vertex"];
+planets.shader.skinning_params_vertex = THREE.ShaderChunk["skinning_pars_vertex"];
+planets.shader.skinning_vertex = THREE.ShaderChunk["skinning_vertex"];
+planets.shader.skinbase_vertex = THREE.ShaderChunk["skinbase_vertex"];
+planets.shader.morphtarget_params_vertex = THREE.ShaderChunk["morphtarget_pars_vertex"];
+planets.shader.morphtarget_vertex = THREE.ShaderChunk["morphtarget_vertex"];
+planets.shader.morphnormal_vertex = THREE.ShaderChunk["morphnormal_vertex"];
+planets.shader.skinnormal_vertex = THREE.ShaderChunk["skinnormal_vertex"];
+planets.shader.defaultnormal_vertex = THREE.ShaderChunk["defaultnormal_vertex"];
+planets.shader.default_vertex = THREE.ShaderChunk["default_vertex"];
+planets.shader.shadowmap_params_fragment = THREE.ShaderChunk["shadowmap_pars_fragment"];
+planets.shader.shadowmap_fragment = THREE.ShaderChunk["shadowmap_fragment"];
+planets.shader.shadowmap_params_vertex = THREE.ShaderChunk["shadowmap_pars_vertex"];
+planets.shader.shadowmap_vertex = THREE.ShaderChunk["shadowmap_vertex"];
+planets.shader.alphatest_fragment = THREE.ShaderChunk["alphatest_fragment"];
+planets.shader.linear_to_gamma_fragment = THREE.ShaderChunk["linear_to_gamma_fragment"];
+planets.shader.simplex_shader = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", planets.utils.sel_shader.call(null, "\ufdd0:#simplex_noise_fs"), "\ufdd0:vertexShader", planets.utils.sel_shader.call(null, "\ufdd0:#simplex_noise_vs"), "\ufdd0:uniforms", cljs.core.merge.call(null, planets.shader.fog, planets.shader.lights, planets.shader.shadowmap, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 20], 
+true)], true))], true);
+planets.shader.terrain_shader = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", planets.utils.sel_shader.call(null, "\ufdd0:#fragment-terrain"), "\ufdd0:vertexShader", planets.utils.sel_shader.call(null, "\ufdd0:#vertex-terrain"), "\ufdd0:uniforms", cljs.core.merge.call(null, planets.shader.fog, planets.shader.lights, planets.shader.shadowmap, cljs.core.PersistentHashMap.fromArrays(["\ufdd0:tDisplacement", "\ufdd0:uRepeatOverlay", "\ufdd0:uAmbientColor", "\ufdd0:tNormal", "\ufdd0:uRepeatBase", 
+"\ufdd0:uDiffuseColor", "\ufdd0:enableReflection", "\ufdd0:enableSpecular", "\ufdd0:enableDiffuse2", "\ufdd0:tDetail", "\ufdd0:enableDiffuse1", "\ufdd0:uOpacity", "\ufdd0:uSpecularColor", "\ufdd0:tSpecular", "\ufdd0:uNormalScale", "\ufdd0:uOffset", "\ufdd0:uShininess", "\ufdd0:uDisplacementBias", "\ufdd0:tDiffuse1", "\ufdd0:uDisplacementScale", "\ufdd0:tDiffuse2"], [cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", 
+"v2", "\ufdd0:value", new THREE.Vector2(1, 1)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "c", "\ufdd0:value", new THREE.Color(328965)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v2", "\ufdd0:value", new THREE.Vector2(1, 1)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "c", "\ufdd0:value", new THREE.Color(15658734)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", 
+"i", "\ufdd0:value", 0], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "i", "\ufdd0:value", 0], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "i", "\ufdd0:value", 0], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "i", "\ufdd0:value", 0], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 1], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", 
+"c", "\ufdd0:value", new THREE.Color(1118481)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 1], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v2", "\ufdd0:value", new THREE.Vector2(0, 0)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 30], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 
+0], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 1], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true)]))], true);
+planets.shader.normal_shader = function() {
+  var shader = THREE.NormalMapShader;
+  return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", shader.fragmentShader, "\ufdd0:vertexShader", shader.vertexShader, "\ufdd0:uniforms", planets.utils.clone.call(null, shader.uniforms)], true)
+}();
+planets.shader.specularity_shader = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", planets.utils.sel_shader.call(null, "\ufdd0:#bake_color_and_specularity_fs"), "\ufdd0:vertexShader", planets.utils.sel_shader.call(null, "\ufdd0:#bake_color_and_specularity_vs"), "\ufdd0:uniforms", cljs.core.PersistentHashMap.fromArrays(["\ufdd0:waterLevel", "\ufdd0:color0", "\ufdd0:color1", "\ufdd0:color2", "\ufdd0:heightMap", "\ufdd0:color4", "\ufdd0:color3", "\ufdd0:color6", "\ufdd0:color5", "\ufdd0:colorStop1", 
+"\ufdd0:colorStop0", "\ufdd0:colorStop2", "\ufdd0:colorStop3"], [cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 0.2], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v4", "\ufdd0:value", cljs.core.PersistentVector.fromArray([1, 1, 1, 1], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v4", "\ufdd0:value", cljs.core.PersistentVector.fromArray([1, 1, 1, 1], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v4", 
+"\ufdd0:value", cljs.core.PersistentVector.fromArray([1, 1, 1, 1], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v4", "\ufdd0:value", cljs.core.PersistentVector.fromArray([1, 1, 1, 1], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v4", "\ufdd0:value", cljs.core.PersistentVector.fromArray([1, 1, 1, 1], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", 
+"v4", "\ufdd0:value", cljs.core.PersistentVector.fromArray([1, 1, 1, 1], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v4", "\ufdd0:value", cljs.core.PersistentVector.fromArray([1, 1, 1, 1], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 0.4], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 0.2], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 0.6], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", 
+"f", "\ufdd0:value", 0.8], true)])], true);
+planets.shader.height_map_shader = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", planets.utils.sel_shader.call(null, "\ufdd0:#fragmentShaderNoise"), "\ufdd0:vertexShader", planets.utils.sel_shader.call(null, "\ufdd0:#vertexShader"), "\ufdd0:uniforms", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:time", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 1], true), "\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v2", "\ufdd0:value", 
+new THREE.Vector2(1.5, 1.5)], true), "\ufdd0:offset", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v2", "\ufdd0:value", new THREE.Vector2(0, 0)], true), "\ufdd0:resolution", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v3", "\ufdd0:value", new THREE.Vector3(0, 0, 0)], true)], true)], true);
+planets.shader.planet_shader = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", planets.utils.sel_shader.call(null, "\ufdd0:#planet_composition_fs"), "\ufdd0:vertexShader", planets.utils.sel_shader.call(null, "\ufdd0:#planet_composition_vs"), "\ufdd0:uniforms", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:heightMap", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "t", "\ufdd0:value", null], true), "\ufdd0:mainTexture", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", 
+"t", "\ufdd0:value", null], true), "\ufdd0:bumpmapTextureStep", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "fv1", "\ufdd0:value", cljs.core.PersistentVector.EMPTY], true), "\ufdd0:atmosphereColor", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "c", "\ufdd0:value", function() {
+  var G__63803 = new THREE.Color;
+  planets.utils.set_nested_BANG_.call(null, G__63803, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:r", 0, "\ufdd0:b", 0, "\ufdd0:g", 0.9], true));
+  return G__63803
+}()], true), "\ufdd0:maxHeight", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "fv1", "\ufdd0:value", cljs.core.PersistentVector.fromArray([2], true)], true), "\ufdd0:waterLevel", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "fv1", "\ufdd0:value", cljs.core.PersistentVector.fromArray([0.5], true)], true)], true)], true);
+planets.shader.luminosity_shader = function() {
+  var shader = THREE.LuminosityShader;
+  return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", shader.fragmentShader, "\ufdd0:vertexShader", shader.vertexShader, "\ufdd0:uniforms", planets.utils.clone.call(null, shader.uniforms)], true)
+}();
+planets.shader.mountain_shader = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", planets.utils.sel_shader.call(null, "\ufdd0:#simplex_noise_fs"), "\ufdd0:vertexShader", planets.utils.sel_shader.call(null, "\ufdd0:#simplex_noise_vs"), "\ufdd0:uniforms", cljs.core.merge.call(null, planets.shader.fog, planets.shader.lights, planets.shader.shadowmap, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 20], 
+true)], true))], true);
+planets.shader.snowy_terrain_shader = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", planets.utils.sel_shader.call(null, "\ufdd0:#snow"), "\ufdd0:vertexShader", planets.utils.sel_shader.call(null, "\ufdd0:#vertexShader"), "\ufdd0:uniforms", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:time", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "f", "\ufdd0:value", 1], true), "\ufdd0:resolution", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", "v2", "\ufdd0:value", new THREE.Vector2], 
+true)], true)], true);
+goog.provide("planets.texture");
+goog.require("cljs.core");
+goog.require("planets.utils");
+goog.require("planets.rtt");
+goog.require("planets.shader");
+goog.require("planets.utils");
+planets.texture.mapping = function() {
+  var mapping = null;
+  var mapping__1 = function(options) {
+    return new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, cljs.core.clj__GT_js.call(null, options))
+  };
+  var mapping__3 = function(width, height, options) {
+    return new THREE.WebGLRenderTarget(width, height, cljs.core.clj__GT_js.call(null, options))
+  };
+  mapping = function(width, height, options) {
+    switch(arguments.length) {
+      case 1:
+        return mapping__1.call(this, width);
+      case 3:
+        return mapping__3.call(this, width, height, options)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  mapping.cljs$core$IFn$_invoke$arity$1 = mapping__1;
+  mapping.cljs$core$IFn$_invoke$arity$3 = mapping__3;
+  return mapping
+}();
+planets.texture.load_texture = function load_texture(path, options) {
+  var texture = THREE.ImageUtils.loadTexture(path);
+  var G__150933 = texture;
+  planets.utils.set_nested_BANG_.call(null, G__150933, options);
+  return G__150933
+};
+planets.texture.data_texture = function data_texture(width, height, color, params) {
+  var G__150935 = THREE.ImageUtils.generateDataTexture(width, height, color);
+  planets.utils.set_nested_BANG_.call(null, G__150935, params);
+  return G__150935
+};
+goog.provide("goog.messaging.MessageChannel");
+goog.messaging.MessageChannel = function() {
+};
+goog.messaging.MessageChannel.prototype.connect = function(opt_connectCb) {
+};
+goog.messaging.MessageChannel.prototype.isConnected = function() {
+};
+goog.messaging.MessageChannel.prototype.registerService = function(serviceName, callback, opt_objectPayload) {
+};
+goog.messaging.MessageChannel.prototype.registerDefaultService = function(callback) {
+};
+goog.messaging.MessageChannel.prototype.send = function(serviceName, payload) {
+};
+goog.provide("goog.messaging.AbstractChannel");
+goog.require("goog.Disposable");
+goog.require("goog.debug");
+goog.require("goog.debug.Logger");
+goog.require("goog.json");
+goog.require("goog.messaging.MessageChannel");
+goog.messaging.AbstractChannel = function() {
+  goog.base(this);
+  this.services_ = {}
+};
+goog.inherits(goog.messaging.AbstractChannel, goog.Disposable);
+goog.messaging.AbstractChannel.prototype.defaultService_;
+goog.messaging.AbstractChannel.prototype.logger = goog.debug.Logger.getLogger("goog.messaging.AbstractChannel");
+goog.messaging.AbstractChannel.prototype.connect = function(opt_connectCb) {
+  if(opt_connectCb) {
+    opt_connectCb()
+  }
+};
+goog.messaging.AbstractChannel.prototype.isConnected = function() {
+  return true
+};
+goog.messaging.AbstractChannel.prototype.registerService = function(serviceName, callback, opt_objectPayload) {
+  this.services_[serviceName] = {callback:callback, objectPayload:!!opt_objectPayload}
+};
+goog.messaging.AbstractChannel.prototype.registerDefaultService = function(callback) {
+  this.defaultService_ = callback
+};
+goog.messaging.AbstractChannel.prototype.send = goog.abstractMethod;
+goog.messaging.AbstractChannel.prototype.deliver = function(serviceName, payload) {
+  var service = this.getService(serviceName, payload);
+  if(!service) {
+    return
+  }
+  var decodedPayload = this.decodePayload(serviceName, payload, service.objectPayload);
+  if(goog.isDefAndNotNull(decodedPayload)) {
+    service.callback(decodedPayload)
+  }
+};
+goog.messaging.AbstractChannel.prototype.getService = function(serviceName, payload) {
+  var service = this.services_[serviceName];
+  if(service) {
+    return service
+  }else {
+    if(this.defaultService_) {
+      var callback = goog.partial(this.defaultService_, serviceName);
+      var objectPayload = goog.isObject(payload);
+      return{callback:callback, objectPayload:objectPayload}
+    }
+  }
+  this.logger.warning('Unknown service name "' + serviceName + '"');
+  return null
+};
+goog.messaging.AbstractChannel.prototype.decodePayload = function(serviceName, payload, objectPayload) {
+  if(objectPayload && goog.isString(payload)) {
+    try {
+      return goog.json.parse(payload)
+    }catch(err) {
+      this.logger.warning("Expected JSON payload for " + serviceName + ', was "' + payload + '"');
+      return null
+    }
+  }else {
+    if(!objectPayload && !goog.isString(payload)) {
+      return goog.json.serialize(payload)
+    }
+  }
+  return payload
+};
+goog.messaging.AbstractChannel.prototype.disposeInternal = function() {
+  goog.base(this, "disposeInternal");
+  goog.dispose(this.logger);
+  delete this.logger;
+  delete this.services_;
+  delete this.defaultService_
+};
+goog.provide("clojure.browser.event");
+goog.require("cljs.core");
+goog.require("goog.events.EventType");
+goog.require("goog.events.EventTarget");
+goog.require("goog.events");
+clojure.browser.event.EventType = {};
+clojure.browser.event.event_types = function event_types(this$) {
+  if(function() {
+    var and__3941__auto__ = this$;
+    if(and__3941__auto__) {
+      return this$.clojure$browser$event$EventType$event_types$arity$1
+    }else {
+      return and__3941__auto__
+    }
+  }()) {
+    return this$.clojure$browser$event$EventType$event_types$arity$1(this$)
+  }else {
+    var x__2942__auto__ = this$ == null ? null : this$;
+    return function() {
+      var or__3943__auto__ = clojure.browser.event.event_types[goog.typeOf(x__2942__auto__)];
+      if(or__3943__auto__) {
+        return or__3943__auto__
+      }else {
+        var or__3943__auto____$1 = clojure.browser.event.event_types["_"];
+        if(or__3943__auto____$1) {
+          return or__3943__auto____$1
+        }else {
+          throw cljs.core.missing_protocol.call(null, "EventType.event-types", this$);
+        }
+      }
+    }().call(null, this$)
+  }
+};
+Element.prototype.clojure$browser$event$EventType$ = true;
+Element.prototype.clojure$browser$event$EventType$event_types$arity$1 = function(this$) {
+  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4381) {
+    var vec__4382 = p__4381;
+    var k = cljs.core.nth.call(null, vec__4382, 0, null);
+    var v = cljs.core.nth.call(null, vec__4382, 1, null);
+    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
+  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
+};
+goog.events.EventTarget.prototype.clojure$browser$event$EventType$ = true;
+goog.events.EventTarget.prototype.clojure$browser$event$EventType$event_types$arity$1 = function(this$) {
+  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4383) {
+    var vec__4384 = p__4383;
+    var k = cljs.core.nth.call(null, vec__4384, 0, null);
+    var v = cljs.core.nth.call(null, vec__4384, 1, null);
+    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
+  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.events.EventType))))
+};
+clojure.browser.event.listen = function() {
+  var listen = null;
+  var listen__3 = function(src, type, fn) {
+    return listen.call(null, src, type, fn, false)
+  };
+  var listen__4 = function(src, type, fn, capture_QMARK_) {
+    return goog.events.listen(src, cljs.core.get.call(null, clojure.browser.event.event_types.call(null, src), type, type), fn, capture_QMARK_)
+  };
+  listen = function(src, type, fn, capture_QMARK_) {
+    switch(arguments.length) {
+      case 3:
+        return listen__3.call(this, src, type, fn);
+      case 4:
+        return listen__4.call(this, src, type, fn, capture_QMARK_)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  listen.cljs$core$IFn$_invoke$arity$3 = listen__3;
+  listen.cljs$core$IFn$_invoke$arity$4 = listen__4;
+  return listen
+}();
+clojure.browser.event.listen_once = function() {
+  var listen_once = null;
+  var listen_once__3 = function(src, type, fn) {
+    return listen_once.call(null, src, type, fn, false)
+  };
+  var listen_once__4 = function(src, type, fn, capture_QMARK_) {
+    return goog.events.listenOnce(src, cljs.core.get.call(null, clojure.browser.event.event_types.call(null, src), type, type), fn, capture_QMARK_)
+  };
+  listen_once = function(src, type, fn, capture_QMARK_) {
+    switch(arguments.length) {
+      case 3:
+        return listen_once__3.call(this, src, type, fn);
+      case 4:
+        return listen_once__4.call(this, src, type, fn, capture_QMARK_)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  listen_once.cljs$core$IFn$_invoke$arity$3 = listen_once__3;
+  listen_once.cljs$core$IFn$_invoke$arity$4 = listen_once__4;
+  return listen_once
+}();
+clojure.browser.event.unlisten = function() {
+  var unlisten = null;
+  var unlisten__3 = function(src, type, fn) {
+    return unlisten.call(null, src, type, fn, false)
+  };
+  var unlisten__4 = function(src, type, fn, capture_QMARK_) {
+    return goog.events.unlisten(src, cljs.core.get.call(null, clojure.browser.event.event_types.call(null, src), type, type), fn, capture_QMARK_)
+  };
+  unlisten = function(src, type, fn, capture_QMARK_) {
+    switch(arguments.length) {
+      case 3:
+        return unlisten__3.call(this, src, type, fn);
+      case 4:
+        return unlisten__4.call(this, src, type, fn, capture_QMARK_)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  unlisten.cljs$core$IFn$_invoke$arity$3 = unlisten__3;
+  unlisten.cljs$core$IFn$_invoke$arity$4 = unlisten__4;
+  return unlisten
+}();
+clojure.browser.event.unlisten_by_key = function unlisten_by_key(key) {
+  return goog.events.unlistenByKey(key)
+};
+clojure.browser.event.dispatch_event = function dispatch_event(src, event) {
+  return goog.events.dispatchEvent(src, event)
+};
+clojure.browser.event.expose = function expose(e) {
+  return goog.events.expose(e)
+};
+clojure.browser.event.fire_listeners = function fire_listeners(obj, type, capture, event) {
+  return null
+};
+clojure.browser.event.total_listener_count = function total_listener_count() {
+  return goog.events.getTotalListenerCount()
+};
+clojure.browser.event.get_listener = function get_listener(src, type, listener, opt_capt, opt_handler) {
+  return null
+};
+clojure.browser.event.all_listeners = function all_listeners(obj, type, capture) {
+  return null
+};
+clojure.browser.event.unique_event_id = function unique_event_id(event_type) {
+  return null
+};
+clojure.browser.event.has_listener = function has_listener(obj, opt_type, opt_capture) {
+  return null
+};
+clojure.browser.event.remove_all = function remove_all(opt_obj, opt_type, opt_capt) {
+  return null
+};
+goog.provide("planets.materials");
+goog.require("cljs.core");
+goog.require("planets.utils");
+goog.require("planets.shader");
+goog.require("planets.utils");
+planets.materials.shader_material = function shader_material(shader, uniforms, options) {
+  return new THREE.ShaderMaterial(cljs.core.clj__GT_js.call(null, cljs.core.merge_with.call(null, cljs.core.partial.call(null, cljs.core.merge_with, cljs.core.merge), shader, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:uniforms", uniforms], true), options)))
+};
+planets.materials.simplex_material = function simplex_material(simplex_uniforms) {
+  return planets.materials.shader_material.call(null, planets.shader.simplex_shader, simplex_uniforms, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:lights", false, "\ufdd0:fog", true], true))
+};
+planets.materials.normal_material = function normal_material(normal_uniforms) {
+  return planets.materials.shader_material.call(null, planets.shader.normal_shader, normal_uniforms, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:lights", false, "\ufdd0:fog", true], true))
+};
+planets.materials.terrain_material = function terrain_material(terrain_uniforms) {
+  return planets.materials.shader_material.call(null, planets.shader.terrain_shader, terrain_uniforms, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:lights", true, "\ufdd0:fog", true], true))
+};
+planets.materials.height_map_material = function height_map_material(noise_uniforms) {
+  return planets.materials.shader_material.call(null, planets.shader.height_map_shader, noise_uniforms, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:lights", false, "\ufdd0:fog", true], true))
+};
+planets.materials.luminosity_material = function luminosity_material(luminosity_uniforms) {
+  return planets.materials.shader_material.call(null, planets.shader.luminosity_shader, luminosity_uniforms, cljs.core.PersistentArrayMap.EMPTY)
+};
+planets.materials.snowy_terrain_material = function snowy_terrain_material(snowy_terrain_uniforms) {
+  return planets.materials.shader_material.call(null, planets.shader.snowy_terrain_shader, snowy_terrain_uniforms, cljs.core.PersistentArrayMap.EMPTY)
+};
+goog.provide("planets.planet");
+goog.require("cljs.core");
+goog.require("planets.utils");
+goog.require("planets.rtt");
+goog.require("planets.materials");
+goog.require("planets.texture");
+goog.require("planets.rtt");
+goog.require("planets.utils");
+planets.planet.noise_uniforms = function noise_uniforms(renderer) {
+  return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:resolution", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new THREE.Vector3(window.innerWidth * renderer.devicePixelRatio, window.innerHeight * renderer.devicePixelRatio, 0)], true)], true)
+};
+planets.planet.terrain_uniforms = function terrain_uniforms(normal_map, height_map, specular_map, diffuse1, diffuse2, detail) {
+  return cljs.core.PersistentHashMap.fromArrays(["\ufdd0:tDisplacement", "\ufdd0:uRepeatOverlay", "\ufdd0:uAmbientColor", "\ufdd0:tNormal", "\ufdd0:uDiffuseColor", "\ufdd0:enableSpecular", "\ufdd0:enableDiffuse2", "\ufdd0:tDetail", "\ufdd0:enableDiffuse1", "\ufdd0:uSpecularColor", "\ufdd0:tSpecular", "\ufdd0:uNormalScale", "\ufdd0:uShininess", "\ufdd0:tDiffuse1", "\ufdd0:uDisplacementScale", "\ufdd0:tDiffuse2"], [cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", height_map], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 
+  new THREE.Vector2(128, 128)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new THREE.Color(1118481)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", normal_map], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new THREE.Color(16777215)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", true], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", true], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", function() {
+    var G__315918 = detail;
+    planets.utils.set_nested_BANG_.call(null, G__315918, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:anisotropy", 16], true));
+    return G__315918
+  }()], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", true], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new THREE.Color(16777215)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", function() {
+    var G__315919 = specular_map;
+    planets.utils.set_nested_BANG_.call(null, G__315919, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:anisotropy", 16], true));
+    return G__315919
+  }()], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 1], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 3], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", function() {
+    var G__315920 = diffuse1;
+    planets.utils.set_nested_BANG_.call(null, G__315920, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:anisotropy", 16], true));
+    return G__315920
+  }()], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 375], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", function() {
+    var G__315921 = diffuse2;
+    planets.utils.set_nested_BANG_.call(null, G__315921, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:anisotropy", 16], true));
+    return G__315921
+  }()], true)])
+};
+planets.planet.normal_uniforms = function normal_uniforms(height_map) {
+  return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:height", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 0.05], true), "\ufdd0:resolution", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new THREE.Vector2(512, 512)], true), "\ufdd0:heightMap", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", height_map], true)], true)
+};
+planets.planet.simplex_uniforms = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 50], true)], true);
+planets.planet.gen_planet = function gen_planet(renderer) {
+  var normal_map = planets.texture.mapping.call(null, 512, 512, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:minFilter", THREE.LinearMipMapLinearFilter, "\ufdd0:magFilter", THREE.LinearFilter, "\ufdd0:format", THREE.RGBFormat], true));
+  var height_map = planets.texture.load_texture.call(null, "textures/terrain7.png");
+  var specular_map = planets.texture.mapping.call(null, 2048, 2048, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:minFilter", THREE.LinearMipMapLinearFilter, "\ufdd0:magFilter", THREE.LinearFilter, "\ufdd0:format", THREE.RGBFormat, "\ufdd0:wrapS", THREE.RepeatWrapping, "\ufdd0:wrapT", THREE.RepeatWrapping], true));
+  var s1 = function() {
+    var G__315923 = planets.texture.data_texture.call(null, 1024, 1024, new THREE.Color(8801024));
+    planets.utils.set_nested_BANG_.call(null, G__315923, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:wrapS", THREE.RepeatWrapping, "\ufdd0:wrapT", THREE.RepeatWrapping], true));
+    return G__315923
+  }();
+  var s2 = planets.texture.data_texture.call(null, 1024, 1024, new THREE.Color(412416), planets.utils.set_nested_BANG_.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:wrapS", THREE.RepeatWrapping, "\ufdd0:wrapT", THREE.RepeatWrapping], true)));
+  var s3 = planets.texture.data_texture.call(null, 1024, 1024, new THREE.Color(16141056), planets.utils.set_nested_BANG_.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:wrapS", THREE.RepeatWrapping, "\ufdd0:wrapT", THREE.RepeatWrapping], true)));
+  var diffuse1 = planets.texture.load_texture.call(null, "textures/grasslight.jpg");
+  var diffuse2 = planets.texture.load_texture.call(null, "textures/bg.jpg");
+  var detail = planets.texture.load_texture.call(null, "textures/grasslight-nm.jpg");
+  var luminosity_material = planets.materials.luminosity_material.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:tDiffuse", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", diffuse1], true)], true));
+  planets.rtt.rtt_BANG_.call(null, luminosity_material, cljs.core.PersistentVector.fromArray([specular_map], true), renderer);
+  return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:height-map", height_map, "\ufdd0:normal-map", normal_map, "\ufdd0:specular-map", specular_map, "\ufdd0:luminosity-material", luminosity_material, "\ufdd0:normal-material", planets.materials.normal_material.call(null, planets.planet.normal_uniforms.call(null, height_map)), "\ufdd0:terrain-material", planets.materials.terrain_material.call(null, planets.planet.terrain_uniforms.call(null, normal_map, height_map, specular_map, diffuse1, diffuse2, 
+  detail)), "\ufdd0:height-map-material", planets.materials.height_map_material.call(null, planets.planet.noise_uniforms.call(null, renderer))], true)
+};
+goog.provide("planets.maps");
+goog.require("cljs.core");
+goog.require("planets.planet");
+goog.require("planets.utils");
+goog.require("planets.rtt");
+goog.require("planets.rtt");
+goog.require("planets.texture");
+goog.require("planets.planet");
+goog.require("planets.utils");
+goog.require("dommy.core");
+planets.maps.simplex_noise_terrain = function simplex_noise_terrain(renderer, camera, delta) {
+  var planet = planets.planet.gen_planet.call(null, renderer);
+  var geometry_terrain = function() {
+    var G__315279 = new THREE.PlaneGeometry(4096, 4096, 512, 512);
+    G__315279.computeCentroids();
+    G__315279.computeTangents();
+    return G__315279
+  }();
+  var terrain = new THREE.Mesh(geometry_terrain, (new cljs.core.Keyword("\ufdd0:terrain-material")).call(null, planet));
+  planets.utils.set_nested_BANG_.call(null, terrain, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0, "\ufdd0:y", -125, "\ufdd0:z", 0], true)], true));
+  planets.rtt.rtt_BANG_.call(null, (new cljs.core.Keyword("\ufdd0:normal-material")).call(null, planet), cljs.core.PersistentVector.fromArray([(new cljs.core.Keyword("\ufdd0:normal-map")).call(null, planet)], true), renderer);
+  return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:terrain-mesh", terrain], true)
+};
+goog.provide("goog.events.EventHandler");
+goog.require("goog.Disposable");
+goog.require("goog.array");
+goog.require("goog.events");
+goog.require("goog.events.EventWrapper");
+goog.events.EventHandler = function(opt_handler) {
+  goog.Disposable.call(this);
+  this.handler_ = opt_handler;
+  this.keys_ = []
+};
+goog.inherits(goog.events.EventHandler, goog.Disposable);
+goog.events.EventHandler.typeArray_ = [];
+goog.events.EventHandler.prototype.listen = function(src, type, opt_fn, opt_capture, opt_handler) {
+  if(!goog.isArray(type)) {
+    goog.events.EventHandler.typeArray_[0] = type;
+    type = goog.events.EventHandler.typeArray_
+  }
+  for(var i = 0;i < type.length;i++) {
+    var key = goog.events.listen(src, type[i], opt_fn || this, opt_capture || false, opt_handler || this.handler_ || this);
+    this.keys_.push(key)
+  }
+  return this
+};
+goog.events.EventHandler.prototype.listenOnce = function(src, type, opt_fn, opt_capture, opt_handler) {
+  if(goog.isArray(type)) {
+    for(var i = 0;i < type.length;i++) {
+      this.listenOnce(src, type[i], opt_fn, opt_capture, opt_handler)
+    }
+  }else {
+    var key = goog.events.listenOnce(src, type, opt_fn || this, opt_capture, opt_handler || this.handler_ || this);
+    this.keys_.push(key)
+  }
+  return this
+};
+goog.events.EventHandler.prototype.listenWithWrapper = function(src, wrapper, listener, opt_capt, opt_handler) {
+  wrapper.listen(src, listener, opt_capt, opt_handler || this.handler_ || this, this);
+  return this
+};
+goog.events.EventHandler.prototype.getListenerCount = function() {
+  return this.keys_.length
+};
+goog.events.EventHandler.prototype.unlisten = function(src, type, opt_fn, opt_capture, opt_handler) {
+  if(goog.isArray(type)) {
+    for(var i = 0;i < type.length;i++) {
+      this.unlisten(src, type[i], opt_fn, opt_capture, opt_handler)
+    }
+  }else {
+    var listener = goog.events.getListener(src, type, opt_fn || this, opt_capture, opt_handler || this.handler_ || this);
+    if(listener) {
+      var key = listener.key;
+      goog.events.unlistenByKey(key);
+      goog.array.remove(this.keys_, key)
+    }
+  }
+  return this
+};
+goog.events.EventHandler.prototype.unlistenWithWrapper = function(src, wrapper, listener, opt_capt, opt_handler) {
+  wrapper.unlisten(src, listener, opt_capt, opt_handler || this.handler_ || this, this);
+  return this
+};
+goog.events.EventHandler.prototype.removeAll = function() {
+  goog.array.forEach(this.keys_, goog.events.unlistenByKey);
+  this.keys_.length = 0
+};
+goog.events.EventHandler.prototype.disposeInternal = function() {
+  goog.events.EventHandler.superClass_.disposeInternal.call(this);
+  this.removeAll()
+};
+goog.events.EventHandler.prototype.handleEvent = function(e) {
+  throw Error("EventHandler.handleEvent not implemented");
+};
+goog.provide("goog.net.xpc.CrossPageChannelRole");
+goog.net.xpc.CrossPageChannelRole = {OUTER:0, INNER:1};
+goog.provide("goog.net.xpc.FrameElementMethodTransport");
+goog.require("goog.net.xpc");
+goog.require("goog.net.xpc.CrossPageChannelRole");
+goog.require("goog.net.xpc.Transport");
+goog.net.xpc.FrameElementMethodTransport = function(channel, opt_domHelper) {
+  goog.base(this, opt_domHelper);
+  this.channel_ = channel;
+  this.queue_ = [];
+  this.deliverQueuedCb_ = goog.bind(this.deliverQueued_, this)
+};
+goog.inherits(goog.net.xpc.FrameElementMethodTransport, goog.net.xpc.Transport);
+goog.net.xpc.FrameElementMethodTransport.prototype.transportType = goog.net.xpc.TransportTypes.FRAME_ELEMENT_METHOD;
+goog.net.xpc.FrameElementMethodTransport.prototype.recursive_ = false;
+goog.net.xpc.FrameElementMethodTransport.prototype.timer_ = 0;
+goog.net.xpc.FrameElementMethodTransport.outgoing_ = null;
+goog.net.xpc.FrameElementMethodTransport.prototype.connect = function() {
+  if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER) {
+    this.iframeElm_ = this.channel_.iframeElement_;
+    this.iframeElm_["XPC_toOuter"] = goog.bind(this.incoming_, this)
+  }else {
+    this.attemptSetup_()
+  }
+};
+goog.net.xpc.FrameElementMethodTransport.prototype.attemptSetup_ = function() {
+  var retry = true;
+  try {
+    if(!this.iframeElm_) {
+      this.iframeElm_ = this.getWindow().frameElement
+    }
+    if(this.iframeElm_ && this.iframeElm_["XPC_toOuter"]) {
+      this.outgoing_ = this.iframeElm_["XPC_toOuter"];
+      this.iframeElm_["XPC_toOuter"]["XPC_toInner"] = goog.bind(this.incoming_, this);
+      retry = false;
+      this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_);
+      this.channel_.notifyConnected()
+    }
+  }catch(e) {
+    goog.net.xpc.logger.severe("exception caught while attempting setup: " + e)
+  }
+  if(retry) {
+    if(!this.attemptSetupCb_) {
+      this.attemptSetupCb_ = goog.bind(this.attemptSetup_, this)
+    }
+    this.getWindow().setTimeout(this.attemptSetupCb_, 100)
+  }
+};
+goog.net.xpc.FrameElementMethodTransport.prototype.transportServiceHandler = function(payload) {
+  if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER && !this.channel_.isConnected() && payload == goog.net.xpc.SETUP_ACK_) {
+    this.outgoing_ = this.iframeElm_["XPC_toOuter"]["XPC_toInner"];
+    this.channel_.notifyConnected()
+  }else {
+    throw Error("Got unexpected transport message.");
+  }
+};
+goog.net.xpc.FrameElementMethodTransport.prototype.incoming_ = function(serviceName, payload) {
+  if(!this.recursive_ && this.queue_.length == 0) {
+    this.channel_.deliver_(serviceName, payload)
+  }else {
+    this.queue_.push({serviceName:serviceName, payload:payload});
+    if(this.queue_.length == 1) {
+      this.timer_ = this.getWindow().setTimeout(this.deliverQueuedCb_, 1)
+    }
+  }
+};
+goog.net.xpc.FrameElementMethodTransport.prototype.deliverQueued_ = function() {
+  while(this.queue_.length) {
+    var msg = this.queue_.shift();
+    this.channel_.deliver_(msg.serviceName, msg.payload)
+  }
+};
+goog.net.xpc.FrameElementMethodTransport.prototype.send = function(service, payload) {
+  this.recursive_ = true;
+  this.outgoing_(service, payload);
+  this.recursive_ = false
+};
+goog.net.xpc.FrameElementMethodTransport.prototype.disposeInternal = function() {
+  goog.net.xpc.FrameElementMethodTransport.superClass_.disposeInternal.call(this);
+  this.outgoing_ = null;
+  this.iframeElm_ = null
+};
+goog.provide("goog.net.xpc.IframePollingTransport");
+goog.provide("goog.net.xpc.IframePollingTransport.Receiver");
+goog.provide("goog.net.xpc.IframePollingTransport.Sender");
+goog.require("goog.array");
+goog.require("goog.dom");
+goog.require("goog.net.xpc");
+goog.require("goog.net.xpc.CrossPageChannelRole");
+goog.require("goog.net.xpc.Transport");
+goog.require("goog.userAgent");
+goog.net.xpc.IframePollingTransport = function(channel, opt_domHelper) {
+  goog.base(this, opt_domHelper);
+  this.channel_ = channel;
+  this.sendUri_ = this.channel_.cfg_[goog.net.xpc.CfgFields.PEER_POLL_URI];
+  this.rcvUri_ = this.channel_.cfg_[goog.net.xpc.CfgFields.LOCAL_POLL_URI];
+  this.sendQueue_ = []
+};
+goog.inherits(goog.net.xpc.IframePollingTransport, goog.net.xpc.Transport);
+goog.net.xpc.IframePollingTransport.prototype.pollsBeforeReconnect_ = 5;
+goog.net.xpc.IframePollingTransport.prototype.transportType = goog.net.xpc.TransportTypes.IFRAME_POLLING;
+goog.net.xpc.IframePollingTransport.prototype.sequence_ = 0;
+goog.net.xpc.IframePollingTransport.prototype.waitForAck_ = false;
+goog.net.xpc.IframePollingTransport.prototype.initialized_ = false;
+goog.net.xpc.IframePollingTransport.prototype.reconnectFrame_ = null;
+goog.net.xpc.IframePollingTransport.IFRAME_PREFIX = "googlexpc";
+goog.net.xpc.IframePollingTransport.prototype.getMsgFrameName_ = function() {
+  return goog.net.xpc.IframePollingTransport.IFRAME_PREFIX + "_" + this.channel_.name + "_msg"
+};
+goog.net.xpc.IframePollingTransport.prototype.getAckFrameName_ = function() {
+  return goog.net.xpc.IframePollingTransport.IFRAME_PREFIX + "_" + this.channel_.name + "_ack"
+};
+goog.net.xpc.IframePollingTransport.prototype.isChannelAvailable = function() {
+  return!this.isDisposed() && this.channel_.isPeerAvailable()
+};
+goog.net.xpc.IframePollingTransport.prototype.getPeerFrames_ = function() {
+  try {
+    if(this.isChannelAvailable()) {
+      return this.channel_.getPeerWindowObject().frames || {}
+    }
+  }catch(e) {
+    goog.net.xpc.logger.fine("error retrieving peer frames")
+  }
+  return{}
+};
+goog.net.xpc.IframePollingTransport.prototype.getPeerFrame_ = function(frameName) {
+  return this.getPeerFrames_()[frameName]
+};
+goog.net.xpc.IframePollingTransport.prototype.connect = function() {
+  if(!this.isChannelAvailable()) {
+    return
+  }
+  goog.net.xpc.logger.fine("transport connect called");
+  if(!this.initialized_) {
+    goog.net.xpc.logger.fine("initializing...");
+    this.constructSenderFrames_();
+    this.initialized_ = true
+  }
+  this.checkForeignFramesReady_()
+};
+goog.net.xpc.IframePollingTransport.prototype.constructSenderFrames_ = function() {
+  var name = this.getMsgFrameName_();
+  this.msgIframeElm_ = this.constructSenderFrame_(name);
+  this.msgWinObj_ = this.getWindow().frames[name];
+  name = this.getAckFrameName_();
+  this.ackIframeElm_ = this.constructSenderFrame_(name);
+  this.ackWinObj_ = this.getWindow().frames[name]
+};
+goog.net.xpc.IframePollingTransport.prototype.constructSenderFrame_ = function(id) {
+  goog.net.xpc.logger.finest("constructing sender frame: " + id);
+  var ifr = goog.dom.createElement("iframe");
+  var s = ifr.style;
+  s.position = "absolute";
+  s.top = "-10px";
+  s.left = "10px";
+  s.width = "1px";
+  s.height = "1px";
+  ifr.id = ifr.name = id;
+  ifr.src = this.sendUri_ + "#INITIAL";
+  this.getWindow().document.body.appendChild(ifr);
+  return ifr
+};
+goog.net.xpc.IframePollingTransport.prototype.maybeInnerPeerReconnect_ = function() {
+  if(this.reconnectFrame_ || this.pollsBeforeReconnect_-- > 0) {
+    return
+  }
+  goog.net.xpc.logger.finest("Inner peer reconnect triggered.");
+  this.channel_.name = goog.net.xpc.getRandomString(10);
+  goog.net.xpc.logger.finest("switching channels: " + this.channel_.name);
+  this.deconstructSenderFrames_();
+  this.initialized_ = false;
+  this.reconnectFrame_ = this.constructSenderFrame_(goog.net.xpc.IframePollingTransport.IFRAME_PREFIX + "_reconnect_" + this.channel_.name)
+};
+goog.net.xpc.IframePollingTransport.prototype.outerPeerReconnect_ = function() {
+  goog.net.xpc.logger.finest("outerPeerReconnect called");
+  var frames = this.getPeerFrames_();
+  var length = frames.length;
+  for(var i = 0;i < length;i++) {
+    var frameName;
+    try {
+      if(frames[i] && frames[i].name) {
+        frameName = frames[i].name
+      }
+    }catch(e) {
+    }
+    if(!frameName) {
+      continue
+    }
+    var message = frameName.split("_");
+    if(message.length == 3 && message[0] == goog.net.xpc.IframePollingTransport.IFRAME_PREFIX && message[1] == "reconnect") {
+      this.channel_.name = message[2];
+      this.deconstructSenderFrames_();
+      this.initialized_ = false;
+      break
+    }
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.deconstructSenderFrames_ = function() {
+  goog.net.xpc.logger.finest("deconstructSenderFrames called");
+  if(this.msgIframeElm_) {
+    this.msgIframeElm_.parentNode.removeChild(this.msgIframeElm_);
+    this.msgIframeElm_ = null;
+    this.msgWinObj_ = null
+  }
+  if(this.ackIframeElm_) {
+    this.ackIframeElm_.parentNode.removeChild(this.ackIframeElm_);
+    this.ackIframeElm_ = null;
+    this.ackWinObj_ = null
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.checkForeignFramesReady_ = function() {
+  if(!(this.isRcvFrameReady_(this.getMsgFrameName_()) && this.isRcvFrameReady_(this.getAckFrameName_()))) {
+    goog.net.xpc.logger.finest("foreign frames not (yet) present");
+    if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.INNER) {
+      this.maybeInnerPeerReconnect_()
+    }else {
+      if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER) {
+        this.outerPeerReconnect_()
+      }
+    }
+    this.getWindow().setTimeout(goog.bind(this.connect, this), 100)
+  }else {
+    goog.net.xpc.logger.fine("foreign frames present");
+    this.msgReceiver_ = new goog.net.xpc.IframePollingTransport.Receiver(this, this.getPeerFrame_(this.getMsgFrameName_()), goog.bind(this.processIncomingMsg, this));
+    this.ackReceiver_ = new goog.net.xpc.IframePollingTransport.Receiver(this, this.getPeerFrame_(this.getAckFrameName_()), goog.bind(this.processIncomingAck, this));
+    this.checkLocalFramesPresent_()
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.isRcvFrameReady_ = function(frameName) {
+  goog.net.xpc.logger.finest("checking for receive frame: " + frameName);
+  try {
+    var winObj = this.getPeerFrame_(frameName);
+    if(!winObj || winObj.location.href.indexOf(this.rcvUri_) != 0) {
+      return false
+    }
+  }catch(e) {
+    return false
+  }
+  return true
+};
+goog.net.xpc.IframePollingTransport.prototype.checkLocalFramesPresent_ = function() {
+  var frames = this.getPeerFrames_();
+  if(!(frames[this.getAckFrameName_()] && frames[this.getMsgFrameName_()])) {
+    if(!this.checkLocalFramesPresentCb_) {
+      this.checkLocalFramesPresentCb_ = goog.bind(this.checkLocalFramesPresent_, this)
+    }
+    this.getWindow().setTimeout(this.checkLocalFramesPresentCb_, 100);
+    goog.net.xpc.logger.fine("local frames not (yet) present")
+  }else {
+    this.msgSender_ = new goog.net.xpc.IframePollingTransport.Sender(this.sendUri_, this.msgWinObj_);
+    this.ackSender_ = new goog.net.xpc.IframePollingTransport.Sender(this.sendUri_, this.ackWinObj_);
+    goog.net.xpc.logger.fine("local frames ready");
+    this.getWindow().setTimeout(goog.bind(function() {
+      this.msgSender_.send(goog.net.xpc.SETUP);
+      this.sentConnectionSetup_ = true;
+      this.waitForAck_ = true;
+      goog.net.xpc.logger.fine("SETUP sent")
+    }, this), 100)
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.checkIfConnected_ = function() {
+  if(this.sentConnectionSetupAck_ && this.rcvdConnectionSetupAck_) {
+    this.channel_.notifyConnected();
+    if(this.deliveryQueue_) {
+      goog.net.xpc.logger.fine("delivering queued messages " + "(" + this.deliveryQueue_.length + ")");
+      for(var i = 0, m;i < this.deliveryQueue_.length;i++) {
+        m = this.deliveryQueue_[i];
+        this.channel_.deliver_(m.service, m.payload)
+      }
+      delete this.deliveryQueue_
+    }
+  }else {
+    goog.net.xpc.logger.finest("checking if connected: " + "ack sent:" + this.sentConnectionSetupAck_ + ", ack rcvd: " + this.rcvdConnectionSetupAck_)
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.processIncomingMsg = function(raw) {
+  goog.net.xpc.logger.finest("msg received: " + raw);
+  if(raw == goog.net.xpc.SETUP) {
+    if(!this.ackSender_) {
+      return
+    }
+    this.ackSender_.send(goog.net.xpc.SETUP_ACK_);
+    goog.net.xpc.logger.finest("SETUP_ACK sent");
+    this.sentConnectionSetupAck_ = true;
+    this.checkIfConnected_()
+  }else {
+    if(this.channel_.isConnected() || this.sentConnectionSetupAck_) {
+      var pos = raw.indexOf("|");
+      var head = raw.substring(0, pos);
+      var frame = raw.substring(pos + 1);
+      pos = head.indexOf(",");
+      if(pos == -1) {
+        var seq = head;
+        this.ackSender_.send("ACK:" + seq);
+        this.deliverPayload_(frame)
+      }else {
+        var seq = head.substring(0, pos);
+        this.ackSender_.send("ACK:" + seq);
+        var partInfo = head.substring(pos + 1).split("/");
+        var part0 = parseInt(partInfo[0], 10);
+        var part1 = parseInt(partInfo[1], 10);
+        if(part0 == 1) {
+          this.parts_ = []
+        }
+        this.parts_.push(frame);
+        if(part0 == part1) {
+          this.deliverPayload_(this.parts_.join(""));
+          delete this.parts_
+        }
+      }
+    }else {
+      goog.net.xpc.logger.warning("received msg, but channel is not connected")
+    }
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.processIncomingAck = function(msgStr) {
+  goog.net.xpc.logger.finest("ack received: " + msgStr);
+  if(msgStr == goog.net.xpc.SETUP_ACK_) {
+    this.waitForAck_ = false;
+    this.rcvdConnectionSetupAck_ = true;
+    this.checkIfConnected_()
+  }else {
+    if(this.channel_.isConnected()) {
+      if(!this.waitForAck_) {
+        goog.net.xpc.logger.warning("got unexpected ack");
+        return
+      }
+      var seq = parseInt(msgStr.split(":")[1], 10);
+      if(seq == this.sequence_) {
+        this.waitForAck_ = false;
+        this.sendNextFrame_()
+      }else {
+        goog.net.xpc.logger.warning("got ack with wrong sequence")
+      }
+    }else {
+      goog.net.xpc.logger.warning("received ack, but channel not connected")
+    }
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.sendNextFrame_ = function() {
+  if(this.waitForAck_ || !this.sendQueue_.length) {
+    return
+  }
+  var s = this.sendQueue_.shift();
+  ++this.sequence_;
+  this.msgSender_.send(this.sequence_ + s);
+  goog.net.xpc.logger.finest("msg sent: " + this.sequence_ + s);
+  this.waitForAck_ = true
+};
+goog.net.xpc.IframePollingTransport.prototype.deliverPayload_ = function(s) {
+  var pos = s.indexOf(":");
+  var service = s.substr(0, pos);
+  var payload = s.substring(pos + 1);
+  if(!this.channel_.isConnected()) {
+    (this.deliveryQueue_ || (this.deliveryQueue_ = [])).push({service:service, payload:payload});
+    goog.net.xpc.logger.finest("queued delivery")
+  }else {
+    this.channel_.deliver_(service, payload)
+  }
+};
+goog.net.xpc.IframePollingTransport.prototype.MAX_FRAME_LENGTH_ = 3800;
+goog.net.xpc.IframePollingTransport.prototype.send = function(service, payload) {
+  var frame = service + ":" + payload;
+  if(!goog.userAgent.IE || payload.length <= this.MAX_FRAME_LENGTH_) {
+    this.sendQueue_.push("|" + frame)
+  }else {
+    var l = payload.length;
+    var num = Math.ceil(l / this.MAX_FRAME_LENGTH_);
+    var pos = 0;
+    var i = 1;
+    while(pos < l) {
+      this.sendQueue_.push("," + i + "/" + num + "|" + frame.substr(pos, this.MAX_FRAME_LENGTH_));
+      i++;
+      pos += this.MAX_FRAME_LENGTH_
+    }
+  }
+  this.sendNextFrame_()
+};
+goog.net.xpc.IframePollingTransport.prototype.disposeInternal = function() {
+  goog.base(this, "disposeInternal");
+  var receivers = goog.net.xpc.IframePollingTransport.receivers_;
+  goog.array.remove(receivers, this.msgReceiver_);
+  goog.array.remove(receivers, this.ackReceiver_);
+  this.msgReceiver_ = this.ackReceiver_ = null;
+  goog.dom.removeNode(this.msgIframeElm_);
+  goog.dom.removeNode(this.ackIframeElm_);
+  this.msgIframeElm_ = this.ackIframeElm_ = null;
+  this.msgWinObj_ = this.ackWinObj_ = null
+};
+goog.net.xpc.IframePollingTransport.receivers_ = [];
+goog.net.xpc.IframePollingTransport.TIME_POLL_SHORT_ = 10;
+goog.net.xpc.IframePollingTransport.TIME_POLL_LONG_ = 100;
+goog.net.xpc.IframePollingTransport.TIME_SHORT_POLL_AFTER_ACTIVITY_ = 1E3;
+goog.net.xpc.IframePollingTransport.receive_ = function() {
+  var rcvd = false;
+  try {
+    for(var i = 0, l = goog.net.xpc.IframePollingTransport.receivers_.length;i < l;i++) {
+      rcvd = rcvd || goog.net.xpc.IframePollingTransport.receivers_[i].receive()
+    }
+  }catch(e) {
+    goog.net.xpc.logger.info("receive_() failed: " + e);
+    goog.net.xpc.IframePollingTransport.receivers_[i].transport_.channel_.notifyTransportError_();
+    if(!goog.net.xpc.IframePollingTransport.receivers_.length) {
+      return
+    }
+  }
+  var now = goog.now();
+  if(rcvd) {
+    goog.net.xpc.IframePollingTransport.lastActivity_ = now
+  }
+  var t = now - goog.net.xpc.IframePollingTransport.lastActivity_ < goog.net.xpc.IframePollingTransport.TIME_SHORT_POLL_AFTER_ACTIVITY_ ? goog.net.xpc.IframePollingTransport.TIME_POLL_SHORT_ : goog.net.xpc.IframePollingTransport.TIME_POLL_LONG_;
+  goog.net.xpc.IframePollingTransport.rcvTimer_ = window.setTimeout(goog.net.xpc.IframePollingTransport.receiveCb_, t)
+};
+goog.net.xpc.IframePollingTransport.receiveCb_ = goog.bind(goog.net.xpc.IframePollingTransport.receive_, goog.net.xpc.IframePollingTransport);
+goog.net.xpc.IframePollingTransport.startRcvTimer_ = function() {
+  goog.net.xpc.logger.fine("starting receive-timer");
+  goog.net.xpc.IframePollingTransport.lastActivity_ = goog.now();
+  if(goog.net.xpc.IframePollingTransport.rcvTimer_) {
+    window.clearTimeout(goog.net.xpc.IframePollingTransport.rcvTimer_)
+  }
+  goog.net.xpc.IframePollingTransport.rcvTimer_ = window.setTimeout(goog.net.xpc.IframePollingTransport.receiveCb_, goog.net.xpc.IframePollingTransport.TIME_POLL_SHORT_)
+};
+goog.net.xpc.IframePollingTransport.Sender = function(url, windowObj) {
+  this.sendUri_ = url;
+  this.sendFrame_ = windowObj;
+  this.cycle_ = 0
+};
+goog.net.xpc.IframePollingTransport.Sender.prototype.send = function(payload) {
+  this.cycle_ = ++this.cycle_ % 2;
+  var url = this.sendUri_ + "#" + this.cycle_ + encodeURIComponent(payload);
+  try {
+    if(goog.userAgent.WEBKIT) {
+      this.sendFrame_.location.href = url
+    }else {
+      this.sendFrame_.location.replace(url)
+    }
+  }catch(e) {
+    goog.net.xpc.logger.severe("sending failed", e)
+  }
+  goog.net.xpc.IframePollingTransport.startRcvTimer_()
+};
+goog.net.xpc.IframePollingTransport.Receiver = function(transport, windowObj, callback) {
+  this.transport_ = transport;
+  this.rcvFrame_ = windowObj;
+  this.cb_ = callback;
+  this.currentLoc_ = this.rcvFrame_.location.href.split("#")[0] + "#INITIAL";
+  goog.net.xpc.IframePollingTransport.receivers_.push(this);
+  goog.net.xpc.IframePollingTransport.startRcvTimer_()
+};
+goog.net.xpc.IframePollingTransport.Receiver.prototype.receive = function() {
+  var loc = this.rcvFrame_.location.href;
+  if(loc != this.currentLoc_) {
+    this.currentLoc_ = loc;
+    var payload = loc.split("#")[1];
+    if(payload) {
+      payload = payload.substr(1);
+      this.cb_(decodeURIComponent(payload))
+    }
+    return true
+  }else {
+    return false
+  }
+};
+goog.provide("goog.net.xpc.IframeRelayTransport");
+goog.require("goog.dom");
+goog.require("goog.events");
+goog.require("goog.net.xpc");
+goog.require("goog.net.xpc.Transport");
+goog.require("goog.userAgent");
+goog.net.xpc.IframeRelayTransport = function(channel, opt_domHelper) {
+  goog.base(this, opt_domHelper);
+  this.channel_ = channel;
+  this.peerRelayUri_ = this.channel_.cfg_[goog.net.xpc.CfgFields.PEER_RELAY_URI];
+  this.peerIframeId_ = this.channel_.cfg_[goog.net.xpc.CfgFields.IFRAME_ID];
+  if(goog.userAgent.WEBKIT) {
+    goog.net.xpc.IframeRelayTransport.startCleanupTimer_()
+  }
+};
+goog.inherits(goog.net.xpc.IframeRelayTransport, goog.net.xpc.Transport);
+if(goog.userAgent.WEBKIT) {
+  goog.net.xpc.IframeRelayTransport.iframeRefs_ = [];
+  goog.net.xpc.IframeRelayTransport.CLEANUP_INTERVAL_ = 1E3;
+  goog.net.xpc.IframeRelayTransport.IFRAME_MAX_AGE_ = 3E3;
+  goog.net.xpc.IframeRelayTransport.cleanupTimer_ = 0;
+  goog.net.xpc.IframeRelayTransport.startCleanupTimer_ = function() {
+    if(!goog.net.xpc.IframeRelayTransport.cleanupTimer_) {
+      goog.net.xpc.IframeRelayTransport.cleanupTimer_ = window.setTimeout(function() {
+        goog.net.xpc.IframeRelayTransport.cleanup_()
+      }, goog.net.xpc.IframeRelayTransport.CLEANUP_INTERVAL_)
+    }
+  };
+  goog.net.xpc.IframeRelayTransport.cleanup_ = function(opt_maxAge) {
+    var now = goog.now();
+    var maxAge = opt_maxAge || goog.net.xpc.IframeRelayTransport.IFRAME_MAX_AGE_;
+    while(goog.net.xpc.IframeRelayTransport.iframeRefs_.length && now - goog.net.xpc.IframeRelayTransport.iframeRefs_[0].timestamp >= maxAge) {
+      var ifr = goog.net.xpc.IframeRelayTransport.iframeRefs_.shift().iframeElement;
+      goog.dom.removeNode(ifr);
+      goog.net.xpc.logger.finest("iframe removed")
+    }
+    goog.net.xpc.IframeRelayTransport.cleanupTimer_ = window.setTimeout(goog.net.xpc.IframeRelayTransport.cleanupCb_, goog.net.xpc.IframeRelayTransport.CLEANUP_INTERVAL_)
+  };
+  goog.net.xpc.IframeRelayTransport.cleanupCb_ = function() {
+    goog.net.xpc.IframeRelayTransport.cleanup_()
+  }
+}
+goog.net.xpc.IframeRelayTransport.IE_PAYLOAD_MAX_SIZE_ = 1800;
+goog.net.xpc.IframeRelayTransport.FragmentInfo;
+goog.net.xpc.IframeRelayTransport.fragmentMap_ = {};
+goog.net.xpc.IframeRelayTransport.prototype.transportType = goog.net.xpc.TransportTypes.IFRAME_RELAY;
+goog.net.xpc.IframeRelayTransport.prototype.connect = function() {
+  if(!this.getWindow()["xpcRelay"]) {
+    this.getWindow()["xpcRelay"] = goog.net.xpc.IframeRelayTransport.receiveMessage_
+  }
+  this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP)
+};
+goog.net.xpc.IframeRelayTransport.receiveMessage_ = function(channelName, frame) {
+  var pos = frame.indexOf(":");
+  var header = frame.substr(0, pos);
+  var payload = frame.substr(pos + 1);
+  if(!goog.userAgent.IE || (pos = header.indexOf("|")) == -1) {
+    var service = header
+  }else {
+    var service = header.substr(0, pos);
+    var fragmentIdStr = header.substr(pos + 1);
+    pos = fragmentIdStr.indexOf("+");
+    var messageIdStr = fragmentIdStr.substr(0, pos);
+    var fragmentNum = parseInt(fragmentIdStr.substr(pos + 1), 10);
+    var fragmentInfo = goog.net.xpc.IframeRelayTransport.fragmentMap_[messageIdStr];
+    if(!fragmentInfo) {
+      fragmentInfo = goog.net.xpc.IframeRelayTransport.fragmentMap_[messageIdStr] = {fragments:[], received:0, expected:0}
+    }
+    if(goog.string.contains(fragmentIdStr, "++")) {
+      fragmentInfo.expected = fragmentNum + 1
+    }
+    fragmentInfo.fragments[fragmentNum] = payload;
+    fragmentInfo.received++;
+    if(fragmentInfo.received != fragmentInfo.expected) {
+      return
+    }
+    payload = fragmentInfo.fragments.join("");
+    delete goog.net.xpc.IframeRelayTransport.fragmentMap_[messageIdStr]
+  }
+  goog.net.xpc.channels_[channelName].deliver_(service, decodeURIComponent(payload))
+};
+goog.net.xpc.IframeRelayTransport.prototype.transportServiceHandler = function(payload) {
+  if(payload == goog.net.xpc.SETUP) {
+    this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_);
+    this.channel_.notifyConnected()
+  }else {
+    if(payload == goog.net.xpc.SETUP_ACK_) {
+      this.channel_.notifyConnected()
+    }
+  }
+};
+goog.net.xpc.IframeRelayTransport.prototype.send = function(service, payload) {
+  var encodedPayload = encodeURIComponent(payload);
+  var encodedLen = encodedPayload.length;
+  var maxSize = goog.net.xpc.IframeRelayTransport.IE_PAYLOAD_MAX_SIZE_;
+  if(goog.userAgent.IE && encodedLen > maxSize) {
+    var messageIdStr = goog.string.getRandomString();
+    for(var startIndex = 0, fragmentNum = 0;startIndex < encodedLen;fragmentNum++) {
+      var payloadFragment = encodedPayload.substr(startIndex, maxSize);
+      startIndex += maxSize;
+      var fragmentIdStr = messageIdStr + (startIndex >= encodedLen ? "++" : "+") + fragmentNum;
+      this.send_(service, payloadFragment, fragmentIdStr)
+    }
+  }else {
+    this.send_(service, encodedPayload)
+  }
+};
+goog.net.xpc.IframeRelayTransport.prototype.send_ = function(service, encodedPayload, opt_fragmentIdStr) {
+  if(goog.userAgent.IE) {
+    var div = this.getWindow().document.createElement("div");
+    div.innerHTML = '<iframe onload="this.xpcOnload()"></iframe>';
+    var ifr = div.childNodes[0];
+    div = null;
+    ifr["xpcOnload"] = goog.net.xpc.IframeRelayTransport.iframeLoadHandler_
+  }else {
+    var ifr = this.getWindow().document.createElement("iframe");
+    if(goog.userAgent.WEBKIT) {
+      goog.net.xpc.IframeRelayTransport.iframeRefs_.push({timestamp:goog.now(), iframeElement:ifr})
+    }else {
+      goog.events.listen(ifr, "load", goog.net.xpc.IframeRelayTransport.iframeLoadHandler_)
+    }
+  }
+  var style = ifr.style;
+  style.visibility = "hidden";
+  style.width = ifr.style.height = "0px";
+  style.position = "absolute";
+  var url = this.peerRelayUri_;
+  url += "#" + this.channel_.name;
+  if(this.peerIframeId_) {
+    url += "," + this.peerIframeId_
+  }
+  url += "|" + service;
+  if(opt_fragmentIdStr) {
+    url += "|" + opt_fragmentIdStr
+  }
+  url += ":" + encodedPayload;
+  ifr.src = url;
+  this.getWindow().document.body.appendChild(ifr);
+  goog.net.xpc.logger.finest("msg sent: " + url)
+};
+goog.net.xpc.IframeRelayTransport.iframeLoadHandler_ = function() {
+  goog.net.xpc.logger.finest("iframe-load");
+  goog.dom.removeNode(this);
+  this.xpcOnload = null
+};
+goog.net.xpc.IframeRelayTransport.prototype.disposeInternal = function() {
+  goog.base(this, "disposeInternal");
+  if(goog.userAgent.WEBKIT) {
+    goog.net.xpc.IframeRelayTransport.cleanup_(0)
+  }
+};
+goog.provide("goog.net.xpc.NativeMessagingTransport");
+goog.require("goog.Timer");
+goog.require("goog.asserts");
+goog.require("goog.async.Deferred");
+goog.require("goog.events");
+goog.require("goog.events.EventHandler");
+goog.require("goog.net.xpc");
+goog.require("goog.net.xpc.CrossPageChannelRole");
+goog.require("goog.net.xpc.Transport");
+goog.net.xpc.NativeMessagingTransport = function(channel, peerHostname, opt_domHelper, opt_oneSidedHandshake, opt_protocolVersion) {
+  goog.base(this, opt_domHelper);
+  this.channel_ = channel;
+  this.protocolVersion_ = opt_protocolVersion || 2;
+  goog.asserts.assert(this.protocolVersion_ >= 1);
+  goog.asserts.assert(this.protocolVersion_ <= 2);
+  this.peerHostname_ = peerHostname || "*";
+  this.eventHandler_ = new goog.events.EventHandler(this);
+  this.maybeAttemptToConnectTimer_ = new goog.Timer(100, this.getWindow());
+  this.oneSidedHandshake_ = !!opt_oneSidedHandshake;
+  this.setupAckReceived_ = new goog.async.Deferred;
+  this.setupAckSent_ = new goog.async.Deferred;
+  this.connected_ = new goog.async.Deferred;
+  this.endpointId_ = goog.net.xpc.getRandomString(10);
+  this.peerEndpointId_ = null;
+  if(this.oneSidedHandshake_) {
+    if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.INNER) {
+      this.connected_.awaitDeferred(this.setupAckReceived_)
+    }else {
+      this.connected_.awaitDeferred(this.setupAckSent_)
+    }
+  }else {
+    this.connected_.awaitDeferred(this.setupAckReceived_);
+    if(this.protocolVersion_ == 2) {
+      this.connected_.awaitDeferred(this.setupAckSent_)
+    }
+  }
+  this.connected_.addCallback(this.notifyConnected_, this);
+  this.connected_.callback(true);
+  this.eventHandler_.listen(this.maybeAttemptToConnectTimer_, goog.Timer.TICK, this.maybeAttemptToConnect_);
+  goog.net.xpc.logger.info("NativeMessagingTransport created.  " + "protocolVersion=" + this.protocolVersion_ + ", oneSidedHandshake=" + this.oneSidedHandshake_ + ", role=" + this.channel_.getRole())
+};
+goog.inherits(goog.net.xpc.NativeMessagingTransport, goog.net.xpc.Transport);
+goog.net.xpc.NativeMessagingTransport.CONNECTION_DELAY_MS_ = 200;
+goog.net.xpc.NativeMessagingTransport.prototype.peerProtocolVersion_ = null;
+goog.net.xpc.NativeMessagingTransport.prototype.initialized_ = false;
+goog.net.xpc.NativeMessagingTransport.prototype.transportType = goog.net.xpc.TransportTypes.NATIVE_MESSAGING;
+goog.net.xpc.NativeMessagingTransport.MESSAGE_DELIMITER_ = ",";
+goog.net.xpc.NativeMessagingTransport.activeCount_ = {};
+goog.net.xpc.NativeMessagingTransport.sendTimerId_ = 0;
+goog.net.xpc.NativeMessagingTransport.prototype.couldPeerVersionBe_ = function(version) {
+  return this.peerProtocolVersion_ == null || this.peerProtocolVersion_ == version
+};
+goog.net.xpc.NativeMessagingTransport.initialize_ = function(listenWindow) {
+  var uid = goog.getUid(listenWindow);
+  var value = goog.net.xpc.NativeMessagingTransport.activeCount_[uid];
+  if(!goog.isNumber(value)) {
+    value = 0
+  }
+  if(value == 0) {
+    goog.events.listen(listenWindow.postMessage ? listenWindow : listenWindow.document, "message", goog.net.xpc.NativeMessagingTransport.messageReceived_, false, goog.net.xpc.NativeMessagingTransport)
+  }
+  goog.net.xpc.NativeMessagingTransport.activeCount_[uid] = value + 1
+};
+goog.net.xpc.NativeMessagingTransport.messageReceived_ = function(msgEvt) {
+  var data = msgEvt.getBrowserEvent().data;
+  if(!goog.isString(data)) {
+    return false
+  }
+  var headDelim = data.indexOf("|");
+  var serviceDelim = data.indexOf(":");
+  if(headDelim == -1 || serviceDelim == -1) {
+    return false
+  }
+  var channelName = data.substring(0, headDelim);
+  var service = data.substring(headDelim + 1, serviceDelim);
+  var payload = data.substring(serviceDelim + 1);
+  goog.net.xpc.logger.fine("messageReceived: channel=" + channelName + ", service=" + service + ", payload=" + payload);
+  var channel = goog.net.xpc.channels_[channelName];
+  if(channel) {
+    channel.deliver_(service, payload, msgEvt.getBrowserEvent().origin);
+    return true
+  }
+  var transportMessageType = goog.net.xpc.NativeMessagingTransport.parseTransportPayload_(payload)[0];
+  for(var staleChannelName in goog.net.xpc.channels_) {
+    var staleChannel = goog.net.xpc.channels_[staleChannelName];
+    if(staleChannel.getRole() == goog.net.xpc.CrossPageChannelRole.INNER && !staleChannel.isConnected() && service == goog.net.xpc.TRANSPORT_SERVICE_ && (transportMessageType == goog.net.xpc.SETUP || transportMessageType == goog.net.xpc.SETUP_NTPV2)) {
+      goog.net.xpc.logger.fine("changing channel name to " + channelName);
+      staleChannel.name = channelName;
+      delete goog.net.xpc.channels_[staleChannelName];
+      goog.net.xpc.channels_[channelName] = staleChannel;
+      staleChannel.deliver_(service, payload);
+      return true
+    }
+  }
+  goog.net.xpc.logger.info('channel name mismatch; message ignored"');
+  return false
+};
+goog.net.xpc.NativeMessagingTransport.prototype.transportServiceHandler = function(payload) {
+  var transportParts = goog.net.xpc.NativeMessagingTransport.parseTransportPayload_(payload);
+  var transportMessageType = transportParts[0];
+  var peerEndpointId = transportParts[1];
+  switch(transportMessageType) {
+    case goog.net.xpc.SETUP_ACK_:
+      this.setPeerProtocolVersion_(1);
+      if(!this.setupAckReceived_.hasFired()) {
+        this.setupAckReceived_.callback(true)
+      }
+      break;
+    case goog.net.xpc.SETUP_ACK_NTPV2:
+      if(this.protocolVersion_ == 2) {
+        this.setPeerProtocolVersion_(2);
+        if(!this.setupAckReceived_.hasFired()) {
+          this.setupAckReceived_.callback(true)
+        }
+      }
+      break;
+    case goog.net.xpc.SETUP:
+      this.setPeerProtocolVersion_(1);
+      this.sendSetupAckMessage_(1);
+      break;
+    case goog.net.xpc.SETUP_NTPV2:
+      if(this.protocolVersion_ == 2) {
+        var prevPeerProtocolVersion = this.peerProtocolVersion_;
+        this.setPeerProtocolVersion_(2);
+        this.sendSetupAckMessage_(2);
+        if((prevPeerProtocolVersion == 1 || this.peerEndpointId_ != null) && this.peerEndpointId_ != peerEndpointId) {
+          goog.net.xpc.logger.info("Sending SETUP and changing peer ID to: " + peerEndpointId);
+          this.sendSetupMessage_()
+        }
+        this.peerEndpointId_ = peerEndpointId
+      }
+      break
+  }
+};
+goog.net.xpc.NativeMessagingTransport.prototype.sendSetupMessage_ = function() {
+  goog.asserts.assert(!(this.protocolVersion_ == 1 && this.peerProtocolVersion_ == 2));
+  if(this.protocolVersion_ == 2 && this.couldPeerVersionBe_(2)) {
+    var payload = goog.net.xpc.SETUP_NTPV2;
+    payload += goog.net.xpc.NativeMessagingTransport.MESSAGE_DELIMITER_;
+    payload += this.endpointId_;
+    this.send(goog.net.xpc.TRANSPORT_SERVICE_, payload)
+  }
+  if(this.couldPeerVersionBe_(1)) {
+    this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP)
+  }
+};
+goog.net.xpc.NativeMessagingTransport.prototype.sendSetupAckMessage_ = function(protocolVersion) {
+  goog.asserts.assert(this.protocolVersion_ != 1 || protocolVersion != 2, "Shouldn't try to send a v2 setup ack in v1 mode.");
+  if(this.protocolVersion_ == 2 && this.couldPeerVersionBe_(2) && protocolVersion == 2) {
+    this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_NTPV2)
+  }else {
+    if(this.couldPeerVersionBe_(1) && protocolVersion == 1) {
+      this.send(goog.net.xpc.TRANSPORT_SERVICE_, goog.net.xpc.SETUP_ACK_)
+    }else {
+      return
+    }
+  }
+  if(!this.setupAckSent_.hasFired()) {
+    this.setupAckSent_.callback(true)
+  }
+};
+goog.net.xpc.NativeMessagingTransport.prototype.setPeerProtocolVersion_ = function(version) {
+  if(version > this.peerProtocolVersion_) {
+    this.peerProtocolVersion_ = version
+  }
+  if(this.peerProtocolVersion_ == 1) {
+    if(!this.setupAckSent_.hasFired() && !this.oneSidedHandshake_) {
+      this.setupAckSent_.callback(true)
+    }
+    this.peerEndpointId_ = null
+  }
+};
+goog.net.xpc.NativeMessagingTransport.prototype.connect = function() {
+  goog.net.xpc.NativeMessagingTransport.initialize_(this.getWindow());
+  this.initialized_ = true;
+  this.maybeAttemptToConnect_()
+};
+goog.net.xpc.NativeMessagingTransport.prototype.maybeAttemptToConnect_ = function() {
+  var outerFrame = this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER;
+  if(this.oneSidedHandshake_ && outerFrame || this.channel_.isConnected() || this.isDisposed()) {
+    this.maybeAttemptToConnectTimer_.stop();
+    return
+  }
+  this.maybeAttemptToConnectTimer_.start();
+  this.sendSetupMessage_()
+};
+goog.net.xpc.NativeMessagingTransport.prototype.send = function(service, payload) {
+  var win = this.channel_.peerWindowObject_;
+  if(!win) {
+    goog.net.xpc.logger.fine("send(): window not ready");
+    return
+  }
+  this.send = function(service, payload) {
+    var transport = this;
+    var channelName = this.channel_.name;
+    var sendFunctor = function() {
+      transport.sendTimerId_ = 0;
+      try {
+        var obj = win.postMessage ? win : win.document;
+        if(!obj.postMessage) {
+          goog.net.xpc.logger.warning("Peer window had no postMessage " + "function.");
+          return
+        }
+        obj.postMessage(channelName + "|" + service + ":" + payload, transport.peerHostname_);
+        goog.net.xpc.logger.fine("send(): service=" + service + " payload=" + payload + " to hostname=" + transport.peerHostname_)
+      }catch(error) {
+        goog.net.xpc.logger.warning("Error performing postMessage, ignoring.", error)
+      }
+    };
+    this.sendTimerId_ = goog.Timer.callOnce(sendFunctor, 0)
+  };
+  this.send(service, payload)
+};
+goog.net.xpc.NativeMessagingTransport.prototype.notifyConnected_ = function() {
+  var delay = this.protocolVersion_ == 1 || this.peerProtocolVersion_ == 1 ? goog.net.xpc.NativeMessagingTransport.CONNECTION_DELAY_MS_ : undefined;
+  this.channel_.notifyConnected(delay)
+};
+goog.net.xpc.NativeMessagingTransport.prototype.disposeInternal = function() {
+  if(this.initialized_) {
+    var listenWindow = this.getWindow();
+    var uid = goog.getUid(listenWindow);
+    var value = goog.net.xpc.NativeMessagingTransport.activeCount_[uid];
+    goog.net.xpc.NativeMessagingTransport.activeCount_[uid] = value - 1;
+    if(value == 1) {
+      goog.events.unlisten(listenWindow.postMessage ? listenWindow : listenWindow.document, "message", goog.net.xpc.NativeMessagingTransport.messageReceived_, false, goog.net.xpc.NativeMessagingTransport)
+    }
+  }
+  if(this.sendTimerId_) {
+    goog.Timer.clear(this.sendTimerId_);
+    this.sendTimerId_ = 0
+  }
+  goog.dispose(this.eventHandler_);
+  delete this.eventHandler_;
+  goog.dispose(this.maybeAttemptToConnectTimer_);
+  delete this.maybeAttemptToConnectTimer_;
+  this.setupAckReceived_.cancel();
+  delete this.setupAckReceived_;
+  this.setupAckSent_.cancel();
+  delete this.setupAckSent_;
+  this.connected_.cancel();
+  delete this.connected_;
+  delete this.send;
+  goog.base(this, "disposeInternal")
+};
+goog.net.xpc.NativeMessagingTransport.parseTransportPayload_ = function(payload) {
+  var transportParts = payload.split(goog.net.xpc.NativeMessagingTransport.MESSAGE_DELIMITER_);
+  transportParts[1] = transportParts[1] || null;
+  return transportParts
+};
+goog.provide("goog.net.xpc.NixTransport");
+goog.require("goog.net.xpc");
+goog.require("goog.net.xpc.CrossPageChannelRole");
+goog.require("goog.net.xpc.Transport");
+goog.require("goog.reflect");
+goog.net.xpc.NixTransport = function(channel, opt_domHelper) {
+  goog.base(this, opt_domHelper);
+  this.channel_ = channel;
+  this.authToken_ = channel[goog.net.xpc.CfgFields.AUTH_TOKEN] || "";
+  this.remoteAuthToken_ = channel[goog.net.xpc.CfgFields.REMOTE_AUTH_TOKEN] || "";
+  goog.net.xpc.NixTransport.conductGlobalSetup_(this.getWindow());
+  this[goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE] = this.handleMessage_;
+  this[goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL] = this.createChannel_
+};
+goog.inherits(goog.net.xpc.NixTransport, goog.net.xpc.Transport);
+goog.net.xpc.NixTransport.NIX_WRAPPER = "GCXPC____NIXVBS_wrapper";
+goog.net.xpc.NixTransport.NIX_GET_WRAPPER = "GCXPC____NIXVBS_get_wrapper";
+goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE = "GCXPC____NIXJS_handle_message";
+goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL = "GCXPC____NIXJS_create_channel";
+goog.net.xpc.NixTransport.NIX_ID_FIELD = "GCXPC____NIXVBS_container";
+goog.net.xpc.NixTransport.isNixSupported = function() {
+  var isSupported = false;
+  try {
+    var oldOpener = window.opener;
+    window.opener = {};
+    isSupported = goog.reflect.canAccessProperty(window, "opener");
+    window.opener = oldOpener
+  }catch(e) {
+  }
+  return isSupported
+};
+goog.net.xpc.NixTransport.conductGlobalSetup_ = function(listenWindow) {
+  if(listenWindow["nix_setup_complete"]) {
+    return
+  }
+  var vbscript = "Class " + goog.net.xpc.NixTransport.NIX_WRAPPER + "\n " + "Private m_Transport\n" + "Private m_Auth\n" + "Public Sub SetTransport(transport)\n" + "If isEmpty(m_Transport) Then\n" + "Set m_Transport = transport\n" + "End If\n" + "End Sub\n" + "Public Sub SetAuth(auth)\n" + "If isEmpty(m_Auth) Then\n" + "m_Auth = auth\n" + "End If\n" + "End Sub\n" + "Public Function GetAuthToken()\n " + "GetAuthToken = m_Auth\n" + "End Function\n" + "Public Sub SendMessage(service, payload)\n " + 
+  "Call m_Transport." + goog.net.xpc.NixTransport.NIX_HANDLE_MESSAGE + "(service, payload)\n" + "End Sub\n" + "Public Sub CreateChannel(channel)\n " + "Call m_Transport." + goog.net.xpc.NixTransport.NIX_CREATE_CHANNEL + "(channel)\n" + "End Sub\n" + "Public Sub " + goog.net.xpc.NixTransport.NIX_ID_FIELD + "()\n " + "End Sub\n" + "End Class\n " + "Function " + goog.net.xpc.NixTransport.NIX_GET_WRAPPER + "(transport, auth)\n" + "Dim wrap\n" + "Set wrap = New " + goog.net.xpc.NixTransport.NIX_WRAPPER + 
+  "\n" + "wrap.SetTransport transport\n" + "wrap.SetAuth auth\n" + "Set " + goog.net.xpc.NixTransport.NIX_GET_WRAPPER + " = wrap\n" + "End Function";
+  try {
+    listenWindow.execScript(vbscript, "vbscript");
+    listenWindow["nix_setup_complete"] = true
+  }catch(e) {
+    goog.net.xpc.logger.severe("exception caught while attempting global setup: " + e)
+  }
+};
+goog.net.xpc.NixTransport.prototype.transportType = goog.net.xpc.TransportTypes.NIX;
+goog.net.xpc.NixTransport.prototype.localSetupCompleted_ = false;
+goog.net.xpc.NixTransport.prototype.nixChannel_ = null;
+goog.net.xpc.NixTransport.prototype.connect = function() {
+  if(this.channel_.getRole() == goog.net.xpc.CrossPageChannelRole.OUTER) {
+    this.attemptOuterSetup_()
+  }else {
+    this.attemptInnerSetup_()
+  }
+};
+goog.net.xpc.NixTransport.prototype.attemptOuterSetup_ = function() {
+  if(this.localSetupCompleted_) {
+    return
+  }
+  var innerFrame = this.channel_.iframeElement_;
+  try {
+    innerFrame.contentWindow.opener = this.getWindow()[goog.net.xpc.NixTransport.NIX_GET_WRAPPER](this, this.authToken_);
+    this.localSetupCompleted_ = true
+  }catch(e) {
+    goog.net.xpc.logger.severe("exception caught while attempting setup: " + e)
+  }
+  if(!this.localSetupCompleted_) {
+    this.getWindow().setTimeout(goog.bind(this.attemptOuterSetup_, this), 100)
+  }
+};
+goog.net.xpc.NixTransport.prototype.attemptInnerSetup_ = function() {
+  if(this.localSetupCompleted_) {
+    return
+  }
+  try {
+    var opener = this.getWindow().opener;
+    if(opener && goog.net.xpc.NixTransport.NIX_ID_FIELD in opener) {
+      this.nixChannel_ = opener;
+      var remoteAuthToken = this.nixChannel_["GetAuthToken"]();
+      if(remoteAuthToken != this.remoteAuthToken_) {
+        goog.net.xpc.logger.severe("Invalid auth token from other party");
+        return
+      }
+      this.nixChannel_["CreateChannel"](this.getWindow()[goog.net.xpc.NixTransport.NIX_GET_WRAPPER](this, this.authToken_));
+      this.localSetupCompleted_ = true;
+      this.channel_.notifyConnected()
+    }
+  }catch(e) {
+    goog.net.xpc.logger.severe("exception caught while attempting setup: " + e);
+    return
+  }
+  if(!this.localSetupCompleted_) {
+    this.getWindow().setTimeout(goog.bind(this.attemptInnerSetup_, this), 100)
+  }
+};
+goog.net.xpc.NixTransport.prototype.createChannel_ = function(channel) {
+  if(typeof channel != "unknown" || !(goog.net.xpc.NixTransport.NIX_ID_FIELD in channel)) {
+    goog.net.xpc.logger.severe("Invalid NIX channel given to createChannel_")
+  }
+  this.nixChannel_ = channel;
+  var remoteAuthToken = this.nixChannel_["GetAuthToken"]();
+  if(remoteAuthToken != this.remoteAuthToken_) {
+    goog.net.xpc.logger.severe("Invalid auth token from other party");
+    return
+  }
+  this.channel_.notifyConnected()
+};
+goog.net.xpc.NixTransport.prototype.handleMessage_ = function(serviceName, payload) {
+  var deliveryHandler = function() {
+    this.channel_.safeDeliver(serviceName, payload)
+  };
+  this.getWindow().setTimeout(goog.bind(deliveryHandler, this), 1)
+};
+goog.net.xpc.NixTransport.prototype.send = function(service, payload) {
+  if(typeof this.nixChannel_ !== "unknown") {
+    goog.net.xpc.logger.severe("NIX channel not connected")
+  }
+  this.nixChannel_["SendMessage"](service, payload)
+};
+goog.net.xpc.NixTransport.prototype.disposeInternal = function() {
+  goog.base(this, "disposeInternal");
+  this.nixChannel_ = null
+};
+goog.provide("goog.net.xpc.CrossPageChannel");
+goog.require("goog.Disposable");
+goog.require("goog.Uri");
+goog.require("goog.async.Deferred");
+goog.require("goog.async.Delay");
+goog.require("goog.dom");
+goog.require("goog.events");
+goog.require("goog.events.EventHandler");
+goog.require("goog.json");
+goog.require("goog.messaging.AbstractChannel");
+goog.require("goog.net.xpc");
+goog.require("goog.net.xpc.CrossPageChannelRole");
+goog.require("goog.net.xpc.FrameElementMethodTransport");
+goog.require("goog.net.xpc.IframePollingTransport");
+goog.require("goog.net.xpc.IframeRelayTransport");
+goog.require("goog.net.xpc.NativeMessagingTransport");
+goog.require("goog.net.xpc.NixTransport");
+goog.require("goog.net.xpc.Transport");
+goog.require("goog.userAgent");
+goog.net.xpc.CrossPageChannel = function(cfg, opt_domHelper) {
+  goog.base(this);
+  for(var i = 0, uriField;uriField = goog.net.xpc.UriCfgFields[i];i++) {
+    if(uriField in cfg && !/^https?:\/\//.test(cfg[uriField])) {
+      throw Error("URI " + cfg[uriField] + " is invalid for field " + uriField);
+    }
+  }
+  this.cfg_ = cfg;
+  this.name = this.cfg_[goog.net.xpc.CfgFields.CHANNEL_NAME] || goog.net.xpc.getRandomString(10);
+  this.domHelper_ = opt_domHelper || goog.dom.getDomHelper();
+  this.deferredDeliveries_ = [];
+  this.peerLoadHandler_ = new goog.events.EventHandler(this);
+  cfg[goog.net.xpc.CfgFields.LOCAL_POLL_URI] = cfg[goog.net.xpc.CfgFields.LOCAL_POLL_URI] || goog.uri.utils.getHost(this.domHelper_.getWindow().location.href) + "/robots.txt";
+  cfg[goog.net.xpc.CfgFields.PEER_POLL_URI] = cfg[goog.net.xpc.CfgFields.PEER_POLL_URI] || goog.uri.utils.getHost(cfg[goog.net.xpc.CfgFields.PEER_URI] || "") + "/robots.txt";
+  goog.net.xpc.channels_[this.name] = this;
+  goog.events.listen(window, "unload", goog.net.xpc.CrossPageChannel.disposeAll_);
+  goog.net.xpc.logger.info("CrossPageChannel created: " + this.name)
+};
+goog.inherits(goog.net.xpc.CrossPageChannel, goog.messaging.AbstractChannel);
+goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_ESCAPE_RE_ = new RegExp("^%*" + goog.net.xpc.TRANSPORT_SERVICE_ + "$");
+goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_UNESCAPE_RE_ = new RegExp("^%+" + goog.net.xpc.TRANSPORT_SERVICE_ + "$");
+goog.net.xpc.CrossPageChannel.prototype.connectionDelay_ = null;
+goog.net.xpc.CrossPageChannel.prototype.peerWindowDeferred_ = null;
+goog.net.xpc.CrossPageChannel.prototype.transport_ = null;
+goog.net.xpc.CrossPageChannel.prototype.state_ = goog.net.xpc.ChannelStates.NOT_CONNECTED;
+goog.net.xpc.CrossPageChannel.prototype.isConnected = function() {
+  return this.state_ == goog.net.xpc.ChannelStates.CONNECTED
+};
+goog.net.xpc.CrossPageChannel.prototype.peerWindowObject_ = null;
+goog.net.xpc.CrossPageChannel.prototype.iframeElement_ = null;
+goog.net.xpc.CrossPageChannel.prototype.setPeerWindowObject = function(peerWindowObject) {
+  this.peerWindowObject_ = peerWindowObject
+};
+goog.net.xpc.CrossPageChannel.prototype.getPeerWindowObject = function() {
+  return this.peerWindowObject_
+};
+goog.net.xpc.CrossPageChannel.prototype.isPeerAvailable = function() {
+  try {
+    return!!this.peerWindowObject_ && !Boolean(this.peerWindowObject_.closed)
+  }catch(e) {
+    return false
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.determineTransportType_ = function() {
+  var transportType;
+  if(goog.isFunction(document.postMessage) || goog.isFunction(window.postMessage) || goog.userAgent.IE && window.postMessage) {
+    transportType = goog.net.xpc.TransportTypes.NATIVE_MESSAGING
+  }else {
+    if(goog.userAgent.GECKO) {
+      transportType = goog.net.xpc.TransportTypes.FRAME_ELEMENT_METHOD
+    }else {
+      if(goog.userAgent.IE && this.cfg_[goog.net.xpc.CfgFields.PEER_RELAY_URI]) {
+        transportType = goog.net.xpc.TransportTypes.IFRAME_RELAY
+      }else {
+        if(goog.userAgent.IE && goog.net.xpc.NixTransport.isNixSupported()) {
+          transportType = goog.net.xpc.TransportTypes.NIX
+        }else {
+          transportType = goog.net.xpc.TransportTypes.IFRAME_POLLING
+        }
+      }
+    }
+  }
+  return transportType
+};
+goog.net.xpc.CrossPageChannel.prototype.createTransport_ = function() {
+  if(this.transport_) {
+    return
+  }
+  if(!this.cfg_[goog.net.xpc.CfgFields.TRANSPORT]) {
+    this.cfg_[goog.net.xpc.CfgFields.TRANSPORT] = this.determineTransportType_()
+  }
+  switch(this.cfg_[goog.net.xpc.CfgFields.TRANSPORT]) {
+    case goog.net.xpc.TransportTypes.NATIVE_MESSAGING:
+      var protocolVersion = this.cfg_[goog.net.xpc.CfgFields.NATIVE_TRANSPORT_PROTOCOL_VERSION] || 2;
+      this.transport_ = new goog.net.xpc.NativeMessagingTransport(this, this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME], this.domHelper_, !!this.cfg_[goog.net.xpc.CfgFields.ONE_SIDED_HANDSHAKE], protocolVersion);
+      break;
+    case goog.net.xpc.TransportTypes.NIX:
+      this.transport_ = new goog.net.xpc.NixTransport(this, this.domHelper_);
+      break;
+    case goog.net.xpc.TransportTypes.FRAME_ELEMENT_METHOD:
+      this.transport_ = new goog.net.xpc.FrameElementMethodTransport(this, this.domHelper_);
+      break;
+    case goog.net.xpc.TransportTypes.IFRAME_RELAY:
+      this.transport_ = new goog.net.xpc.IframeRelayTransport(this, this.domHelper_);
+      break;
+    case goog.net.xpc.TransportTypes.IFRAME_POLLING:
+      this.transport_ = new goog.net.xpc.IframePollingTransport(this, this.domHelper_);
+      break
+  }
+  if(this.transport_) {
+    goog.net.xpc.logger.info("Transport created: " + this.transport_.getName())
+  }else {
+    throw Error("CrossPageChannel: No suitable transport found!");
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.getTransportType = function() {
+  return this.transport_.getType()
+};
+goog.net.xpc.CrossPageChannel.prototype.getTransportName = function() {
+  return this.transport_.getName()
+};
+goog.net.xpc.CrossPageChannel.prototype.getPeerConfiguration = function() {
+  var peerCfg = {};
+  peerCfg[goog.net.xpc.CfgFields.CHANNEL_NAME] = this.name;
+  peerCfg[goog.net.xpc.CfgFields.TRANSPORT] = this.cfg_[goog.net.xpc.CfgFields.TRANSPORT];
+  peerCfg[goog.net.xpc.CfgFields.ONE_SIDED_HANDSHAKE] = this.cfg_[goog.net.xpc.CfgFields.ONE_SIDED_HANDSHAKE];
+  if(this.cfg_[goog.net.xpc.CfgFields.LOCAL_RELAY_URI]) {
+    peerCfg[goog.net.xpc.CfgFields.PEER_RELAY_URI] = this.cfg_[goog.net.xpc.CfgFields.LOCAL_RELAY_URI]
+  }
+  if(this.cfg_[goog.net.xpc.CfgFields.LOCAL_POLL_URI]) {
+    peerCfg[goog.net.xpc.CfgFields.PEER_POLL_URI] = this.cfg_[goog.net.xpc.CfgFields.LOCAL_POLL_URI]
+  }
+  if(this.cfg_[goog.net.xpc.CfgFields.PEER_POLL_URI]) {
+    peerCfg[goog.net.xpc.CfgFields.LOCAL_POLL_URI] = this.cfg_[goog.net.xpc.CfgFields.PEER_POLL_URI]
+  }
+  var role = this.cfg_[goog.net.xpc.CfgFields.ROLE];
+  if(role) {
+    peerCfg[goog.net.xpc.CfgFields.ROLE] = role == goog.net.xpc.CrossPageChannelRole.INNER ? goog.net.xpc.CrossPageChannelRole.OUTER : goog.net.xpc.CrossPageChannelRole.INNER
+  }
+  return peerCfg
+};
+goog.net.xpc.CrossPageChannel.prototype.createPeerIframe = function(parentElm, opt_configureIframeCb, opt_addCfgParam) {
+  goog.net.xpc.logger.info("createPeerIframe()");
+  var iframeId = this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID];
+  if(!iframeId) {
+    iframeId = this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID] = "xpcpeer" + goog.net.xpc.getRandomString(4)
+  }
+  var iframeElm = goog.dom.getDomHelper(parentElm).createElement("IFRAME");
+  iframeElm.id = iframeElm.name = iframeId;
+  if(opt_configureIframeCb) {
+    opt_configureIframeCb(iframeElm)
+  }else {
+    iframeElm.style.width = iframeElm.style.height = "100%"
+  }
+  this.cleanUpIncompleteConnection_();
+  this.peerWindowDeferred_ = new goog.async.Deferred(undefined, this);
+  var peerUri = this.getPeerUri(opt_addCfgParam);
+  this.peerLoadHandler_.listenOnce(iframeElm, "load", this.peerWindowDeferred_.callback, false, this.peerWindowDeferred_);
+  if(goog.userAgent.GECKO || goog.userAgent.WEBKIT) {
+    window.setTimeout(goog.bind(function() {
+      parentElm.appendChild(iframeElm);
+      iframeElm.src = peerUri.toString();
+      goog.net.xpc.logger.info("peer iframe created (" + iframeId + ")")
+    }, this), 1)
+  }else {
+    iframeElm.src = peerUri.toString();
+    parentElm.appendChild(iframeElm);
+    goog.net.xpc.logger.info("peer iframe created (" + iframeId + ")")
+  }
+  return iframeElm
+};
+goog.net.xpc.CrossPageChannel.prototype.cleanUpIncompleteConnection_ = function() {
+  if(this.peerWindowDeferred_) {
+    this.peerWindowDeferred_.cancel();
+    this.peerWindowDeferred_ = null
+  }
+  this.deferredDeliveries_.length = 0;
+  this.peerLoadHandler_.removeAll()
+};
+goog.net.xpc.CrossPageChannel.prototype.getPeerUri = function(opt_addCfgParam) {
+  var peerUri = this.cfg_[goog.net.xpc.CfgFields.PEER_URI];
+  if(goog.isString(peerUri)) {
+    peerUri = this.cfg_[goog.net.xpc.CfgFields.PEER_URI] = new goog.Uri(peerUri)
+  }
+  if(opt_addCfgParam !== false) {
+    peerUri.setParameterValue("xpc", goog.json.serialize(this.getPeerConfiguration()))
+  }
+  return peerUri
+};
+goog.net.xpc.CrossPageChannel.prototype.connect = function(opt_connectCb) {
+  this.connectCb_ = opt_connectCb || goog.nullFunction;
+  if(this.peerWindowDeferred_) {
+    this.peerWindowDeferred_.addCallback(this.continueConnection_)
+  }else {
+    this.continueConnection_()
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.continueConnection_ = function() {
+  goog.net.xpc.logger.info("continueConnection_()");
+  this.peerWindowDeferred_ = null;
+  if(this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID]) {
+    this.iframeElement_ = this.domHelper_.getElement(this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID])
+  }
+  if(this.iframeElement_) {
+    var winObj = this.iframeElement_.contentWindow;
+    if(!winObj) {
+      winObj = window.frames[this.cfg_[goog.net.xpc.CfgFields.IFRAME_ID]]
+    }
+    this.setPeerWindowObject(winObj)
+  }
+  if(!this.peerWindowObject_) {
+    if(window == window.top) {
+      throw Error("CrossPageChannel: Can't connect, peer window-object not set.");
+    }else {
+      this.setPeerWindowObject(window.parent)
+    }
+  }
+  this.createTransport_();
+  this.transport_.connect();
+  while(this.deferredDeliveries_.length > 0) {
+    this.deferredDeliveries_.shift()()
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.close = function() {
+  this.cleanUpIncompleteConnection_();
+  this.state_ = goog.net.xpc.ChannelStates.CLOSED;
+  goog.dispose(this.transport_);
+  this.transport_ = null;
+  this.connectCb_ = null;
+  goog.dispose(this.connectionDelay_);
+  this.connectionDelay_ = null;
+  goog.net.xpc.logger.info('Channel "' + this.name + '" closed')
+};
+goog.net.xpc.CrossPageChannel.prototype.notifyConnected = function(opt_delay) {
+  if(this.isConnected() || this.connectionDelay_ && this.connectionDelay_.isActive()) {
+    return
+  }
+  this.state_ = goog.net.xpc.ChannelStates.CONNECTED;
+  goog.net.xpc.logger.info('Channel "' + this.name + '" connected');
+  goog.dispose(this.connectionDelay_);
+  if(opt_delay) {
+    this.connectionDelay_ = new goog.async.Delay(this.connectCb_, opt_delay);
+    this.connectionDelay_.start()
+  }else {
+    this.connectionDelay_ = null;
+    this.connectCb_()
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.notifyConnected_ = goog.net.xpc.CrossPageChannel.prototype.notifyConnected;
+goog.net.xpc.CrossPageChannel.prototype.notifyTransportError_ = function() {
+  goog.net.xpc.logger.info("Transport Error");
+  this.close()
+};
+goog.net.xpc.CrossPageChannel.prototype.send = function(serviceName, payload) {
+  if(!this.isConnected()) {
+    goog.net.xpc.logger.severe("Can't send. Channel not connected.");
+    return
+  }
+  if(!this.isPeerAvailable()) {
+    goog.net.xpc.logger.severe("Peer has disappeared.");
+    this.close();
+    return
+  }
+  if(goog.isObject(payload)) {
+    payload = goog.json.serialize(payload)
+  }
+  this.transport_.send(this.escapeServiceName_(serviceName), payload)
+};
+goog.net.xpc.CrossPageChannel.prototype.safeDeliver = function(serviceName, payload, opt_origin) {
+  this.deliver_(serviceName, payload, opt_origin)
+};
+goog.net.xpc.CrossPageChannel.prototype.deliver_ = function(serviceName, payload, opt_origin) {
+  if(this.peerWindowDeferred_) {
+    this.deferredDeliveries_.push(goog.bind(this.deliver_, this, serviceName, payload, opt_origin));
+    return
+  }
+  if(!this.isMessageOriginAcceptable_(opt_origin)) {
+    goog.net.xpc.logger.warning('Message received from unapproved origin "' + opt_origin + '" - rejected.');
+    return
+  }
+  if(this.isDisposed()) {
+    goog.net.xpc.logger.warning("CrossPageChannel::deliver_(): Disposed.")
+  }else {
+    if(!serviceName || serviceName == goog.net.xpc.TRANSPORT_SERVICE_) {
+      this.transport_.transportServiceHandler(payload)
+    }else {
+      if(this.isConnected()) {
+        this.deliver(this.unescapeServiceName_(serviceName), payload)
+      }else {
+        goog.net.xpc.logger.info("CrossPageChannel::deliver_(): Not connected.")
+      }
+    }
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.escapeServiceName_ = function(name) {
+  if(goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_ESCAPE_RE_.test(name)) {
+    name = "%" + name
+  }
+  return name.replace(/[%:|]/g, encodeURIComponent)
+};
+goog.net.xpc.CrossPageChannel.prototype.unescapeServiceName_ = function(name) {
+  name = name.replace(/%[0-9a-f]{2}/gi, decodeURIComponent);
+  if(goog.net.xpc.CrossPageChannel.TRANSPORT_SERVICE_UNESCAPE_RE_.test(name)) {
+    return name.substring(1)
+  }else {
+    return name
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.getRole = function() {
+  var role = this.cfg_[goog.net.xpc.CfgFields.ROLE];
+  if(role) {
+    return role
+  }else {
+    return window.parent == this.peerWindowObject_ ? goog.net.xpc.CrossPageChannelRole.INNER : goog.net.xpc.CrossPageChannelRole.OUTER
+  }
+};
+goog.net.xpc.CrossPageChannel.prototype.isMessageOriginAcceptable_ = function(opt_origin) {
+  var peerHostname = this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME];
+  return goog.string.isEmptySafe(opt_origin) || goog.string.isEmptySafe(peerHostname) || opt_origin == this.cfg_[goog.net.xpc.CfgFields.PEER_HOSTNAME]
+};
+goog.net.xpc.CrossPageChannel.prototype.disposeInternal = function() {
+  this.close();
+  this.peerWindowObject_ = null;
+  this.iframeElement_ = null;
+  delete goog.net.xpc.channels_[this.name];
+  goog.dispose(this.peerLoadHandler_);
+  delete this.peerLoadHandler_;
+  goog.base(this, "disposeInternal")
+};
+goog.net.xpc.CrossPageChannel.disposeAll_ = function() {
+  for(var name in goog.net.xpc.channels_) {
+    goog.dispose(goog.net.xpc.channels_[name])
+  }
+};
+goog.provide("clojure.browser.net");
+goog.require("cljs.core");
+goog.require("goog.json");
+goog.require("goog.net.xpc.CrossPageChannel");
+goog.require("goog.net.xpc.CfgFields");
+goog.require("goog.net.EventType");
+goog.require("goog.net.XhrIo");
+goog.require("clojure.browser.event");
+clojure.browser.net._STAR_timeout_STAR_ = 1E4;
+clojure.browser.net.event_types = cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4369) {
+  var vec__4370 = p__4369;
+  var k = cljs.core.nth.call(null, vec__4370, 0, null);
+  var v = cljs.core.nth.call(null, vec__4370, 1, null);
+  return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
+}, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.net.EventType))));
+clojure.browser.net.IConnection = {};
+clojure.browser.net.connect = function() {
+  var connect = null;
+  var connect__1 = function(this$) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$connect$arity$1
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$connect$arity$1(this$)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
+          }
+        }
+      }().call(null, this$)
+    }
+  };
+  var connect__2 = function(this$, opt1) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$connect$arity$2
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$connect$arity$2(this$, opt1)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
+          }
+        }
+      }().call(null, this$, opt1)
+    }
+  };
+  var connect__3 = function(this$, opt1, opt2) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$connect$arity$3
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$connect$arity$3(this$, opt1, opt2)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
+          }
+        }
+      }().call(null, this$, opt1, opt2)
+    }
+  };
+  var connect__4 = function(this$, opt1, opt2, opt3) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$connect$arity$4
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$connect$arity$4(this$, opt1, opt2, opt3)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.connect[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.connect["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.connect", this$);
+          }
+        }
+      }().call(null, this$, opt1, opt2, opt3)
+    }
+  };
+  connect = function(this$, opt1, opt2, opt3) {
+    switch(arguments.length) {
+      case 1:
+        return connect__1.call(this, this$);
+      case 2:
+        return connect__2.call(this, this$, opt1);
+      case 3:
+        return connect__3.call(this, this$, opt1, opt2);
+      case 4:
+        return connect__4.call(this, this$, opt1, opt2, opt3)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  connect.cljs$core$IFn$_invoke$arity$1 = connect__1;
+  connect.cljs$core$IFn$_invoke$arity$2 = connect__2;
+  connect.cljs$core$IFn$_invoke$arity$3 = connect__3;
+  connect.cljs$core$IFn$_invoke$arity$4 = connect__4;
+  return connect
+}();
+clojure.browser.net.transmit = function() {
+  var transmit = null;
+  var transmit__2 = function(this$, opt) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$transmit$arity$2
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$transmit$arity$2(this$, opt)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
+          }
+        }
+      }().call(null, this$, opt)
+    }
+  };
+  var transmit__3 = function(this$, opt, opt2) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$transmit$arity$3
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$transmit$arity$3(this$, opt, opt2)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
+          }
+        }
+      }().call(null, this$, opt, opt2)
+    }
+  };
+  var transmit__4 = function(this$, opt, opt2, opt3) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$transmit$arity$4
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$transmit$arity$4(this$, opt, opt2, opt3)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
+          }
+        }
+      }().call(null, this$, opt, opt2, opt3)
+    }
+  };
+  var transmit__5 = function(this$, opt, opt2, opt3, opt4) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$transmit$arity$5
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$transmit$arity$5(this$, opt, opt2, opt3, opt4)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
+          }
+        }
+      }().call(null, this$, opt, opt2, opt3, opt4)
+    }
+  };
+  var transmit__6 = function(this$, opt, opt2, opt3, opt4, opt5) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$IConnection$transmit$arity$6
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$IConnection$transmit$arity$6(this$, opt, opt2, opt3, opt4, opt5)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.transmit[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.transmit["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "IConnection.transmit", this$);
+          }
+        }
+      }().call(null, this$, opt, opt2, opt3, opt4, opt5)
+    }
+  };
+  transmit = function(this$, opt, opt2, opt3, opt4, opt5) {
+    switch(arguments.length) {
+      case 2:
+        return transmit__2.call(this, this$, opt);
+      case 3:
+        return transmit__3.call(this, this$, opt, opt2);
+      case 4:
+        return transmit__4.call(this, this$, opt, opt2, opt3);
+      case 5:
+        return transmit__5.call(this, this$, opt, opt2, opt3, opt4);
+      case 6:
+        return transmit__6.call(this, this$, opt, opt2, opt3, opt4, opt5)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  transmit.cljs$core$IFn$_invoke$arity$2 = transmit__2;
+  transmit.cljs$core$IFn$_invoke$arity$3 = transmit__3;
+  transmit.cljs$core$IFn$_invoke$arity$4 = transmit__4;
+  transmit.cljs$core$IFn$_invoke$arity$5 = transmit__5;
+  transmit.cljs$core$IFn$_invoke$arity$6 = transmit__6;
+  return transmit
+}();
+clojure.browser.net.close = function close(this$) {
+  if(function() {
+    var and__3941__auto__ = this$;
+    if(and__3941__auto__) {
+      return this$.clojure$browser$net$IConnection$close$arity$1
+    }else {
+      return and__3941__auto__
+    }
+  }()) {
+    return this$.clojure$browser$net$IConnection$close$arity$1(this$)
+  }else {
+    var x__2942__auto__ = this$ == null ? null : this$;
+    return function() {
+      var or__3943__auto__ = clojure.browser.net.close[goog.typeOf(x__2942__auto__)];
+      if(or__3943__auto__) {
+        return or__3943__auto__
+      }else {
+        var or__3943__auto____$1 = clojure.browser.net.close["_"];
+        if(or__3943__auto____$1) {
+          return or__3943__auto____$1
+        }else {
+          throw cljs.core.missing_protocol.call(null, "IConnection.close", this$);
+        }
+      }
+    }().call(null, this$)
+  }
+};
+goog.net.XhrIo.prototype.clojure$browser$event$EventType$ = true;
+goog.net.XhrIo.prototype.clojure$browser$event$EventType$event_types$arity$1 = function(this$) {
+  return cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4371) {
+    var vec__4372 = p__4371;
+    var k = cljs.core.nth.call(null, vec__4372, 0, null);
+    var v = cljs.core.nth.call(null, vec__4372, 1, null);
+    return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
+  }, cljs.core.merge.call(null, cljs.core.js__GT_clj.call(null, goog.net.EventType))))
+};
+goog.net.XhrIo.prototype.clojure$browser$net$IConnection$ = true;
+goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$2 = function(this$, uri) {
+  return clojure.browser.net.transmit.call(null, this$, uri, "GET", null, null, clojure.browser.net._STAR_timeout_STAR_)
+};
+goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$3 = function(this$, uri, method) {
+  return clojure.browser.net.transmit.call(null, this$, uri, method, null, null, clojure.browser.net._STAR_timeout_STAR_)
+};
+goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$4 = function(this$, uri, method, content) {
+  return clojure.browser.net.transmit.call(null, this$, uri, method, content, null, clojure.browser.net._STAR_timeout_STAR_)
+};
+goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$5 = function(this$, uri, method, content, headers) {
+  return clojure.browser.net.transmit.call(null, this$, uri, method, content, headers, clojure.browser.net._STAR_timeout_STAR_)
+};
+goog.net.XhrIo.prototype.clojure$browser$net$IConnection$transmit$arity$6 = function(this$, uri, method, content, headers, timeout) {
+  this$.setTimeoutInterval(timeout);
+  return this$.send(uri, method, content, headers)
+};
+clojure.browser.net.xpc_config_fields = cljs.core.into.call(null, cljs.core.ObjMap.EMPTY, cljs.core.map.call(null, function(p__4373) {
+  var vec__4374 = p__4373;
+  var k = cljs.core.nth.call(null, vec__4374, 0, null);
+  var v = cljs.core.nth.call(null, vec__4374, 1, null);
+  return cljs.core.PersistentVector.fromArray([cljs.core.keyword.call(null, k.toLowerCase()), v], true)
+}, cljs.core.js__GT_clj.call(null, goog.net.xpc.CfgFields)));
+clojure.browser.net.xhr_connection = function xhr_connection() {
+  return new goog.net.XhrIo
+};
+clojure.browser.net.ICrossPageChannel = {};
+clojure.browser.net.register_service = function() {
+  var register_service = null;
+  var register_service__3 = function(this$, service_name, fn) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$3
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$3(this$, service_name, fn)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.register_service[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.register_service["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "ICrossPageChannel.register-service", this$);
+          }
+        }
+      }().call(null, this$, service_name, fn)
+    }
+  };
+  var register_service__4 = function(this$, service_name, fn, encode_json_QMARK_) {
+    if(function() {
+      var and__3941__auto__ = this$;
+      if(and__3941__auto__) {
+        return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$4
+      }else {
+        return and__3941__auto__
+      }
+    }()) {
+      return this$.clojure$browser$net$ICrossPageChannel$register_service$arity$4(this$, service_name, fn, encode_json_QMARK_)
+    }else {
+      var x__2942__auto__ = this$ == null ? null : this$;
+      return function() {
+        var or__3943__auto__ = clojure.browser.net.register_service[goog.typeOf(x__2942__auto__)];
+        if(or__3943__auto__) {
+          return or__3943__auto__
+        }else {
+          var or__3943__auto____$1 = clojure.browser.net.register_service["_"];
+          if(or__3943__auto____$1) {
+            return or__3943__auto____$1
+          }else {
+            throw cljs.core.missing_protocol.call(null, "ICrossPageChannel.register-service", this$);
+          }
+        }
+      }().call(null, this$, service_name, fn, encode_json_QMARK_)
+    }
+  };
+  register_service = function(this$, service_name, fn, encode_json_QMARK_) {
+    switch(arguments.length) {
+      case 3:
+        return register_service__3.call(this, this$, service_name, fn);
+      case 4:
+        return register_service__4.call(this, this$, service_name, fn, encode_json_QMARK_)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  register_service.cljs$core$IFn$_invoke$arity$3 = register_service__3;
+  register_service.cljs$core$IFn$_invoke$arity$4 = register_service__4;
+  return register_service
+}();
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$ = true;
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$1 = function(this$) {
+  return clojure.browser.net.connect.call(null, this$, null)
+};
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$2 = function(this$, on_connect_fn) {
+  return this$.connect(on_connect_fn)
+};
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$3 = function(this$, on_connect_fn, config_iframe_fn) {
+  return clojure.browser.net.connect.call(null, this$, on_connect_fn, config_iframe_fn, document.body)
+};
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$connect$arity$4 = function(this$, on_connect_fn, config_iframe_fn, iframe_parent) {
+  this$.createPeerIframe(iframe_parent, config_iframe_fn);
+  return this$.connect(on_connect_fn)
+};
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$transmit$arity$3 = function(this$, service_name, payload) {
+  return this$.send(cljs.core.name.call(null, service_name), payload)
+};
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$IConnection$close$arity$1 = function(this$) {
+  return this$.close(cljs.core.List.EMPTY)
+};
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$ICrossPageChannel$ = true;
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$ICrossPageChannel$register_service$arity$3 = function(this$, service_name, fn) {
+  return clojure.browser.net.register_service.call(null, this$, service_name, fn, false)
+};
+goog.net.xpc.CrossPageChannel.prototype.clojure$browser$net$ICrossPageChannel$register_service$arity$4 = function(this$, service_name, fn, encode_json_QMARK_) {
+  return this$.registerService(cljs.core.name.call(null, service_name), fn, encode_json_QMARK_)
+};
+clojure.browser.net.xpc_connection = function() {
+  var xpc_connection = null;
+  var xpc_connection__0 = function() {
+    var temp__4092__auto__ = (new goog.Uri(window.location.href)).getParameterValue("xpc");
+    if(cljs.core.truth_(temp__4092__auto__)) {
+      var config = temp__4092__auto__;
+      return new goog.net.xpc.CrossPageChannel(goog.json.parse(config))
+    }else {
+      return null
+    }
+  };
+  var xpc_connection__1 = function(config) {
+    return new goog.net.xpc.CrossPageChannel(cljs.core.reduce.call(null, function(sum, p__4378) {
+      var vec__4379 = p__4378;
+      var k = cljs.core.nth.call(null, vec__4379, 0, null);
+      var v = cljs.core.nth.call(null, vec__4379, 1, null);
+      var temp__4090__auto__ = cljs.core.get.call(null, clojure.browser.net.xpc_config_fields, k);
+      if(cljs.core.truth_(temp__4090__auto__)) {
+        var field = temp__4090__auto__;
+        var G__4380 = sum;
+        G__4380[field] = v;
+        return G__4380
+      }else {
+        return sum
+      }
+    }, {}, config))
+  };
+  xpc_connection = function(config) {
+    switch(arguments.length) {
+      case 0:
+        return xpc_connection__0.call(this);
+      case 1:
+        return xpc_connection__1.call(this, config)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  xpc_connection.cljs$core$IFn$_invoke$arity$0 = xpc_connection__0;
+  xpc_connection.cljs$core$IFn$_invoke$arity$1 = xpc_connection__1;
+  return xpc_connection
+}();
+goog.provide("clojure.browser.repl");
+goog.require("cljs.core");
+goog.require("clojure.browser.event");
+goog.require("clojure.browser.net");
+clojure.browser.repl.xpc_connection = cljs.core.atom.call(null, null);
+clojure.browser.repl.repl_print = function repl_print(data) {
+  var temp__4090__auto__ = cljs.core.deref.call(null, clojure.browser.repl.xpc_connection);
+  if(cljs.core.truth_(temp__4090__auto__)) {
+    var conn = temp__4090__auto__;
+    return clojure.browser.net.transmit.call(null, conn, "\ufdd0:print", cljs.core.pr_str.call(null, data))
+  }else {
+    return null
+  }
+};
+clojure.browser.repl.evaluate_javascript = function evaluate_javascript(conn, block) {
+  var result = function() {
+    try {
+      return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:status", "\ufdd0:success", "\ufdd0:value", [cljs.core.str(eval(block))].join("")], true)
+    }catch(e4368) {
+      if(e4368 instanceof Error) {
+        var e = e4368;
+        return cljs.core.PersistentArrayMap.fromArray(["\ufdd0:status", "\ufdd0:exception", "\ufdd0:value", cljs.core.pr_str.call(null, e), "\ufdd0:stacktrace", cljs.core.truth_(e.hasOwnProperty("stack")) ? e.stack : "No stacktrace available."], true)
+      }else {
+        if("\ufdd0:else") {
+          throw e4368;
+        }else {
+          return null
+        }
+      }
+    }
+  }();
+  return cljs.core.pr_str.call(null, result)
+};
+clojure.browser.repl.send_result = function send_result(connection, url, data) {
+  return clojure.browser.net.transmit.call(null, connection, url, "POST", data, null, 0)
+};
+clojure.browser.repl.send_print = function() {
+  var send_print = null;
+  var send_print__2 = function(url, data) {
+    return send_print.call(null, url, data, 0)
+  };
+  var send_print__3 = function(url, data, n) {
+    var conn = clojure.browser.net.xhr_connection.call(null);
+    clojure.browser.event.listen.call(null, conn, "\ufdd0:error", function(_) {
+      if(n < 10) {
+        return send_print.call(null, url, data, n + 1)
+      }else {
+        return console.log([cljs.core.str("Could not send "), cljs.core.str(data), cljs.core.str(" after "), cljs.core.str(n), cljs.core.str(" attempts.")].join(""))
+      }
+    });
+    return clojure.browser.net.transmit.call(null, conn, url, "POST", data, null, 0)
+  };
+  send_print = function(url, data, n) {
+    switch(arguments.length) {
+      case 2:
+        return send_print__2.call(this, url, data);
+      case 3:
+        return send_print__3.call(this, url, data, n)
+    }
+    throw new Error("Invalid arity: " + arguments.length);
+  };
+  send_print.cljs$core$IFn$_invoke$arity$2 = send_print__2;
+  send_print.cljs$core$IFn$_invoke$arity$3 = send_print__3;
+  return send_print
+}();
+clojure.browser.repl.order = cljs.core.atom.call(null, 0);
+clojure.browser.repl.wrap_message = function wrap_message(t, data) {
+  return cljs.core.pr_str.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:type", t, "\ufdd0:content", data, "\ufdd0:order", cljs.core.swap_BANG_.call(null, clojure.browser.repl.order, cljs.core.inc)], true))
+};
+clojure.browser.repl.start_evaluator = function start_evaluator(url) {
+  var temp__4090__auto__ = clojure.browser.net.xpc_connection.call(null);
+  if(cljs.core.truth_(temp__4090__auto__)) {
+    var repl_connection = temp__4090__auto__;
+    var connection = clojure.browser.net.xhr_connection.call(null);
+    clojure.browser.event.listen.call(null, connection, "\ufdd0:success", function(e) {
+      return clojure.browser.net.transmit.call(null, repl_connection, "\ufdd0:evaluate-javascript", e.currentTarget.getResponseText(cljs.core.List.EMPTY))
+    });
+    clojure.browser.net.register_service.call(null, repl_connection, "\ufdd0:send-result", function(data) {
+      return clojure.browser.repl.send_result.call(null, connection, url, clojure.browser.repl.wrap_message.call(null, "\ufdd0:result", data))
+    });
+    clojure.browser.net.register_service.call(null, repl_connection, "\ufdd0:print", function(data) {
+      return clojure.browser.repl.send_print.call(null, url, clojure.browser.repl.wrap_message.call(null, "\ufdd0:print", data))
+    });
+    clojure.browser.net.connect.call(null, repl_connection, cljs.core.constantly.call(null, null));
+    return setTimeout(function() {
+      return clojure.browser.repl.send_result.call(null, connection, url, clojure.browser.repl.wrap_message.call(null, "\ufdd0:ready", "ready"))
+    }, 50)
+  }else {
+    return alert("No 'xpc' param provided to child iframe.")
+  }
+};
+clojure.browser.repl.connect = function connect(repl_server_url) {
+  var repl_connection = clojure.browser.net.xpc_connection.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:peer_uri", repl_server_url], true));
+  cljs.core.swap_BANG_.call(null, clojure.browser.repl.xpc_connection, cljs.core.constantly.call(null, repl_connection));
+  clojure.browser.net.register_service.call(null, repl_connection, "\ufdd0:evaluate-javascript", function(js) {
+    return clojure.browser.net.transmit.call(null, repl_connection, "\ufdd0:send-result", clojure.browser.repl.evaluate_javascript.call(null, repl_connection, js))
+  });
+  return clojure.browser.net.connect.call(null, repl_connection, cljs.core.constantly.call(null, null), function(iframe) {
+    return iframe.style.display = "none"
+  })
+};
+goog.provide("planets.three");
+goog.require("cljs.core");
+goog.require("planets.utils");
+goog.require("planets.maps");
+goog.require("planets.utils");
 goog.require("clojure.browser.repl");
 goog.require("dommy.core");
-planets.three.THREE = THREE;
-planets.three.Camera = THREE.Camera;
-planets.three.OBJLoader = THREE.OBJLoader;
-planets.three.Color = THREE.Color;
-planets.three.Raycaster = THREE.Raycaster;
-planets.three.Quaternion = THREE.Quaternion;
-planets.three.PerspectiveCamera = THREE.PerspectiveCamera;
-planets.three.Scene = THREE.Scene;
-planets.three.FogExp2 = THREE.FogExp2;
-planets.three.Renderer = THREE.WebGLRenderer;
-planets.three.Texture = THREE.Texture;
-planets.three.ImageUtils = THREE.ImageUtils;
-planets.three.AdditiveBlending = THREE.AdditiveBlending;
-planets.three.RenderPass = THREE.RenderPass;
-planets.three.FilmPass = THREE.FilmPass;
-planets.three.Mesh = THREE.Mesh;
-planets.three.ShaderLib = THREE.ShaderLib;
-planets.three.Geometry = THREE.Geometry;
-planets.three.Vertex = THREE.Vertex;
-planets.three.Vector3 = THREE.Vector3;
-planets.three.EffectComposer = THREE.EffectComposer;
-planets.three.ParticleBasicMaterial = THREE.ParticleBasicMaterial;
-planets.three.MeshPhongMaterial = THREE.MeshPhongMaterial;
-planets.three.ParticleSystem = THREE.ParticleSystem;
-planets.three.SphereGeometry = THREE.SphereGeometry;
-planets.three.CubeGeometry = THREE.CubeGeometry;
-planets.three.MeshLambertMaterial = THREE.MeshLambertMaterial;
-planets.three.MeshBasicMaterial = THREE.MeshBasicMaterial;
-planets.three.ShaderMaterial = THREE.ShaderMaterial;
-planets.three.Clock = THREE.Clock;
-planets.three.PointLight = THREE.PointLight;
-planets.three.DirectionalLight = THREE.DirectionalLight;
-planets.three.AmbientLight = THREE.AmbientLight;
-planets.three.UniformsUtils = THREE.UniformsUtils;
 planets.three.IRenderable = {};
 planets.three.setup = function setup(this$, options) {
   if(function() {
@@ -32414,9 +32848,9 @@ planets.three.setup = function setup(this$, options) {
   }()) {
     return this$.planets$three$IRenderable$setup$arity$2(this$, options)
   }else {
-    var x__2942__auto__ = this$ == null ? null : this$;
+    var x__2900__auto__ = this$ == null ? null : this$;
     return function() {
-      var or__3943__auto__ = planets.three.setup[goog.typeOf(x__2942__auto__)];
+      var or__3943__auto__ = planets.three.setup[goog.typeOf(x__2900__auto__)];
       if(or__3943__auto__) {
         return or__3943__auto__
       }else {
@@ -32441,9 +32875,9 @@ planets.three.render = function render(this$, renderables, options) {
   }()) {
     return this$.planets$three$IRenderable$render$arity$3(this$, renderables, options)
   }else {
-    var x__2942__auto__ = this$ == null ? null : this$;
+    var x__2900__auto__ = this$ == null ? null : this$;
     return function() {
-      var or__3943__auto__ = planets.three.render[goog.typeOf(x__2942__auto__)];
+      var or__3943__auto__ = planets.three.render[goog.typeOf(x__2900__auto__)];
       if(or__3943__auto__) {
         return or__3943__auto__
       }else {
@@ -32469,9 +32903,9 @@ planets.three.animate = function animate(this$, renderables, animatables, option
   }()) {
     return this$.planets$three$IAnimatable$animate$arity$4(this$, renderables, animatables, options)
   }else {
-    var x__2942__auto__ = this$ == null ? null : this$;
+    var x__2900__auto__ = this$ == null ? null : this$;
     return function() {
-      var or__3943__auto__ = planets.three.animate[goog.typeOf(x__2942__auto__)];
+      var or__3943__auto__ = planets.three.animate[goog.typeOf(x__2900__auto__)];
       if(or__3943__auto__) {
         return or__3943__auto__
       }else {
@@ -32496,9 +32930,9 @@ planets.three.animate_BANG_ = function animate_BANG_(this$, options, delta) {
   }()) {
     return this$.planets$three$IAnimatable$animate_BANG_$arity$3(this$, options, delta)
   }else {
-    var x__2942__auto__ = this$ == null ? null : this$;
+    var x__2900__auto__ = this$ == null ? null : this$;
     return function() {
-      var or__3943__auto__ = planets.three.animate_BANG_[goog.typeOf(x__2942__auto__)];
+      var or__3943__auto__ = planets.three.animate_BANG_[goog.typeOf(x__2900__auto__)];
       if(or__3943__auto__) {
         return or__3943__auto__
       }else {
@@ -32512,67 +32946,71 @@ planets.three.animate_BANG_ = function animate_BANG_(this$, options, delta) {
     }().call(null, this$, options, delta)
   }
 };
-planets.three.Mesh.prototype.planets$three$IAnimatable$ = true;
-planets.three.Mesh.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
-  var G__274293 = this$;
-  planets.utils.apply_nested_BANG_.call(null, G__274293, options);
-  return G__274293
+THREE.Mesh.prototype.planets$three$IAnimatable$ = true;
+THREE.Mesh.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
+  var G__310014 = this$;
+  planets.utils.apply_nested_BANG_.call(null, G__310014, options);
+  return G__310014
 };
-planets.three.Mesh.prototype.planets$three$IRenderable$ = true;
-planets.three.Mesh.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var G__274294 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274294, options);
-  return G__274294
+THREE.Mesh.prototype.planets$three$IRenderable$ = true;
+THREE.Mesh.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310015 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310015, options);
+  return G__310015
 };
-planets.three.Renderer.prototype.planets$three$IAnimatable$ = true;
-planets.three.Renderer.prototype.planets$three$IAnimatable$animate$arity$4 = function(this$, renderables, animatables, options) {
+THREE.EffectComposer.prototype.planets$three$IRenderable$ = true;
+THREE.EffectComposer.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  return null
+};
+THREE.WebGLRenderer.prototype.planets$three$IAnimatable$ = true;
+THREE.WebGLRenderer.prototype.planets$three$IAnimatable$animate$arity$4 = function(this$, renderables, animatables, options) {
+  (new cljs.core.Keyword("\ufdd0:camera")).call(null, renderables).lookAt((new cljs.core.Keyword("\ufdd0:scene")).call(null, renderables).position);
   var _animate = function _animate() {
     var delta = cljs.core.reset_BANG_.call(null, (new cljs.core.Keyword("\ufdd0:delta")).call(null, options), (new cljs.core.Keyword("\ufdd0:clock")).call(null, options).getDelta());
     window.requestAnimationFrame(_animate);
-    (new cljs.core.Keyword("\ufdd0:camera")).call(null, renderables).lookAt((new cljs.core.Keyword("\ufdd0:scene")).call(null, renderables).position);
-    var seq__274299_274305 = cljs.core.seq.call(null, animatables);
-    var chunk__274300_274306 = null;
-    var count__274301_274307 = 0;
-    var i__274302_274308 = 0;
+    var seq__310020_310026 = cljs.core.seq.call(null, animatables);
+    var chunk__310021_310027 = null;
+    var count__310022_310028 = 0;
+    var i__310023_310029 = 0;
     while(true) {
-      if(i__274302_274308 < count__274301_274307) {
-        var animatable_274309 = cljs.core._nth.call(null, chunk__274300_274306, i__274302_274308);
-        planets.three.animate_BANG_.call(null, (new cljs.core.Keyword("\ufdd0:animatable")).call(null, animatable_274309), (new cljs.core.Keyword("\ufdd0:animation")).call(null, animatable_274309), delta);
-        var G__274310 = seq__274299_274305;
-        var G__274311 = chunk__274300_274306;
-        var G__274312 = count__274301_274307;
-        var G__274313 = i__274302_274308 + 1;
-        seq__274299_274305 = G__274310;
-        chunk__274300_274306 = G__274311;
-        count__274301_274307 = G__274312;
-        i__274302_274308 = G__274313;
+      if(i__310023_310029 < count__310022_310028) {
+        var animatable_310030 = cljs.core._nth.call(null, chunk__310021_310027, i__310023_310029);
+        planets.three.animate_BANG_.call(null, (new cljs.core.Keyword("\ufdd0:animatable")).call(null, animatable_310030), (new cljs.core.Keyword("\ufdd0:animation")).call(null, animatable_310030), delta);
+        var G__310031 = seq__310020_310026;
+        var G__310032 = chunk__310021_310027;
+        var G__310033 = count__310022_310028;
+        var G__310034 = i__310023_310029 + 1;
+        seq__310020_310026 = G__310031;
+        chunk__310021_310027 = G__310032;
+        count__310022_310028 = G__310033;
+        i__310023_310029 = G__310034;
         continue
       }else {
-        var temp__4092__auto___274314 = cljs.core.seq.call(null, seq__274299_274305);
-        if(temp__4092__auto___274314) {
-          var seq__274299_274315__$1 = temp__4092__auto___274314;
-          if(cljs.core.chunked_seq_QMARK_.call(null, seq__274299_274315__$1)) {
-            var c__3073__auto___274316 = cljs.core.chunk_first.call(null, seq__274299_274315__$1);
-            var G__274317 = cljs.core.chunk_rest.call(null, seq__274299_274315__$1);
-            var G__274318 = c__3073__auto___274316;
-            var G__274319 = cljs.core.count.call(null, c__3073__auto___274316);
-            var G__274320 = 0;
-            seq__274299_274305 = G__274317;
-            chunk__274300_274306 = G__274318;
-            count__274301_274307 = G__274319;
-            i__274302_274308 = G__274320;
+        var temp__4092__auto___310035 = cljs.core.seq.call(null, seq__310020_310026);
+        if(temp__4092__auto___310035) {
+          var seq__310020_310036__$1 = temp__4092__auto___310035;
+          if(cljs.core.chunked_seq_QMARK_.call(null, seq__310020_310036__$1)) {
+            var c__3031__auto___310037 = cljs.core.chunk_first.call(null, seq__310020_310036__$1);
+            var G__310038 = cljs.core.chunk_rest.call(null, seq__310020_310036__$1);
+            var G__310039 = c__3031__auto___310037;
+            var G__310040 = cljs.core.count.call(null, c__3031__auto___310037);
+            var G__310041 = 0;
+            seq__310020_310026 = G__310038;
+            chunk__310021_310027 = G__310039;
+            count__310022_310028 = G__310040;
+            i__310023_310029 = G__310041;
             continue
           }else {
-            var animatable_274321 = cljs.core.first.call(null, seq__274299_274315__$1);
-            planets.three.animate_BANG_.call(null, (new cljs.core.Keyword("\ufdd0:animatable")).call(null, animatable_274321), (new cljs.core.Keyword("\ufdd0:animation")).call(null, animatable_274321), delta);
-            var G__274322 = cljs.core.next.call(null, seq__274299_274315__$1);
-            var G__274323 = null;
-            var G__274324 = 0;
-            var G__274325 = 0;
-            seq__274299_274305 = G__274322;
-            chunk__274300_274306 = G__274323;
-            count__274301_274307 = G__274324;
-            i__274302_274308 = G__274325;
+            var animatable_310042 = cljs.core.first.call(null, seq__310020_310036__$1);
+            planets.three.animate_BANG_.call(null, (new cljs.core.Keyword("\ufdd0:animatable")).call(null, animatable_310042), (new cljs.core.Keyword("\ufdd0:animation")).call(null, animatable_310042), delta);
+            var G__310043 = cljs.core.next.call(null, seq__310020_310036__$1);
+            var G__310044 = null;
+            var G__310045 = 0;
+            var G__310046 = 0;
+            seq__310020_310026 = G__310043;
+            chunk__310021_310027 = G__310044;
+            count__310022_310028 = G__310045;
+            i__310023_310029 = G__310046;
             continue
           }
         }else {
@@ -32584,106 +33022,146 @@ planets.three.Renderer.prototype.planets$three$IAnimatable$animate$arity$4 = fun
   };
   return _animate.call(null)
 };
-planets.three.Renderer.prototype.planets$three$IRenderable$ = true;
-planets.three.Renderer.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var map__274303 = options;
-  var map__274303__$1 = cljs.core.seq_QMARK_.call(null, map__274303) ? cljs.core.apply.call(null, cljs.core.hash_map, map__274303) : map__274303;
-  var renderables = cljs.core.get.call(null, map__274303__$1, "\ufdd0:renderables");
-  var height = cljs.core.get.call(null, map__274303__$1, "\ufdd0:height");
-  var width = cljs.core.get.call(null, map__274303__$1, "\ufdd0:width");
-  var render_model = new planets.three.RenderPass((new cljs.core.Keyword("\ufdd0:scene")).call(null, renderables), (new cljs.core.Keyword("\ufdd0:camera")).call(null, renderables));
-  var film_effect = new planets.three.FilmPass(0.35, 0.75, 2048, false);
-  var composer = new planets.three.EffectComposer(this$);
-  film_effect["renderToScreen"] = true;
+THREE.WebGLRenderer.prototype.planets$three$IRenderable$ = true;
+THREE.WebGLRenderer.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var map__310024 = options;
+  var map__310024__$1 = cljs.core.seq_QMARK_.call(null, map__310024) ? cljs.core.apply.call(null, cljs.core.hash_map, map__310024) : map__310024;
+  var renderables = cljs.core.get.call(null, map__310024__$1, "\ufdd0:renderables");
+  var height = cljs.core.get.call(null, map__310024__$1, "\ufdd0:height");
+  var width = cljs.core.get.call(null, map__310024__$1, "\ufdd0:width");
+  var render_target = new THREE.WebGLRenderTarget(width, height, cljs.core.clj__GT_js.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:minFilter", THREE.LinearFilter, "\ufdd0:magFilter", THREE.LinearFilter, "\ufdd0:format", THREE.RGBFormat, "\ufdd0:stencilBuffer", false], true)));
+  var composer = new THREE.EffectComposer(this$, render_target);
+  var render_model = new THREE.RenderPass((new cljs.core.Keyword("\ufdd0:scene")).call(null, renderables), (new cljs.core.Keyword("\ufdd0:camera")).call(null, renderables));
+  var bleach_effect = function() {
+    var bleach = new THREE.ShaderPass(THREE.BleachBypassShader);
+    var uniforms = bleach.uniforms;
+    planets.utils.set_nested_BANG_.call(null, uniforms, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:opacity", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 0.65], true)], true));
+    return bleach
+  }();
+  var bloom_effect = new THREE.BloomPass(0.6);
+  var hblur = function() {
+    var hblur = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader);
+    var uniforms = hblur.uniforms;
+    planets.utils.set_nested_BANG_.call(null, uniforms, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:h", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 1.5 / width], true), "\ufdd0:r", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 0.5], true)], true));
+    return hblur
+  }();
+  var vblur = function() {
+    var vblur = new THREE.ShaderPass(THREE.VerticalTiltShiftShader);
+    var uniforms = vblur.uniforms;
+    planets.utils.set_nested_BANG_.call(null, uniforms, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:v", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 1.5 / height], true), "\ufdd0:r", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 0.5], true)], true));
+    return vblur
+  }();
+  vblur["renderToScreen"] = true;
+  this$.sortObjects = false;
   composer.addPass(render_model);
-  composer.addPass(film_effect);
-  var G__274304 = this$;
-  G__274304.setSize(width, height);
-  G__274304["sortObjects"] = false;
-  G__274304["autoClear"] = false;
-  G__274304["clearAlpha"] = 1;
-  G__274304["antialias"] = true;
-  G__274304["composer"] = composer;
-  return G__274304
+  composer.addPass(bloom_effect);
+  composer.addPass(hblur);
+  composer.addPass(vblur);
+  var G__310025 = this$;
+  G__310025.setSize(width, height);
+  planets.utils.set_nested_BANG_.call(null, G__310025, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:gammaInput", true, "\ufdd0:gammaOutput", true], true));
+  G__310025["autoClear"] = false;
+  G__310025["alpha"] = false;
+  G__310025["composer"] = composer;
+  return G__310025
 };
-planets.three.Renderer.prototype.planets$three$IRenderable$render$arity$3 = function(this$, renderables, options) {
+THREE.WebGLRenderer.prototype.planets$three$IRenderable$render$arity$3 = function(this$, renderables, options) {
   var delta = cljs.core.deref.call(null, (new cljs.core.Keyword("\ufdd0:delta")).call(null, options));
   var composer = this$["composer"];
   return composer.render(delta)
 };
-planets.three.PerspectiveCamera.prototype.planets$three$IAnimatable$ = true;
-planets.three.PerspectiveCamera.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
+THREE.WebGLRenderTarget.prototype.planets$three$IAnimatable$ = true;
+THREE.WebGLRenderTarget.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
+  return(new cljs.core.Keyword("\ufdd0:renderer")).call(null, options).render((new cljs.core.Keyword("\ufdd0:scene")).call(null, options), (new cljs.core.Keyword("\ufdd0:camera")).call(null, options), this$, true)
+};
+THREE.WebGLRenderTarget.prototype.planets$three$IRenderable$ = true;
+THREE.WebGLRenderTarget.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310047 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310047, options);
+  return G__310047
+};
+THREE.PerspectiveCamera.prototype.planets$three$IAnimatable$ = true;
+THREE.PerspectiveCamera.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
   var ship = (new cljs.core.Keyword("\ufdd0:ship")).call(null, options);
   var quaternion = (new cljs.core.Keyword("\ufdd0:quaternion")).call(null, cljs.core.deref.call(null, ship));
   var move_mult = (new cljs.core.Keyword("\ufdd0:speed")).call(null, cljs.core.deref.call(null, ship)) * delta;
   var rot_mult = (new cljs.core.Keyword("\ufdd0:roll-speed")).call(null, cljs.core.deref.call(null, ship)) * delta;
-  var G__274326_274329 = quaternion;
-  G__274326_274329.set((new cljs.core.Keyword("\ufdd0:rotation-vector")).call(null, cljs.core.deref.call(null, ship)).x * rot_mult, (new cljs.core.Keyword("\ufdd0:rotation-vector")).call(null, cljs.core.deref.call(null, ship)).y * rot_mult, (new cljs.core.Keyword("\ufdd0:rotation-vector")).call(null, cljs.core.deref.call(null, ship)).z * rot_mult, 1);
-  G__274326_274329.normalize();
+  var G__310048_310051 = quaternion;
+  G__310048_310051.set((new cljs.core.Keyword("\ufdd0:rotation-vector")).call(null, cljs.core.deref.call(null, ship)).x * rot_mult, (new cljs.core.Keyword("\ufdd0:rotation-vector")).call(null, cljs.core.deref.call(null, ship)).y * rot_mult, (new cljs.core.Keyword("\ufdd0:rotation-vector")).call(null, cljs.core.deref.call(null, ship)).z * rot_mult, 1);
+  G__310048_310051.normalize();
   this$.quaternion.multiply(quaternion);
   this$.rotation.setEulerFromQuaternion(this$.quaternion, this$.eulerOrder);
-  var G__274327 = this$;
-  G__274327.translateX((new cljs.core.Keyword("\ufdd0:move-vector")).call(null, cljs.core.deref.call(null, ship)).x * move_mult);
-  G__274327.translateY((new cljs.core.Keyword("\ufdd0:move-vector")).call(null, cljs.core.deref.call(null, ship)).y * move_mult);
-  G__274327.translateZ((new cljs.core.Keyword("\ufdd0:move-vector")).call(null, cljs.core.deref.call(null, ship)).z * move_mult);
-  return G__274327
+  var G__310049 = this$;
+  G__310049.translateX((new cljs.core.Keyword("\ufdd0:move-vector")).call(null, cljs.core.deref.call(null, ship)).x * move_mult);
+  G__310049.translateY((new cljs.core.Keyword("\ufdd0:move-vector")).call(null, cljs.core.deref.call(null, ship)).y * move_mult);
+  G__310049.translateZ((new cljs.core.Keyword("\ufdd0:move-vector")).call(null, cljs.core.deref.call(null, ship)).z * move_mult);
+  return G__310049
 };
-planets.three.PerspectiveCamera.prototype.planets$three$IRenderable$ = true;
-planets.three.PerspectiveCamera.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var G__274328 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274328, options);
-  return G__274328
+THREE.PerspectiveCamera.prototype.planets$three$IRenderable$ = true;
+THREE.PerspectiveCamera.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310050 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310050, options);
+  return G__310050
 };
-planets.three.Scene.prototype.planets$three$IRenderable$ = true;
-planets.three.Scene.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var map__274330 = options;
-  var map__274330__$1 = cljs.core.seq_QMARK_.call(null, map__274330) ? cljs.core.apply.call(null, cljs.core.hash_map, map__274330) : map__274330;
-  var objects = cljs.core.get.call(null, map__274330__$1, "\ufdd0:objects");
-  var seq__274331 = cljs.core.seq.call(null, objects);
-  var chunk__274332 = null;
-  var count__274333 = 0;
-  var i__274334 = 0;
+THREE.Scene.prototype.planets$three$IAnimatable$ = true;
+THREE.Scene.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
+  var G__310052 = this$;
+  planets.utils.apply_nested_BANG_.call(null, G__310052, options);
+  return G__310052
+};
+THREE.Scene.prototype.planets$three$IRenderable$ = true;
+THREE.Scene.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var map__310053 = options;
+  var map__310053__$1 = cljs.core.seq_QMARK_.call(null, map__310053) ? cljs.core.apply.call(null, cljs.core.hash_map, map__310053) : map__310053;
+  var params = cljs.core.get.call(null, map__310053__$1, "\ufdd0:params");
+  var objects = cljs.core.get.call(null, map__310053__$1, "\ufdd0:objects");
+  var seq__310054 = cljs.core.seq.call(null, objects);
+  var chunk__310055 = null;
+  var count__310056 = 0;
+  var i__310057 = 0;
   while(true) {
-    if(i__274334 < count__274333) {
-      var obj = cljs.core._nth.call(null, chunk__274332, i__274334);
-      var G__274335_274337 = this$;
-      G__274335_274337.add(obj);
-      var G__274338 = seq__274331;
-      var G__274339 = chunk__274332;
-      var G__274340 = count__274333;
-      var G__274341 = i__274334 + 1;
-      seq__274331 = G__274338;
-      chunk__274332 = G__274339;
-      count__274333 = G__274340;
-      i__274334 = G__274341;
+    if(i__310057 < count__310056) {
+      var obj = cljs.core._nth.call(null, chunk__310055, i__310057);
+      var G__310058_310060 = this$;
+      G__310058_310060.add(obj);
+      planets.utils.set_nested_BANG_.call(null, G__310058_310060, params);
+      var G__310061 = seq__310054;
+      var G__310062 = chunk__310055;
+      var G__310063 = count__310056;
+      var G__310064 = i__310057 + 1;
+      seq__310054 = G__310061;
+      chunk__310055 = G__310062;
+      count__310056 = G__310063;
+      i__310057 = G__310064;
       continue
     }else {
-      var temp__4092__auto__ = cljs.core.seq.call(null, seq__274331);
+      var temp__4092__auto__ = cljs.core.seq.call(null, seq__310054);
       if(temp__4092__auto__) {
-        var seq__274331__$1 = temp__4092__auto__;
-        if(cljs.core.chunked_seq_QMARK_.call(null, seq__274331__$1)) {
-          var c__3073__auto__ = cljs.core.chunk_first.call(null, seq__274331__$1);
-          var G__274342 = cljs.core.chunk_rest.call(null, seq__274331__$1);
-          var G__274343 = c__3073__auto__;
-          var G__274344 = cljs.core.count.call(null, c__3073__auto__);
-          var G__274345 = 0;
-          seq__274331 = G__274342;
-          chunk__274332 = G__274343;
-          count__274333 = G__274344;
-          i__274334 = G__274345;
+        var seq__310054__$1 = temp__4092__auto__;
+        if(cljs.core.chunked_seq_QMARK_.call(null, seq__310054__$1)) {
+          var c__3031__auto__ = cljs.core.chunk_first.call(null, seq__310054__$1);
+          var G__310065 = cljs.core.chunk_rest.call(null, seq__310054__$1);
+          var G__310066 = c__3031__auto__;
+          var G__310067 = cljs.core.count.call(null, c__3031__auto__);
+          var G__310068 = 0;
+          seq__310054 = G__310065;
+          chunk__310055 = G__310066;
+          count__310056 = G__310067;
+          i__310057 = G__310068;
           continue
         }else {
-          var obj = cljs.core.first.call(null, seq__274331__$1);
-          var G__274336_274346 = this$;
-          G__274336_274346.add(obj);
-          var G__274347 = cljs.core.next.call(null, seq__274331__$1);
-          var G__274348 = null;
-          var G__274349 = 0;
-          var G__274350 = 0;
-          seq__274331 = G__274347;
-          chunk__274332 = G__274348;
-          count__274333 = G__274349;
-          i__274334 = G__274350;
+          var obj = cljs.core.first.call(null, seq__310054__$1);
+          var G__310059_310069 = this$;
+          G__310059_310069.add(obj);
+          planets.utils.set_nested_BANG_.call(null, G__310059_310069, params);
+          var G__310070 = cljs.core.next.call(null, seq__310054__$1);
+          var G__310071 = null;
+          var G__310072 = 0;
+          var G__310073 = 0;
+          seq__310054 = G__310070;
+          chunk__310055 = G__310071;
+          count__310056 = G__310072;
+          i__310057 = G__310073;
           continue
         }
       }else {
@@ -32693,99 +33171,103 @@ planets.three.Scene.prototype.planets$three$IRenderable$setup$arity$2 = function
     break
   }
 };
-planets.three.PointLight.prototype.planets$three$IRenderable$ = true;
-planets.three.PointLight.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var G__274351 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274351, options);
-  return G__274351
+THREE.PointLight.prototype.planets$three$IRenderable$ = true;
+THREE.PointLight.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310074 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310074, options);
+  return G__310074
 };
-planets.three.DirectionalLight.prototype.planets$three$IRenderable$ = true;
-planets.three.DirectionalLight.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var G__274352 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274352, options);
-  return G__274352
+THREE.DirectionalLight.prototype.planets$three$IRenderable$ = true;
+THREE.DirectionalLight.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310075 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310075, options);
+  return G__310075
 };
-planets.three.ParticleSystem.prototype.planets$three$IAnimatable$ = true;
-planets.three.ParticleSystem.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
-  var G__274353 = this$;
-  planets.utils.apply_nested_BANG_.call(null, G__274353, options);
-  return G__274353
+THREE.ParticleSystem.prototype.planets$three$IAnimatable$ = true;
+THREE.ParticleSystem.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
+  var G__310076 = this$;
+  planets.utils.apply_nested_BANG_.call(null, G__310076, options);
+  return G__310076
 };
-planets.three.ParticleSystem.prototype.planets$three$IRenderable$ = true;
-planets.three.ParticleSystem.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var G__274354 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274354, options);
-  return G__274354
+THREE.ParticleSystem.prototype.planets$three$IRenderable$ = true;
+THREE.ParticleSystem.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310077 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310077, options);
+  return G__310077
 };
-planets.three.ParticleBasicMaterial.prototype.planets$three$IAnimatable$ = true;
-planets.three.ParticleBasicMaterial.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
-  var G__274359 = this$;
-  planets.utils.apply_nested_BANG_.call(null, G__274359, options);
-  return G__274359
+THREE.ParticleBasicMaterial.prototype.planets$three$IAnimatable$ = true;
+THREE.ParticleBasicMaterial.prototype.planets$three$IAnimatable$animate_BANG_$arity$3 = function(this$, options, delta) {
+  var G__310078 = this$;
+  planets.utils.apply_nested_BANG_.call(null, G__310078, options);
+  return G__310078
 };
-planets.three.ParticleBasicMaterial.prototype.planets$three$IRenderable$ = true;
-planets.three.ParticleBasicMaterial.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var G__274360 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274360, options);
-  return G__274360
+THREE.ParticleBasicMaterial.prototype.planets$three$IRenderable$ = true;
+THREE.ParticleBasicMaterial.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310079 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310079, options);
+  return G__310079
 };
-planets.three.Geometry.prototype.planets$three$IAnimatable$ = true;
-planets.three.Geometry.prototype.planets$three$IRenderable$ = true;
-planets.three.Geometry.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var map__274361 = options;
-  var map__274361__$1 = cljs.core.seq_QMARK_.call(null, map__274361) ? cljs.core.apply.call(null, cljs.core.hash_map, map__274361) : map__274361;
-  var vertex_range = cljs.core.get.call(null, map__274361__$1, "\ufdd0:vertex-range");
-  var particle_count = cljs.core.get.call(null, map__274361__$1, "\ufdd0:particle-count");
-  var particles = function(map__274361, map__274361__$1, vertex_range, particle_count) {
-    return function(p1__274358_SHARP_) {
-      var G__274362 = this$;
-      G__274362["vertices"] = p1__274358_SHARP_;
-      return G__274362
+THREE.Geometry.prototype.planets$three$IAnimatable$ = true;
+THREE.Geometry.prototype.planets$three$IRenderable$ = true;
+THREE.Geometry.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var map__310084 = options;
+  var map__310084__$1 = cljs.core.seq_QMARK_.call(null, map__310084) ? cljs.core.apply.call(null, cljs.core.hash_map, map__310084) : map__310084;
+  var vertex_range = cljs.core.get.call(null, map__310084__$1, "\ufdd0:vertex-range");
+  var particle_count = cljs.core.get.call(null, map__310084__$1, "\ufdd0:particle-count");
+  var particles = function(map__310084, map__310084__$1, vertex_range, particle_count) {
+    return function(p1__310083_SHARP_) {
+      var G__310085 = this$;
+      G__310085["vertices"] = p1__310083_SHARP_;
+      return G__310085
     }
-  }(map__274361, map__274361__$1, vertex_range, particle_count).call(null, cljs.core.clj__GT_js.call(null, cljs.core.reduce.call(null, function(map__274361, map__274361__$1, vertex_range, particle_count) {
+  }(map__310084, map__310084__$1, vertex_range, particle_count).call(null, cljs.core.clj__GT_js.call(null, cljs.core.reduce.call(null, function(map__310084, map__310084__$1, vertex_range, particle_count) {
     return function(particles, p) {
-      var particle = cljs.core.apply.call(null, function(map__274361, map__274361__$1, vertex_range, particle_count) {
-        return function(p1__274355_SHARP_, p2__274356_SHARP_, p3__274357_SHARP_) {
-          return new planets.three.Vector3(p1__274355_SHARP_, p2__274356_SHARP_, p3__274357_SHARP_)
+      var particle = cljs.core.apply.call(null, function(map__310084, map__310084__$1, vertex_range, particle_count) {
+        return function(p1__310080_SHARP_, p2__310081_SHARP_, p3__310082_SHARP_) {
+          return new THREE.Vector3(p1__310080_SHARP_, p2__310081_SHARP_, p3__310082_SHARP_)
         }
-      }(map__274361, map__274361__$1, vertex_range, particle_count), cljs.core.repeatedly.call(null, 3, function(map__274361, map__274361__$1, vertex_range, particle_count) {
+      }(map__310084, map__310084__$1, vertex_range, particle_count), cljs.core.repeatedly.call(null, 3, function(map__310084, map__310084__$1, vertex_range, particle_count) {
         return function() {
           return cljs.core.rand.call(null) * 2 - 1
         }
-      }(map__274361, map__274361__$1, vertex_range, particle_count)));
+      }(map__310084, map__310084__$1, vertex_range, particle_count)));
       particle.multiplyScalar(6371);
       return cljs.core.conj.call(null, particles, particle)
     }
-  }(map__274361, map__274361__$1, vertex_range, particle_count), cljs.core.PersistentVector.EMPTY, cljs.core.range.call(null, particle_count))));
+  }(map__310084, map__310084__$1, vertex_range, particle_count), cljs.core.PersistentVector.EMPTY, cljs.core.range.call(null, particle_count))));
   return this$
 };
-planets.three.Texture.prototype.planets$three$IAnimatable$ = true;
-planets.three.Texture.prototype.planets$three$IRenderable$ = true;
-planets.three.Texture.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
-  var G__274363 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274363, options);
-  return G__274363
+THREE.Texture.prototype.planets$three$IAnimatable$ = true;
+THREE.Texture.prototype.planets$three$IRenderable$ = true;
+THREE.Texture.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+  var G__310086 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310086, options);
+  return G__310086
 };
 planets.three.IRenderable["object"] = true;
 planets.three.setup["object"] = function(this$, options) {
-  var G__274364 = this$;
-  planets.utils.set_nested_BANG_.call(null, G__274364, options);
-  return G__274364
+  var G__310087 = this$;
+  planets.utils.set_nested_BANG_.call(null, G__310087, options);
+  return G__310087
 };
-planets.three.FogExp2.prototype.planets$three$IAnimatable$ = true;
-planets.three.FogExp2.prototype.planets$three$IRenderable$ = true;
-planets.three.Vector3.prototype.planets$three$IAnimatable$ = true;
-planets.three.Vector3.prototype.planets$three$IRenderable$ = true;
-planets.three.Vector3.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
+THREE.FogExp2.prototype.planets$three$IAnimatable$ = true;
+THREE.FogExp2.prototype.planets$three$IRenderable$ = true;
+THREE.Vector3.prototype.planets$three$IAnimatable$ = true;
+THREE.Vector3.prototype.planets$three$IRenderable$ = true;
+THREE.Vector3.prototype.planets$three$IRenderable$setup$arity$2 = function(this$, options) {
   return null
 };
-planets.three.SphereGeometry.prototype.planets$three$IRenderable$ = true;
+THREE.SphereGeometry.prototype.planets$three$IRenderable$ = true;
 planets.three.mouse_observer = function mouse_observer(mouse) {
   dommy.core.listen_BANG_.call(null, dommy.utils.__GT_Array.call(null, document.getElementsByTagName("canvas"))[0], "\ufdd0:click", function() {
     return dommy.utils.__GT_Array.call(null, document.getElementsByTagName("canvas"))[0].webkitRequestPointerLock()
   });
   return dommy.core.listen_BANG_.call(null, document, "\ufdd0:mousemove", function(e) {
-    return cljs.core.reset_BANG_.call(null, mouse, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", e.webkitMovementX, "\ufdd0:y", e.webkitMovementY, "\ufdd0:event", e], true))
+    if(cljs.core._EQ_.call(null, document.webkitPointerLockElement, dommy.utils.__GT_Array.call(null, document.getElementsByTagName("canvas"))[0])) {
+      return cljs.core.reset_BANG_.call(null, mouse, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", e.webkitMovementX, "\ufdd0:y", -e.webkitMovementY, "\ufdd0:event", e], true))
+    }else {
+      return cljs.core.reset_BANG_.call(null, mouse, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0, "\ufdd0:y", 0, "\ufdd0:event", e], true))
+    }
   })
 };
 planets.three.ship_observer = function ship_observer(ship, mouse, keyboard) {
@@ -32830,175 +33312,180 @@ planets.three.random_planet = function random_planet() {
   }, cljs.core.PersistentVector.EMPTY, "abcdefghijklmnopqrstxyz"))
 };
 planets.three.draw_canvas = function draw_canvas(scene, renderer, camera, options) {
-  var galaxy_options = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:radius", 6371, "\ufdd0:tilt", 0.41, "\ufdd0:rotationSpeed", 0.02], true);
-  var ship = cljs.core.atom.call(null, cljs.core.PersistentHashMap.fromArrays(["\ufdd0:yaw-left", "\ufdd0:rotation-vector", "\ufdd0:speed", "\ufdd0:forward", "\ufdd0:pitch-down", "\ufdd0:back", "\ufdd0:yaw-right", "\ufdd0:move-vector", "\ufdd0:roll-left", "\ufdd0:right", "\ufdd0:left", "\ufdd0:quaternion", "\ufdd0:roll-right", "\ufdd0:roll-speed", "\ufdd0:pitch-up", "\ufdd0:down", "\ufdd0:up"], [0, new planets.three.Vector3(0, 0, 0), 1E3, 0, 0, 0, 0, new planets.three.Vector3(0, 0, 0), 0, 0, 0, new planets.three.Quaternion, 
+  var ship = cljs.core.atom.call(null, cljs.core.PersistentHashMap.fromArrays(["\ufdd0:yaw-left", "\ufdd0:rotation-vector", "\ufdd0:speed", "\ufdd0:forward", "\ufdd0:pitch-down", "\ufdd0:back", "\ufdd0:yaw-right", "\ufdd0:move-vector", "\ufdd0:roll-left", "\ufdd0:right", "\ufdd0:left", "\ufdd0:quaternion", "\ufdd0:roll-right", "\ufdd0:roll-speed", "\ufdd0:pitch-up", "\ufdd0:down", "\ufdd0:up"], [0, new THREE.Vector3(0, 0, 0), 2E3, 0, 0, 0, 0, new THREE.Vector3(0, 0, 0), 0, 0, 0, new THREE.Quaternion, 
   0, Math.PI / 36, 0, 0, 0]));
+  var clock = new THREE.Clock;
+  var delta = cljs.core.atom.call(null, 0);
   var mouse = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0, "\ufdd0:y", 0, "\ufdd0:drag-to-look", false], true));
   var keyboard = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:key-code", null, "\ufdd0:event", null], true));
-  var fog = new planets.three.FogExp2(0, 2.5E-7);
-  var loader = new planets.three.OBJLoader;
-  var sovereign = loader.load("textures/planets/Sovereign/Sovereign.obj", function(galaxy_options, ship, mouse, keyboard, fog, loader) {
-    return function(obj) {
-      return planets.three.setup.call(null, scene, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:objects", cljs.core.PersistentVector.fromArray([function() {
-        var G__274394 = obj;
-        planets.three.setup.call(null, G__274394, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 3 * 6371], true)], true));
-        return G__274394
-      }()], true)], true))
+  var fog = function() {
+    var G__310117 = new THREE.Fog(328965, 2E3, 4E3);
+    planets.utils.apply_nested_BANG_.call(null, G__310117, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", function(G__310117, ship, clock, delta, mouse, keyboard) {
+      return function(clr) {
+        return clr
+      }
+    }(G__310117, ship, clock, delta, mouse, keyboard)], true));
+    return G__310117
+  }();
+  var sovereign = cljs.core.atom.call(null, null);
+  var load_fn = function(ship, clock, delta, mouse, keyboard, fog, sovereign) {
+    return function(e) {
+      return cljs.core.reset_BANG_.call(null, sovereign, e.content)
     }
-  }(galaxy_options, ship, mouse, keyboard, fog, loader));
-  var container = dommy.core.append_BANG_.call(null, dommy.core.set_style_BANG_.call(null, document.body, "\ufdd0:background-color", "#000"), renderer.domElement);
-  var sun_texture = planets.three.ImageUtils.loadTexture("textures/planets/sun.png");
-  var planet_texture = planets.three.ImageUtils.loadTexture("textures/planets/textures/planets/earth_atmos_2048.jpg");
-  var clouds_texture = planets.three.ImageUtils.loadTexture("textures/planets/textures/planets/earth_clouds_1024.png");
-  var normal_texture = planets.three.ImageUtils.loadTexture("textures/planets/textures/planets/earth_normal_2048.jpg");
-  var specular_texture = planets.three.ImageUtils.loadTexture("textures/planets/textures/planets/earth_specular_2048.jpg");
-  var moon_texture = planets.three.ImageUtils.loadTexture("textures/planets/textures/planets/moon_1024.jpg");
-  var shader = planets.three.ShaderLib["normalmap"];
-  var uniforms = function() {
-    var uniforms = function() {
-      var G__274395 = planets.three.UniformsUtils.clone(shader.uniforms);
-      planets.utils.set_nested_BANG_.call(null, G__274395, cljs.core.PersistentHashMap.fromArrays(["\ufdd0:uAmbientColor", "\ufdd0:tNormal", "\ufdd0:enableDiffuse", "\ufdd0:uDiffuseColor", "\ufdd0:enableSpecular", "\ufdd0:uSpecularColor", "\ufdd0:tSpecular", "\ufdd0:uShininess", "\ufdd0:tDiffuse", "\ufdd0:enableAO"], [cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new planets.three.Color(0)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", normal_texture], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 
-      true], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new planets.three.Color(16777215)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", true], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", new planets.three.Color(3355443)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", specular_texture], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", 15], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", planet_texture], 
-      true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:value", false], true)]));
-      return G__274395
-    }();
-    uniforms["uNormalScale"].value.set(0.85, 0.85);
-    return uniforms
+  }(ship, clock, delta, mouse, keyboard, fog, sovereign);
+  var loader = function() {
+    var G__310118 = new THREE.OBJMTLLoader;
+    G__310118.addEventListener("load", load_fn);
+    return G__310118
   }();
-  var material_normal_map = new planets.three.ShaderMaterial(cljs.core.clj__GT_js.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fragmentShader", shader.fragmentShader, "\ufdd0:vertexShader", shader.vertexShader, "\ufdd0:uniforms", uniforms, "\ufdd0:lights", true, "\ufdd0:fog", true], true)));
-  var lambert_material = new planets.three.MeshLambertMaterial(cljs.core.clj__GT_js.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 16777215, "\ufdd0:blending", planets.three.AdditiveBlending, "\ufdd0:map", planet_texture], true)));
+  var load = loader.load("textures/planets/Sovereign/Sovereign.obj", "textures/planets/Sovereign/Sovereign.mtl");
+  var loader_watcher = cljs.core.add_watch.call(null, sovereign, null, function(ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load) {
+    return function(a, b, c, obj) {
+      var G__310119_310145 = obj;
+      planets.three.setup.call(null, G__310119_310145, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:z", 5 * 6371], true)], true));
+      return planets.three.setup.call(null, scene, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:objects", cljs.core.PersistentVector.fromArray([obj], true)], true))
+    }
+  }(ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load));
+  var container = dommy.core.append_BANG_.call(null, document.body, renderer.domElement);
+  var spectral_nebula = THREE.ImageUtils.loadTexture("textures/planets/textures/planets/47tuc.png");
+  var nebula = THREE.ImageUtils.loadTexture("textures/planets/textures/planets/NGC1499.png");
+  var moon_texture = THREE.ImageUtils.loadTexture("textures/planets/textures/planets/moon_1024.jpg");
+  var shader_textures = planets.maps.simplex_noise_terrain.call(null, renderer, camera, delta);
+  var lambert_material = new THREE.MeshLambertMaterial(cljs.core.clj__GT_js.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 16777215, "\ufdd0:blending", THREE.AdditiveBlending, "\ufdd0:map", nebula], true)));
   var planet_geometry = function() {
-    var G__274396 = new planets.three.SphereGeometry(6371, 100, 50);
-    G__274396.computeTangents();
-    return G__274396
+    var G__310120 = new THREE.SphereGeometry(6371, 100, 50);
+    G__310120.computeFaceNormals();
+    G__310120.computeVertexNormals();
+    G__310120.computeTangents();
+    return G__310120
   }();
-  var planet = function() {
-    var G__274397 = new planets.three.Mesh(planet_geometry, material_normal_map);
-    planets.three.setup.call(null, G__274397, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:rotation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:y", 0, "\ufdd0:z", 0.41], true)], true));
-    return G__274397
-  }();
-  var clouds_material = new planets.three.MeshLambertMaterial(cljs.core.clj__GT_js.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 16777215, "\ufdd0:map", clouds_texture, "\ufdd0:transparent", true], true)));
-  var clouds = function() {
-    var G__274398 = new planets.three.Mesh(planet_geometry, clouds_material);
-    planets.three.setup.call(null, G__274398, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:rotation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:z", 0.41], true), "\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 1.005, "\ufdd0:y", 1.005, "\ufdd0:z", 1.005], true)], true));
-    return G__274398
-  }();
-  var moon_material = new planets.three.MeshPhongMaterial(cljs.core.clj__GT_js.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 16777215, "\ufdd0:map", moon_texture], true)));
+  var moon_material = new THREE.MeshPhongMaterial(cljs.core.clj__GT_js.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 16777215, "\ufdd0:map", moon_texture], true)));
   var moon = function() {
-    var G__274399 = new planets.three.Mesh(planet_geometry, moon_material);
-    planets.three.setup.call(null, G__274399, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 6371 * 5, "\ufdd0:y", 0, "\ufdd0:z", 0], true), "\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0.23, "\ufdd0:y", 0.23, "\ufdd0:z", 0.23], true)], true));
-    return G__274399
+    var G__310121 = new THREE.Mesh(planet_geometry, moon_material);
+    planets.three.setup.call(null, G__310121, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 6371 * 5, "\ufdd0:y", 0, "\ufdd0:z", 0], true), "\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0.23, "\ufdd0:y", 0.23, "\ufdd0:z", 0.23], true)], true));
+    return G__310121
   }();
-  var light_options = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", -1, "\ufdd0:y", 0, "\ufdd0:z", 1], true), "\ufdd0:shadowMapWidth", 1024, "\ufdd0:shadowMapHeight", 1024, "\ufdd0:shadowMapShadow", 0.95], true));
   var light_source = function() {
-    var light = new planets.three.DirectionalLight(16777215);
-    light.position.set(-1, 0, 1).normalize();
+    var light = new THREE.DirectionalLight(16777215, 1);
+    light.position.set(500, 2E3, 0);
     return light
   }();
-  var ambient_light = new planets.three.AmbientLight(0);
-  var clock = new planets.three.Clock;
-  var delta = cljs.core.atom.call(null, 0);
-  var particle_materials = cljs.core.reduce.call(null, function(galaxy_options, ship, mouse, keyboard, fog, loader, sovereign, container, sun_texture, planet_texture, clouds_texture, normal_texture, specular_texture, moon_texture, shader, uniforms, material_normal_map, lambert_material, planet_geometry, planet, clouds_material, clouds, moon_material, moon, light_options, light_source, ambient_light, clock, delta) {
+  var point_light = new THREE.PointLight(16777215, 1.15);
+  var hemi_light = function() {
+    var light = new THREE.HemisphereLight(16777215, 16777215, 1);
+    light.color.setHSL(0.6, 0.75, 1);
+    light.groundColor.setHSL(0.295, 0.5, 1);
+    var G__310122 = light;
+    planets.utils.set_nested_BANG_.call(null, G__310122, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 500, "\ufdd0:y", 2E3, "\ufdd0:z", 0], true)], true));
+    return G__310122
+  }();
+  var ambient_light = new THREE.AmbientLight(1118481);
+  var particle_materials = cljs.core.reduce.call(null, function(ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load, loader_watcher, container, spectral_nebula, nebula, moon_texture, shader_textures, lambert_material, planet_geometry, moon_material, moon, light_source, point_light, hemi_light, ambient_light) {
     return function(materials, params) {
-      return cljs.core.conj.call(null, materials, new planets.three.ParticleBasicMaterial(cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, params, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:blending", planets.three.AdditiveBlending, "\ufdd0:transparent", true, "\ufdd0:map", planets.three.ImageUtils.loadTexture(cljs.core.rand_nth.call(null, cljs.core.PersistentVector.fromArray(["textures/flare5.jpeg"], true)))], true)))))
+      return cljs.core.conj.call(null, materials, function() {
+        var G__310123 = new THREE.ParticleBasicMaterial(cljs.core.clj__GT_js.call(null, cljs.core.merge.call(null, params, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:blending", THREE.AdditiveBlending, "\ufdd0:transparent", true, "\ufdd0:map", THREE.ImageUtils.loadTexture(cljs.core.rand_nth.call(null, cljs.core.PersistentVector.fromArray(["textures/flare5.jpeg"], true)))], true))));
+        planets.utils.apply_nested_BANG_.call(null, G__310123, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", function(G__310123, ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load, loader_watcher, container, spectral_nebula, nebula, moon_texture, shader_textures, lambert_material, planet_geometry, moon_material, moon, light_source, point_light, hemi_light, ambient_light) {
+          return function(clr) {
+            return clr.setHSL(0.5, clr.g, clr.b)
+          }
+        }(G__310123, ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load, loader_watcher, container, spectral_nebula, nebula, moon_texture, shader_textures, lambert_material, planet_geometry, moon_material, moon, light_source, point_light, hemi_light, ambient_light)], true));
+        return G__310123
+      }())
     }
-  }(galaxy_options, ship, mouse, keyboard, fog, loader, sovereign, container, sun_texture, planet_texture, clouds_texture, normal_texture, specular_texture, moon_texture, shader, uniforms, material_normal_map, lambert_material, planet_geometry, planet, clouds_material, clouds, moon_material, moon, light_options, light_source, ambient_light, clock, delta), cljs.core.PersistentVector.EMPTY, cljs.core.PersistentVector.fromArray([cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 5592405, "\ufdd0:size", 
-  8], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 3815994, "\ufdd0:size", 6], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 5592405, "\ufdd0:size", 5], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 1710618, "\ufdd0:size", 4], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 3355443, "\ufdd0:size", 3], true)], true));
-  var particle_systems = cljs.core.reduce.call(null, function(galaxy_options, ship, mouse, keyboard, fog, loader, sovereign, container, sun_texture, planet_texture, clouds_texture, normal_texture, specular_texture, moon_texture, shader, uniforms, material_normal_map, lambert_material, planet_geometry, planet, clouds_material, clouds, moon_material, moon, light_options, light_source, ambient_light, clock, delta, particle_materials) {
+  }(ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load, loader_watcher, container, spectral_nebula, nebula, moon_texture, shader_textures, lambert_material, planet_geometry, moon_material, moon, light_source, point_light, hemi_light, ambient_light), cljs.core.PersistentVector.EMPTY, cljs.core.PersistentVector.fromArray([cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 5592405, "\ufdd0:size", 20], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 3815994, 
+  "\ufdd0:size", 15], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 5592405, "\ufdd0:size", 17], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 1710618, "\ufdd0:size", 18], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", 3355443, "\ufdd0:size", 13], true)], true));
+  var particle_systems = cljs.core.reduce.call(null, function(ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load, loader_watcher, container, spectral_nebula, nebula, moon_texture, shader_textures, lambert_material, planet_geometry, moon_material, moon, light_source, point_light, hemi_light, ambient_light, particle_materials) {
     return function(systems, particle_material) {
       var particles = function() {
-        var G__274400 = new planets.three.Geometry;
-        planets.three.setup.call(null, G__274400, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:particle-count", 2E4, "\ufdd0:vertex-range", 2E3], true));
-        return G__274400
+        var G__310124 = new THREE.Geometry;
+        planets.three.setup.call(null, G__310124, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:particle-count", 2E4, "\ufdd0:vertex-range", 2E3], true));
+        return G__310124
       }();
       var system = function() {
-        var G__274401 = new planets.three.ParticleSystem(particles, particle_material);
-        planets.three.setup.call(null, G__274401, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:rotation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", cljs.core.rand.call(null) * 6, "\ufdd0:y", cljs.core.rand.call(null) * 6, "\ufdd0:z", cljs.core.rand.call(null) * 6], true), "\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 10 * (10 + cljs.core.count.call(null, systems)), "\ufdd0:y", 10 * (10 + cljs.core.count.call(null, systems)), "\ufdd0:z", 10 * (10 + cljs.core.count.call(null, 
+        var G__310125 = new THREE.ParticleSystem(particles, particle_material);
+        planets.three.setup.call(null, G__310125, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:rotation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", cljs.core.rand.call(null) * 6, "\ufdd0:y", cljs.core.rand.call(null) * 6, "\ufdd0:z", cljs.core.rand.call(null) * 6], true), "\ufdd0:scale", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 15 * (10 + cljs.core.count.call(null, systems)), "\ufdd0:y", 15 * (10 + cljs.core.count.call(null, systems)), "\ufdd0:z", 15 * (10 + cljs.core.count.call(null, 
         systems))], true), "\ufdd0:matrixAutoUpdate", false], true));
-        return G__274401
+        return G__310125
       }();
       system.updateMatrix();
       return cljs.core.conj.call(null, systems, system)
     }
-  }(galaxy_options, ship, mouse, keyboard, fog, loader, sovereign, container, sun_texture, planet_texture, clouds_texture, normal_texture, specular_texture, moon_texture, shader, uniforms, material_normal_map, lambert_material, planet_geometry, planet, clouds_material, clouds, moon_material, moon, light_options, light_source, ambient_light, clock, delta, particle_materials), cljs.core.PersistentVector.EMPTY, particle_materials);
-  var ray = new planets.three.Raycaster;
-  var scene_objects = cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([planet, clouds, moon, light_source, camera, ambient_light, sovereign], true), particle_systems);
-  var G__274402_274422 = light_source;
-  planets.three.setup.call(null, G__274402_274422, cljs.core.deref.call(null, light_options));
-  var G__274403_274423 = scene;
-  planets.three.setup.call(null, G__274403_274423, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:objects", scene_objects], true));
-  console.log(scene);
-  var G__274404_274424 = camera;
-  planets.three.setup.call(null, G__274404_274424, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:z", 5 * 6371], true), "\ufdd0:useQuaternion", true], true));
-  var G__274405_274425 = renderer;
-  planets.three.setup.call(null, G__274405_274425, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:width", (new cljs.core.Keyword("\ufdd0:width")).call(null, options), "\ufdd0:height", (new cljs.core.Keyword("\ufdd0:height")).call(null, options), "\ufdd0:renderables", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:scene", scene, "\ufdd0:camera", camera], true)], true));
-  planets.three.animate.call(null, renderer, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:scene", scene, "\ufdd0:camera", camera], true), cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.fromArray([cljs.core.PersistentArrayMap.fromArray(["\ufdd0:animatable", planet, "\ufdd0:animation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:rotation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:y", function(y_pos) {
-    return y_pos + cljs.core.deref.call(null, delta) * 0.02
-  }], true)], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:animatable", clouds, "\ufdd0:animation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:rotation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:y", function(y_pos) {
-    return y_pos + 1.25 * cljs.core.deref.call(null, delta) * 0.02
-  }], true)], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:animatable", camera, "\ufdd0:animation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:clock", clock, "\ufdd0:ship", ship], true)], true)], true), cljs.core.PersistentVector.fromArray([cljs.core.reduce.call(null, function(animations, material) {
-    return cljs.core.conj.call(null, animations, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:animatable", material, "\ufdd0:animation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:color", function(clr) {
-      return clr.setHSL(0.5, clr.g, clr.b)
-    }], true)], true))
-  }, cljs.core.PersistentVector.EMPTY, particle_materials)], true)), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:clock", clock, "\ufdd0:delta", delta], true));
+  }(ship, clock, delta, mouse, keyboard, fog, sovereign, load_fn, loader, load, loader_watcher, container, spectral_nebula, nebula, moon_texture, shader_textures, lambert_material, planet_geometry, moon_material, moon, light_source, point_light, hemi_light, ambient_light, particle_materials), cljs.core.PersistentVector.EMPTY, particle_materials);
+  var ray = new THREE.Raycaster;
+  var light_val = cljs.core.atom.call(null, 0);
+  var light_dir = cljs.core.atom.call(null, 1);
+  var anim_delta = cljs.core.atom.call(null, 0);
+  var anim_delta_dir = cljs.core.atom.call(null, -1);
+  var scene_objects = cljs.core.into.call(null, cljs.core.PersistentVector.fromArray([moon, light_source, camera, ambient_light, hemi_light, point_light, (new cljs.core.Keyword("\ufdd0:terrain-mesh")).call(null, shader_textures)], true), particle_systems);
+  point_light.position.set(0, 0, 0);
   planets.three.mouse_observer.call(null, mouse);
   planets.three.keyboard_observer.call(null, keyboard);
   planets.three.ship_observer.call(null, ship, mouse, keyboard);
+  var G__310126_310146 = scene;
+  planets.three.setup.call(null, G__310126_310146, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:objects", scene_objects], true));
+  var G__310127_310147 = camera;
+  planets.three.setup.call(null, G__310127_310147, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:position", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:x", 0, "\ufdd0:y", 0, "\ufdd0:z", 6371 * 1], true), "\ufdd0:useQuaternion", true], true));
+  var G__310128_310148 = renderer;
+  planets.three.setup.call(null, G__310128_310148, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:width", (new cljs.core.Keyword("\ufdd0:width")).call(null, options), "\ufdd0:height", (new cljs.core.Keyword("\ufdd0:height")).call(null, options), "\ufdd0:renderables", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:scene", scene, "\ufdd0:camera", camera], true)], true));
+  planets.three.animate.call(null, renderer, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:scene", scene, "\ufdd0:camera", camera], true), cljs.core.reduce.call(null, cljs.core.into, cljs.core.PersistentVector.fromArray([cljs.core.PersistentArrayMap.fromArray(["\ufdd0:animatable", (new cljs.core.Keyword("\ufdd0:terrain-mesh")).call(null, shader_textures), "\ufdd0:animation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:rotation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:y", function(y_pos) {
+    return y_pos + cljs.core.deref.call(null, delta) * 0
+  }], true)], true)], true), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:animatable", camera, "\ufdd0:animation", cljs.core.PersistentArrayMap.fromArray(["\ufdd0:clock", clock, "\ufdd0:ship", ship], true)], true)], true), cljs.core.PersistentVector.EMPTY), cljs.core.PersistentArrayMap.fromArray(["\ufdd0:clock", clock, "\ufdd0:delta", delta, "\ufdd0:shader-textures", shader_textures, "\ufdd0:anim-delta", anim_delta, "\ufdd0:light-val", light_val, "\ufdd0:light-dir", light_dir, "\ufdd0:anim-delta-dir", 
+  anim_delta_dir], true));
   planets.three.redraw_canvas = function redraw_canvas() {
     dommy.core.remove_BANG_.call(null, dommy.utils.__GT_Array.call(null, document.getElementsByTagName("canvas"))[0]);
-    var seq__274414_274426 = cljs.core.seq.call(null, scene.__objects);
-    var chunk__274415_274427 = null;
-    var count__274416_274428 = 0;
-    var i__274417_274429 = 0;
+    var seq__310137_310149 = cljs.core.seq.call(null, scene.__objects);
+    var chunk__310138_310150 = null;
+    var count__310139_310151 = 0;
+    var i__310140_310152 = 0;
     while(true) {
-      if(i__274417_274429 < count__274416_274428) {
-        var obj_274430 = cljs.core._nth.call(null, chunk__274415_274427, i__274417_274429);
-        scene.remove(obj_274430);
-        cljs.core.map.call(null, function(seq__274414_274426, chunk__274415_274427, count__274416_274428, i__274417_274429, obj_274430) {
-          return function(p1__274365_SHARP_) {
-            return p1__274365_SHARP_.dispose()
+      if(i__310140_310152 < count__310139_310151) {
+        var obj_310153 = cljs.core._nth.call(null, chunk__310138_310150, i__310140_310152);
+        scene.remove(obj_310153);
+        cljs.core.map.call(null, function(seq__310137_310149, chunk__310138_310150, count__310139_310151, i__310140_310152, obj_310153) {
+          return function(p1__310088_SHARP_) {
+            return p1__310088_SHARP_.dispose()
           }
-        }(seq__274414_274426, chunk__274415_274427, count__274416_274428, i__274417_274429, obj_274430), cljs.core.PersistentVector.fromArray([obj_274430.material, obj_274430.material.texture, obj_274430.geometry], true));
-        var G__274431 = seq__274414_274426;
-        var G__274432 = chunk__274415_274427;
-        var G__274433 = count__274416_274428;
-        var G__274434 = i__274417_274429 + 1;
-        seq__274414_274426 = G__274431;
-        chunk__274415_274427 = G__274432;
-        count__274416_274428 = G__274433;
-        i__274417_274429 = G__274434;
+        }(seq__310137_310149, chunk__310138_310150, count__310139_310151, i__310140_310152, obj_310153), cljs.core.PersistentVector.fromArray([obj_310153.material, obj_310153.material.texture, obj_310153.geometry], true));
+        var G__310154 = seq__310137_310149;
+        var G__310155 = chunk__310138_310150;
+        var G__310156 = count__310139_310151;
+        var G__310157 = i__310140_310152 + 1;
+        seq__310137_310149 = G__310154;
+        chunk__310138_310150 = G__310155;
+        count__310139_310151 = G__310156;
+        i__310140_310152 = G__310157;
         continue
       }else {
-        var temp__4092__auto___274435 = cljs.core.seq.call(null, seq__274414_274426);
-        if(temp__4092__auto___274435) {
-          var seq__274414_274436__$1 = temp__4092__auto___274435;
-          if(cljs.core.chunked_seq_QMARK_.call(null, seq__274414_274436__$1)) {
-            var c__3073__auto___274437 = cljs.core.chunk_first.call(null, seq__274414_274436__$1);
-            var G__274438 = cljs.core.chunk_rest.call(null, seq__274414_274436__$1);
-            var G__274439 = c__3073__auto___274437;
-            var G__274440 = cljs.core.count.call(null, c__3073__auto___274437);
-            var G__274441 = 0;
-            seq__274414_274426 = G__274438;
-            chunk__274415_274427 = G__274439;
-            count__274416_274428 = G__274440;
-            i__274417_274429 = G__274441;
+        var temp__4092__auto___310158 = cljs.core.seq.call(null, seq__310137_310149);
+        if(temp__4092__auto___310158) {
+          var seq__310137_310159__$1 = temp__4092__auto___310158;
+          if(cljs.core.chunked_seq_QMARK_.call(null, seq__310137_310159__$1)) {
+            var c__3031__auto___310160 = cljs.core.chunk_first.call(null, seq__310137_310159__$1);
+            var G__310161 = cljs.core.chunk_rest.call(null, seq__310137_310159__$1);
+            var G__310162 = c__3031__auto___310160;
+            var G__310163 = cljs.core.count.call(null, c__3031__auto___310160);
+            var G__310164 = 0;
+            seq__310137_310149 = G__310161;
+            chunk__310138_310150 = G__310162;
+            count__310139_310151 = G__310163;
+            i__310140_310152 = G__310164;
             continue
           }else {
-            var obj_274442 = cljs.core.first.call(null, seq__274414_274436__$1);
-            scene.remove(obj_274442);
-            cljs.core.map.call(null, function(seq__274414_274426, chunk__274415_274427, count__274416_274428, i__274417_274429, obj_274442, seq__274414_274436__$1, temp__4092__auto___274435) {
-              return function(p1__274365_SHARP_) {
-                return p1__274365_SHARP_.dispose()
+            var obj_310165 = cljs.core.first.call(null, seq__310137_310159__$1);
+            scene.remove(obj_310165);
+            cljs.core.map.call(null, function(seq__310137_310149, chunk__310138_310150, count__310139_310151, i__310140_310152, obj_310165, seq__310137_310159__$1, temp__4092__auto___310158) {
+              return function(p1__310088_SHARP_) {
+                return p1__310088_SHARP_.dispose()
               }
-            }(seq__274414_274426, chunk__274415_274427, count__274416_274428, i__274417_274429, obj_274442, seq__274414_274436__$1, temp__4092__auto___274435), cljs.core.PersistentVector.fromArray([obj_274442.material, obj_274442.material.texture, obj_274442.geometry], true));
-            var G__274443 = cljs.core.next.call(null, seq__274414_274436__$1);
-            var G__274444 = null;
-            var G__274445 = 0;
-            var G__274446 = 0;
-            seq__274414_274426 = G__274443;
-            chunk__274415_274427 = G__274444;
-            count__274416_274428 = G__274445;
-            i__274417_274429 = G__274446;
+            }(seq__310137_310149, chunk__310138_310150, count__310139_310151, i__310140_310152, obj_310165, seq__310137_310159__$1, temp__4092__auto___310158), cljs.core.PersistentVector.fromArray([obj_310165.material, obj_310165.material.texture, obj_310165.geometry], true));
+            var G__310166 = cljs.core.next.call(null, seq__310137_310159__$1);
+            var G__310167 = null;
+            var G__310168 = 0;
+            var G__310169 = 0;
+            seq__310137_310149 = G__310166;
+            chunk__310138_310150 = G__310167;
+            count__310139_310151 = G__310168;
+            i__310140_310152 = G__310169;
             continue
           }
         }else {
@@ -33006,49 +33493,49 @@ planets.three.draw_canvas = function draw_canvas(scene, renderer, camera, option
       }
       break
     }
-    var seq__274418_274447 = cljs.core.seq.call(null, scene.children);
-    var chunk__274419_274448 = null;
-    var count__274420_274449 = 0;
-    var i__274421_274450 = 0;
+    var seq__310141_310170 = cljs.core.seq.call(null, scene.children);
+    var chunk__310142_310171 = null;
+    var count__310143_310172 = 0;
+    var i__310144_310173 = 0;
     while(true) {
-      if(i__274421_274450 < count__274420_274449) {
-        var obj_274451 = cljs.core._nth.call(null, chunk__274419_274448, i__274421_274450);
-        scene.remove(obj_274451);
-        var G__274452 = seq__274418_274447;
-        var G__274453 = chunk__274419_274448;
-        var G__274454 = count__274420_274449;
-        var G__274455 = i__274421_274450 + 1;
-        seq__274418_274447 = G__274452;
-        chunk__274419_274448 = G__274453;
-        count__274420_274449 = G__274454;
-        i__274421_274450 = G__274455;
+      if(i__310144_310173 < count__310143_310172) {
+        var obj_310174 = cljs.core._nth.call(null, chunk__310142_310171, i__310144_310173);
+        scene.remove(obj_310174);
+        var G__310175 = seq__310141_310170;
+        var G__310176 = chunk__310142_310171;
+        var G__310177 = count__310143_310172;
+        var G__310178 = i__310144_310173 + 1;
+        seq__310141_310170 = G__310175;
+        chunk__310142_310171 = G__310176;
+        count__310143_310172 = G__310177;
+        i__310144_310173 = G__310178;
         continue
       }else {
-        var temp__4092__auto___274456 = cljs.core.seq.call(null, seq__274418_274447);
-        if(temp__4092__auto___274456) {
-          var seq__274418_274457__$1 = temp__4092__auto___274456;
-          if(cljs.core.chunked_seq_QMARK_.call(null, seq__274418_274457__$1)) {
-            var c__3073__auto___274458 = cljs.core.chunk_first.call(null, seq__274418_274457__$1);
-            var G__274459 = cljs.core.chunk_rest.call(null, seq__274418_274457__$1);
-            var G__274460 = c__3073__auto___274458;
-            var G__274461 = cljs.core.count.call(null, c__3073__auto___274458);
-            var G__274462 = 0;
-            seq__274418_274447 = G__274459;
-            chunk__274419_274448 = G__274460;
-            count__274420_274449 = G__274461;
-            i__274421_274450 = G__274462;
+        var temp__4092__auto___310179 = cljs.core.seq.call(null, seq__310141_310170);
+        if(temp__4092__auto___310179) {
+          var seq__310141_310180__$1 = temp__4092__auto___310179;
+          if(cljs.core.chunked_seq_QMARK_.call(null, seq__310141_310180__$1)) {
+            var c__3031__auto___310181 = cljs.core.chunk_first.call(null, seq__310141_310180__$1);
+            var G__310182 = cljs.core.chunk_rest.call(null, seq__310141_310180__$1);
+            var G__310183 = c__3031__auto___310181;
+            var G__310184 = cljs.core.count.call(null, c__3031__auto___310181);
+            var G__310185 = 0;
+            seq__310141_310170 = G__310182;
+            chunk__310142_310171 = G__310183;
+            count__310143_310172 = G__310184;
+            i__310144_310173 = G__310185;
             continue
           }else {
-            var obj_274463 = cljs.core.first.call(null, seq__274418_274457__$1);
-            scene.remove(obj_274463);
-            var G__274464 = cljs.core.next.call(null, seq__274418_274457__$1);
-            var G__274465 = null;
-            var G__274466 = 0;
-            var G__274467 = 0;
-            seq__274418_274447 = G__274464;
-            chunk__274419_274448 = G__274465;
-            count__274420_274449 = G__274466;
-            i__274421_274450 = G__274467;
+            var obj_310186 = cljs.core.first.call(null, seq__310141_310180__$1);
+            scene.remove(obj_310186);
+            var G__310187 = cljs.core.next.call(null, seq__310141_310180__$1);
+            var G__310188 = null;
+            var G__310189 = 0;
+            var G__310190 = 0;
+            seq__310141_310170 = G__310187;
+            chunk__310142_310171 = G__310188;
+            count__310143_310172 = G__310189;
+            i__310144_310173 = G__310190;
             continue
           }
         }else {
@@ -33061,18 +33548,17 @@ planets.three.draw_canvas = function draw_canvas(scene, renderer, camera, option
 };
 planets.three._main = function() {
   var _main__delegate = function(args) {
-    clojure.browser.repl.connect.call(null, "http://localhost:9000/repl");
-    var camera_options = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fov", 45, "\ufdd0:width", window.innerWidth, "\ufdd0:height", window.innerHeight, "\ufdd0:near", 50, "\ufdd0:far", 1E7], true));
-    var map__274469 = cljs.core.deref.call(null, camera_options);
-    var map__274469__$1 = cljs.core.seq_QMARK_.call(null, map__274469) ? cljs.core.apply.call(null, cljs.core.hash_map, map__274469) : map__274469;
-    var far = cljs.core.get.call(null, map__274469__$1, "\ufdd0:far");
-    var near = cljs.core.get.call(null, map__274469__$1, "\ufdd0:near");
-    var height = cljs.core.get.call(null, map__274469__$1, "\ufdd0:height");
-    var width = cljs.core.get.call(null, map__274469__$1, "\ufdd0:width");
-    var fov = cljs.core.get.call(null, map__274469__$1, "\ufdd0:fov");
-    var camera = new planets.three.PerspectiveCamera(fov, width / height, near, far);
-    var scene = new planets.three.Scene;
-    var renderer = new planets.three.Renderer;
+    var camera_options = cljs.core.atom.call(null, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:fov", 45, "\ufdd0:near", 1, "\ufdd0:far", 1E7, "\ufdd0:width", window.innerWidth, "\ufdd0:height", window.innerHeight], true));
+    var map__310192 = cljs.core.deref.call(null, camera_options);
+    var map__310192__$1 = cljs.core.seq_QMARK_.call(null, map__310192) ? cljs.core.apply.call(null, cljs.core.hash_map, map__310192) : map__310192;
+    var far = cljs.core.get.call(null, map__310192__$1, "\ufdd0:far");
+    var near = cljs.core.get.call(null, map__310192__$1, "\ufdd0:near");
+    var height = cljs.core.get.call(null, map__310192__$1, "\ufdd0:height");
+    var width = cljs.core.get.call(null, map__310192__$1, "\ufdd0:width");
+    var fov = cljs.core.get.call(null, map__310192__$1, "\ufdd0:fov");
+    var camera = new THREE.PerspectiveCamera(fov, width / height, near, far);
+    var scene = new THREE.Scene;
+    var renderer = new THREE.WebGLRenderer;
     return planets.three.draw_canvas.call(null, scene, renderer, camera, cljs.core.deref.call(null, camera_options))
   };
   var _main = function(var_args) {
@@ -33083,8 +33569,8 @@ planets.three._main = function() {
     return _main__delegate.call(this, args)
   };
   _main.cljs$lang$maxFixedArity = 0;
-  _main.cljs$lang$applyTo = function(arglist__274470) {
-    var args = cljs.core.seq(arglist__274470);
+  _main.cljs$lang$applyTo = function(arglist__310193) {
+    var args = cljs.core.seq(arglist__310193);
     return _main__delegate(args)
   };
   _main.cljs$core$IFn$_invoke$arity$variadic = _main__delegate;
