@@ -8,7 +8,7 @@
 
 (defn simplex-noise-terrain [renderer camera delta]
   (let [planet (gen-planet renderer)
-        geometry-terrain (doto (THREE.PlaneGeometry. 4096 4096 512 512)
+        geometry-terrain (doto (THREE.PlaneGeometry. 8192 8192 512 512)
                            (.computeCentroids)
                            ;; (.computeFaceNormals)
                            ;; (.computeVertexNormals)
@@ -20,7 +20,7 @@
     ;; (rtt! (:luminosity-material planet)
     ;;       [(:specular-map planet)] renderer)
     (rtt! (:normal-material planet)
-          [(:normal-map planet)] renderer) 
+          [(:normal-map planet)] renderer)
     {:terrain-mesh terrain}))
 
 ;; lod-geometries

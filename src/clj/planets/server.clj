@@ -7,14 +7,14 @@
             [compojure.handler :refer [site]]
             [hiccup.def :refer [defhtml defelem]]
             [aleph.http :refer [start-http-server]]
-            [lamina.core :refer [siphon receive channel]]            
+            [lamina.core :refer [siphon receive channel]]
             [monger.core :as mg]
             [monger.collection :as mc]
             [hiccup.page :refer [html5 include-css include-js]]
             [ring.middleware.reload :refer [wrap-reload]]
             [planets.shaders :refer [vertex-shader fragment-shader]]
             cljs.repl cljs.repl.browser cemerick.piggieback)
-  (:import [com.mongodb  MongoOptions ServerAddress]))
+  (:import [com.mongodb MongoOptions ServerAddress]))
 
 (defhtml layout [& body]
   (html5
@@ -70,8 +70,8 @@
 
 (defn handler []
   (-> #'application-routes
-      (site)      
-      (wrap-reload {:dirs ["src/clj" "src/cljs" "resources/public/shaders"]})))
+      (site)
+      (wrap-reload {:dirs ["src/clj" "src/cljs"]})))
 
 (defn cljs-repl []
   (cemerick.piggieback/cljs-repl

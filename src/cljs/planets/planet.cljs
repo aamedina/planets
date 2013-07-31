@@ -48,7 +48,7 @@
                           :magFilter THREE.LinearFilter
                           :format THREE.RGBFormat})
         height-map
-        (texture/load-texture "textures/terrain7.png")
+        (texture/load-texture "textures/heightmap.png")
         ;; (texture/mapping 512 512 {:minFilter THREE.LinearMipMapLinearFilter
         ;;                             :magFilter THREE.LinearFilter
         ;;                             :format THREE.RGBFormat})
